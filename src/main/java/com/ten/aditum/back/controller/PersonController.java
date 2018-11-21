@@ -1,5 +1,6 @@
 package com.ten.aditum.back.controller;
 
+import com.ten.aditum.back.entity.Community;
 import com.ten.aditum.back.entity.Person;
 import com.ten.aditum.back.model.AditumCode;
 import com.ten.aditum.back.model.ResultModel;
@@ -10,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "/person")
@@ -24,8 +27,13 @@ public class PersonController extends BaseController<Person> {
     }
 
     @Override
+    @RequestMapping(method = RequestMethod.GET)
     public ResultModel get(Person person) {
-        return null;
+        List<Person> personList = service.select(person);
+        if (personList == null) {
+            return new ResultModel(AditumCode.ERROR);
+        }
+        return new ResultModel(AditumCode.OK, personList);
     }
 
     @Override

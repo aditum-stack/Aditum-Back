@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequestMapping(value = "/community")
 public class CommunityController extends BaseController<Community> {
@@ -27,7 +29,11 @@ public class CommunityController extends BaseController<Community> {
     @Override
     @RequestMapping(method = RequestMethod.GET)
     public ResultModel get(Community community) {
-        return new ResultModel(AditumCode.OK);
+        List<Community> communityList = service.select(community);
+        if (communityList == null) {
+            return new ResultModel(AditumCode.ERROR);
+        }
+        return new ResultModel(AditumCode.OK, communityList);
     }
 
     @Override
