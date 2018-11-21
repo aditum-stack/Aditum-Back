@@ -1,7 +1,7 @@
 spring:
     datasource:
-        name: lifecat
-        url: jdbc:mysql://111.230.244.153:3306/catdb
+        name: aditum_mocker
+        url: jdbc:mysql://localhost:3306/aditum_mocker
         username: root
         password: wangshihao
         # 使用druid数据源
@@ -16,4 +16,4 @@ spring:
 
 mybatis:
     mapperLocations: classpath*:mapper/*.xml
-    typeAliasesPackage: com.ten.entity
+    typeAliasesPackage: com.ten.aditum.back.entity

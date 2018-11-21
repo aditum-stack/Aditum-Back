@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ten.aditum.back.mapper.RecordDao">
+
+    <!--auto generated Code-->
+    <resultMap id="AllColumnMap" type="com.ten.aditum.back.entity.Record">
+        <result column="id" property="id"/>
+        <result column="imei" property="imei"/>
+        <result column="personnel_id" property="personnelId"/>
+        <result column="visite_time" property="visiteTime"/>
+        <result column="visite_status" property="visiteStatus"/>
+        <result column="is_deleted" property="isDeleted"/>
+    </resultMap>
+
+    <!--auto generated Code-->
+    <sql id="all_column">
+        id,
+        imei,
+        personnel_id,
+        visite_time,
+        visite_status,
+        is_deleted
+    </sql>
+
+    <!--auto generated Code-->
+    <insert id="insert">
+        INSERT INTO record
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="pojo.id != null">id,</if>
+            <if test="pojo.imei != null">imei,</if>
+            <if test="pojo.personnelId != null">personnel_id,</if>
+            <if test="pojo.visiteTime != null">visite_time,</if>
+            <if test="pojo.visiteStatus != null">visite_status,</if>
+            <if test="pojo.isDeleted != null">is_deleted,</if>
+        </trim>
+        VALUES
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="pojo.id != null">#{pojo.id},</if>
+            <if test="pojo.imei != null">#{pojo.imei},</if>
+            <if test="pojo.personnelId != null">#{pojo.personnelId},</if>
+            <if test="pojo.visiteTime != null">#{pojo.visiteTime},</if>
+            <if test="pojo.visiteStatus != null">#{pojo.visiteStatus},</if>
+            <if test="pojo.isDeleted != null">#{pojo.isDeleted},</if>
+        </trim>
+    </insert>
+
+    <!--auto generated Code-->
+    <insert id="insertList">
+        INSERT INTO record(
+        <include refid="all_column"/>
+        )VALUES
+        <foreach collection="pojos" item="pojo" index="index" separator=",">
+            (
+            #{pojo.id},
+            #{pojo.imei},
+            #{pojo.personnelId},
+            #{pojo.visiteTime},
+            #{pojo.visiteStatus},
+            #{pojo.isDeleted}
+            )
+        </foreach>
+    </insert>
+
+    <!--auto generated Code-->
+    <update id="update">
+        UPDATE record
+        <set>
+            <if test="pojo.id != null">id = #{pojo.id},</if>
+            <if test="pojo.imei != null">imei = #{pojo.imei},</if>
+            <if test="pojo.personnelId != null">personnel_id = #{pojo.personnelId},</if>
+            <if test="pojo.visiteTime != null">visite_time = #{pojo.visiteTime},</if>
+            <if test="pojo.visiteStatus != null">visite_status = #{pojo.visiteStatus},</if>
+            <if test="pojo.isDeleted != null">is_deleted = #{pojo.isDeleted}</if>
+        </set>
+        WHERE id = #{pojo.id}
+    </update>
+
+    <!--auto generated Code-->
+    <select id="select" resultMap="AllColumnMap">
+        SELECT
+        <include refid="all_column"/>
+        FROM record
+        <where>
+            <if test="pojo.id != null">AND id = #{pojo.id}</if>
+            <if test="pojo.imei != null">AND imei = #{pojo.imei}</if>
+            <if test="pojo.personnelId != null">AND personnel_id = #{pojo.personnelId}</if>
+            <if test="pojo.visiteTime != null">AND visite_time = #{pojo.visiteTime}</if>
+            <if test="pojo.visiteStatus != null">AND visite_status = #{pojo.visiteStatus}</if>
+            <if test="pojo.isDeleted != null">AND is_deleted = #{pojo.isDeleted}</if>
+        </where>
+        LIMIT 1000
+    </select>
+
+    <!--auto generated Code-->
+    <delete id="delete">
+        DELETE FROM record where id = #{pojo.id}
+    </delete>
+</mapper>

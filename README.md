@@ -1,2 +1,4 @@
 # Aditum Web Back
-> RESTFul server for Aditum
+
+> Web Back server for Aditum
+

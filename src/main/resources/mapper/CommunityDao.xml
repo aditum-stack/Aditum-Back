@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ten.aditum.back.mapper.CommunityDao">
+
+    <!--auto generated Code-->
+    <resultMap id="AllColumnMap" type="com.ten.aditum.back.entity.Community">
+        <result column="id" property="id"/>
+        <result column="community_id" property="communityId"/>
+        <result column="community_name" property="communityName"/>
+        <result column="community_city" property="communityCity"/>
+        <result column="community_address" property="communityAddress"/>
+        <result column="device_count" property="deviceCount"/>
+        <result column="device_online_count" property="deviceOnlineCount"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="is_deleted" property="isDeleted"/>
+    </resultMap>
+
+    <!--auto generated Code-->
+    <sql id="all_column">
+        id,
+        community_id,
+        community_name,
+        community_city,
+        community_address,
+        device_count,
+        device_online_count,
+        create_time,
+        update_time,
+        is_deleted
+    </sql>
+
+    <!--auto generated Code-->
+    <insert id="insert">
+        INSERT INTO community
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="pojo.id != null">id,</if>
+            <if test="pojo.communityId != null">community_id,</if>
+            <if test="pojo.communityName != null">community_name,</if>
+            <if test="pojo.communityCity != null">community_city,</if>
+            <if test="pojo.communityAddress != null">community_address,</if>
+            <if test="pojo.deviceCount != null">device_count,</if>
+            <if test="pojo.deviceOnlineCount != null">device_online_count,</if>
+            <if test="pojo.createTime != null">create_time,</if>
+            <if test="pojo.updateTime != null">update_time,</if>
+            <if test="pojo.isDeleted != null">is_deleted,</if>
+        </trim>
+        VALUES
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="pojo.id != null">#{pojo.id},</if>
+            <if test="pojo.communityId != null">#{pojo.communityId},</if>
+            <if test="pojo.communityName != null">#{pojo.communityName},</if>
+            <if test="pojo.communityCity != null">#{pojo.communityCity},</if>
+            <if test="pojo.communityAddress != null">#{pojo.communityAddress},</if>
+            <if test="pojo.deviceCount != null">#{pojo.deviceCount},</if>
+            <if test="pojo.deviceOnlineCount != null">#{pojo.deviceOnlineCount},</if>
+            <if test="pojo.createTime != null">#{pojo.createTime},</if>
+            <if test="pojo.updateTime != null">#{pojo.updateTime},</if>
+            <if test="pojo.isDeleted != null">#{pojo.isDeleted},</if>
+        </trim>
+    </insert>
+
+    <!--auto generated Code-->
+    <insert id="insertList">
+        INSERT INTO community(
+        <include refid="all_column"/>
+        )VALUES
+        <foreach collection="pojos" item="pojo" index="index" separator=",">
+            (
+            #{pojo.id},
+            #{pojo.communityId},
+            #{pojo.communityName},
+            #{pojo.communityCity},
+            #{pojo.communityAddress},
+            #{pojo.deviceCount},
+            #{pojo.deviceOnlineCount},
+            #{pojo.createTime},
+            #{pojo.updateTime},
+            #{pojo.isDeleted}
+            )
+        </foreach>
+    </insert>
+
+    <!--auto generated Code-->
+    <update id="update">
+        UPDATE community
+        <set>
+            <if test="pojo.id != null">id = #{pojo.id},</if>
+            <if test="pojo.communityId != null">community_id = #{pojo.communityId},</if>
+            <if test="pojo.communityName != null">community_name = #{pojo.communityName},</if>
+            <if test="pojo.communityCity != null">community_city = #{pojo.communityCity},</if>
+            <if test="pojo.communityAddress != null">community_address = #{pojo.communityAddress},</if>
+            <if test="pojo.deviceCount != null">device_count = #{pojo.deviceCount},</if>
+            <if test="pojo.deviceOnlineCount != null">device_online_count = #{pojo.deviceOnlineCount},</if>
+            <if test="pojo.createTime != null">create_time = #{pojo.createTime},</if>
+            <if test="pojo.isDeleted != null">is_deleted = #{pojo.isDeleted},</if>
+        </set>
+        WHERE id = #{pojo.id}
+    </update>
+
+    <!--auto generated Code-->
+    <select id="select" resultMap="AllColumnMap">
+        SELECT
+        <include refid="all_column"/>
+        FROM community
+        <where>
+            <if test="pojo.id != null">AND id = #{pojo.id}</if>
+            <if test="pojo.communityId != null">AND community_id = #{pojo.communityId}</if>
+            <if test="pojo.communityName != null">AND community_name = #{pojo.communityName}</if>
+            <if test="pojo.communityCity != null">AND community_city = #{pojo.communityCity}</if>
+            <if test="pojo.communityAddress != null">AND community_address = #{pojo.communityAddress}</if>
+            <if test="pojo.deviceCount != null">AND device_count = #{pojo.deviceCount}</if>
+            <if test="pojo.deviceOnlineCount != null">AND device_online_count = #{pojo.deviceOnlineCount}</if>
+            <if test="pojo.createTime != null">AND create_time = #{pojo.createTime}</if>
+            <if test="pojo.updateTime != null">AND update_time = #{pojo.updateTime}</if>
+            <if test="pojo.isDeleted != null">AND is_deleted = #{pojo.isDeleted}</if>
+        </where>
+        LIMIT 1000
+    </select>
+
+    <!--auto generated Code-->
+    <delete id="delete">
+        DELETE FROM community where id = #{pojo.id}
+    </delete>
+</mapper>

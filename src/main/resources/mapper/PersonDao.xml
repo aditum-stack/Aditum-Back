@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ten.aditum.back.mapper.PersonDao">
+
+    <!--auto generated Code-->
+    <resultMap id="AllColumnMap" type="com.ten.aditum.back.entity.Person">
+        <result column="id" property="id"/>
+        <result column="personnel_id" property="personnelId"/>
+        <result column="personnel_name" property="personnelName"/>
+        <result column="community_id" property="communityId"/>
+        <result column="personnel_address" property="personnelAddress"/>
+        <result column="personnel_phone" property="personnelPhone"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="is_deleted" property="isDeleted"/>
+    </resultMap>
+
+    <!--auto generated Code-->
+    <sql id="all_column">
+        id,
+        personnel_id,
+        personnel_name,
+        community_id,
+        personnel_address,
+        personnel_phone,
+        create_time,
+        update_time,
+        is_deleted
+    </sql>
+
+    <!--auto generated Code-->
+    <insert id="insert">
+        INSERT INTO person
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="pojo.id != null">id,</if>
+            <if test="pojo.personnelId != null">personnel_id,</if>
+            <if test="pojo.personnelName != null">personnel_name,</if>
+            <if test="pojo.communityId != null">community_id,</if>
+            <if test="pojo.personnelAddress != null">personnel_address,</if>
+            <if test="pojo.personnelPhone != null">personnel_phone,</if>
+            <if test="pojo.createTime != null">create_time,</if>
+            <if test="pojo.updateTime != null">update_time,</if>
+            <if test="pojo.isDeleted != null">is_deleted,</if>
+        </trim>
+        VALUES
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="pojo.id != null">#{pojo.id},</if>
+            <if test="pojo.personnelId != null">#{pojo.personnelId},</if>
+            <if test="pojo.personnelName != null">#{pojo.personnelName},</if>
+            <if test="pojo.communityId != null">#{pojo.communityId},</if>
+            <if test="pojo.personnelAddress != null">#{pojo.personnelAddress},</if>
+            <if test="pojo.personnelPhone != null">#{pojo.personnelPhone},</if>
+            <if test="pojo.createTime != null">#{pojo.createTime},</if>
+            <if test="pojo.updateTime != null">#{pojo.updateTime},</if>
+            <if test="pojo.isDeleted != null">#{pojo.isDeleted},</if>
+        </trim>
+    </insert>
+
+    <!--auto generated Code-->
+    <insert id="insertList">
+        INSERT INTO person(
+        <include refid="all_column"/>
+        )VALUES
+        <foreach collection="pojos" item="pojo" index="index" separator=",">
+            (
+            #{pojo.id},
+            #{pojo.personnelId},
+            #{pojo.personnelName},
+            #{pojo.communityId},
+            #{pojo.personnelAddress},
+            #{pojo.personnelPhone},
+            #{pojo.createTime},
+            #{pojo.updateTime},
+            #{pojo.isDeleted}
+            )
+        </foreach>
+    </insert>
+
+    <!--auto generated Code-->
+    <update id="update">
+        UPDATE person
+        <set>
+            <if test="pojo.id != null">id = #{pojo.id},</if>
+            <if test="pojo.personnelId != null">personnel_id = #{pojo.personnelId},</if>
+            <if test="pojo.personnelName != null">personnel_name = #{pojo.personnelName},</if>
+            <if test="pojo.communityId != null">community_id = #{pojo.communityId},</if>
+            <if test="pojo.personnelAddress != null">personnel_address = #{pojo.personnelAddress},</if>
+            <if test="pojo.personnelPhone != null">personnel_phone = #{pojo.personnelPhone},</if>
+            <if test="pojo.createTime != null">create_time = #{pojo.createTime},</if>
+            <if test="pojo.isDeleted != null">is_deleted = #{pojo.isDeleted},</if>
+        </set>
+        WHERE id = #{pojo.id}
+    </update>
+
+    <!--auto generated Code-->
+    <select id="select" resultMap="AllColumnMap">
+        SELECT
+        <include refid="all_column"/>
+        FROM person
+        <where>
+            <if test="pojo.id != null">AND id = #{pojo.id}</if>
+            <if test="pojo.personnelId != null">AND personnel_id = #{pojo.personnelId}</if>
+            <if test="pojo.personnelName != null">AND personnel_name = #{pojo.personnelName}</if>
+            <if test="pojo.communityId != null">AND community_id = #{pojo.communityId}</if>
+            <if test="pojo.personnelAddress != null">AND personnel_address = #{pojo.personnelAddress}</if>
+            <if test="pojo.personnelPhone != null">AND personnel_phone = #{pojo.personnelPhone}</if>
+            <if test="pojo.createTime != null">AND create_time = #{pojo.createTime}</if>
+            <if test="pojo.updateTime != null">AND update_time = #{pojo.updateTime}</if>
+            <if test="pojo.isDeleted != null">AND is_deleted = #{pojo.isDeleted}</if>
+        </where>
+        LIMIT 1000
+    </select>
+
+    <!--auto generated Code-->
+    <delete id="delete">
+        DELETE FROM person where id = #{pojo.id}
+    </delete>
+</mapper>

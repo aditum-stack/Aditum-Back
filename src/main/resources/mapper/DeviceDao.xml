@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ten.aditum.back.mapper.DeviceDao">
+
+    <!--auto generated Code-->
+    <resultMap id="AllColumnMap" type="com.ten.aditum.back.entity.Device">
+        <result column="id" property="id"/>
+        <result column="imei" property="imei"/>
+        <result column="alias" property="alias"/>
+        <result column="community_id" property="communityId"/>
+        <result column="device_status" property="deviceStatus"/>
+        <result column="activate_time" property="activateTime"/>
+        <result column="last_online_time" property="lastOnlineTime"/>
+        <result column="last_offline_time" property="lastOfflineTime"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="is_deleted" property="isDeleted"/>
+    </resultMap>
+
+    <!--auto generated Code-->
+    <sql id="all_column">
+        id,
+        imei,
+        alias,
+        community_id,
+        device_status,
+        activate_time,
+        last_online_time,
+        last_offline_time,
+        create_time,
+        update_time,
+        is_deleted
+    </sql>
+
+    <!--auto generated Code-->
+    <insert id="insert">
+        INSERT INTO device
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="pojo.id != null">id,</if>
+            <if test="pojo.imei != null">imei,</if>
+            <if test="pojo.alias != null">alias,</if>
+            <if test="pojo.communityId != null">community_id,</if>
+            <if test="pojo.deviceStatus != null">device_status,</if>
+            <if test="pojo.activateTime != null">activate_time,</if>
+            <if test="pojo.lastOnlineTime != null">last_online_time,</if>
+            <if test="pojo.lastOfflineTime != null">last_offline_time,</if>
+            <if test="pojo.createTime != null">create_time,</if>
+            <if test="pojo.updateTime != null">update_time,</if>
+            <if test="pojo.isDeleted != null">is_deleted,</if>
+        </trim>
+        VALUES
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="pojo.id != null">#{pojo.id},</if>
+            <if test="pojo.imei != null">#{pojo.imei},</if>
+            <if test="pojo.alias != null">#{pojo.alias},</if>
+            <if test="pojo.communityId != null">#{pojo.communityId},</if>
+            <if test="pojo.deviceStatus != null">#{pojo.deviceStatus},</if>
+            <if test="pojo.activateTime != null">#{pojo.activateTime},</if>
+            <if test="pojo.lastOnlineTime != null">#{pojo.lastOnlineTime},</if>
+            <if test="pojo.lastOfflineTime != null">#{pojo.lastOfflineTime},</if>
+            <if test="pojo.createTime != null">#{pojo.createTime},</if>
+            <if test="pojo.updateTime != null">#{pojo.updateTime},</if>
+            <if test="pojo.isDeleted != null">#{pojo.isDeleted},</if>
+        </trim>
+    </insert>
+
+    <!--auto generated Code-->
+    <insert id="insertList">
+        INSERT INTO device(
+        <include refid="all_column"/>
+        )VALUES
+        <foreach collection="pojos" item="pojo" index="index" separator=",">
+            (
+            #{pojo.id},
+            #{pojo.imei},
+            #{pojo.alias},
+            #{pojo.communityId},
+            #{pojo.deviceStatus},
+            #{pojo.activateTime},
+            #{pojo.lastOnlineTime},
+            #{pojo.lastOfflineTime},
+            #{pojo.createTime},
+            #{pojo.updateTime},
+            #{pojo.isDeleted}
+            )
+        </foreach>
+    </insert>
+
+    <!--auto generated Code-->
+    <update id="update">
+        UPDATE device
+        <set>
+            <if test="pojo.id != null">id = #{pojo.id},</if>
+            <if test="pojo.imei != null">imei = #{pojo.imei},</if>
+            <if test="pojo.alias != null">alias = #{pojo.alias},</if>
+            <if test="pojo.communityId != null">community_id = #{pojo.communityId},</if>
+            <if test="pojo.deviceStatus != null">device_status = #{pojo.deviceStatus},</if>
+            <if test="pojo.activateTime != null">activate_time = #{pojo.activateTime},</if>
+            <if test="pojo.lastOnlineTime != null">last_online_time = #{pojo.lastOnlineTime},</if>
+            <if test="pojo.lastOfflineTime != null">last_offline_time = #{pojo.lastOfflineTime},</if>
+            <if test="pojo.createTime != null">create_time = #{pojo.createTime},</if>
+            <if test="pojo.isDeleted != null">is_deleted = #{pojo.isDeleted},</if>
+        </set>
+        WHERE id = #{pojo.id}
+    </update>
+
+    <!--auto generated Code-->
+    <select id="select" resultMap="AllColumnMap">
+        SELECT
+        <include refid="all_column"/>
+        FROM device
+        <where>
+            <if test="pojo.id != null">AND id = #{pojo.id}</if>
+            <if test="pojo.imei != null">AND imei = #{pojo.imei}</if>
+            <if test="pojo.alias != null">AND alias = #{pojo.alias}</if>
+            <if test="pojo.communityId != null">AND community_id = #{pojo.communityId}</if>
+            <if test="pojo.deviceStatus != null">AND device_status = #{pojo.deviceStatus}</if>
+            <if test="pojo.activateTime != null">AND activate_time = #{pojo.activateTime}</if>
+            <if test="pojo.lastOnlineTime != null">AND last_online_time = #{pojo.lastOnlineTime}</if>
+            <if test="pojo.lastOfflineTime != null">AND last_offline_time = #{pojo.lastOfflineTime}</if>
+            <if test="pojo.createTime != null">AND create_time = #{pojo.createTime}</if>
+            <if test="pojo.updateTime != null">AND update_time = #{pojo.updateTime}</if>
+            <if test="pojo.isDeleted != null">AND is_deleted = #{pojo.isDeleted}</if>
+        </where>
+        LIMIT 1000
+    </select>
+
+    <!--auto generated Code-->
+    <delete id="delete">
+        DELETE FROM device where id = #{pojo.id}
+    </delete>
+</mapper>
