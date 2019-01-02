@@ -17,3 +17,14 @@ spring:
 mybatis:
     mapperLocations: classpath*:mapper/*.xml
     typeAliasesPackage: com.ten.aditum.back.entity
+
+# apollo 客户端配置
+app:
+  id: SampleApp
+
+apollo:
+  meta: http://127.0.0.1:8080
+  bootstrap:
+    enabled: true
+    # 使用公共命名空间和back微服务私有命名空间
+    namespaces: application,TEST1.back
