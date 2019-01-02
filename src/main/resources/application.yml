@@ -20,11 +20,13 @@ mybatis:
 
 # apollo 客户端配置
 app:
+  # 配置中心应用ID
   id: SampleApp
 
 apollo:
+  # apollo server 本地默认端口
   meta: http://127.0.0.1:8080
   bootstrap:
     enabled: true
-    # 使用公共命名空间和back微服务私有命名空间
+    # 使用公共命名空间和微服务私有命名空间
     namespaces: application,TEST1.back
