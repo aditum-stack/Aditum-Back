@@ -37,8 +37,20 @@ public class RecordController extends BaseController<Record> {
     }
 
     @Override
+    @RequestMapping(method = RequestMethod.POST)
     public ResultModel post(Record record) {
-        return null;
+        Record entity = new Record()
+                .imei(record.getImei())
+                .personnelId(record.getPersonnelId())
+                .visiteTime(timeGenerator.currentTime())
+                .visiteStatus(record.getVisiteStatus())
+                .isDeleted(NO_DELETED);
+
+        Integer result = service.insert(entity);
+        if (result < 1) {
+            return new ResultModel(AditumCode.ERROR);
+        }
+        return new ResultModel(AditumCode.OK);
     }
 
     @Override
