@@ -8,6 +8,7 @@ import com.ten.aditum.back.service.RecordService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -38,7 +39,7 @@ public class RecordController extends BaseController<Record> {
 
     @Override
     @RequestMapping(method = RequestMethod.POST)
-    public ResultModel post(Record record) {
+    public ResultModel post(@RequestBody Record record) {
         Record entity = new Record()
                 .imei(record.getImei())
                 .personnelId(record.getPersonnelId())
@@ -50,6 +51,9 @@ public class RecordController extends BaseController<Record> {
         if (result < 1) {
             return new ResultModel(AditumCode.ERROR);
         }
+
+        logger.info("post new record : " + entity);
+
         return new ResultModel(AditumCode.OK);
     }
 
