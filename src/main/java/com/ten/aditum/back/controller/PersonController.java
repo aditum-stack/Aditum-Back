@@ -1,10 +1,10 @@
 package com.ten.aditum.back.controller;
 
-import com.ten.aditum.back.entity.Community;
 import com.ten.aditum.back.entity.Person;
 import com.ten.aditum.back.model.AditumCode;
 import com.ten.aditum.back.model.ResultModel;
 import com.ten.aditum.back.service.PersonService;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,10 +14,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+@Slf4j
 @RestController
 @RequestMapping(value = "/person")
 public class PersonController extends BaseController<Person> {
-    private static final Logger logger = LoggerFactory.getLogger(PersonController.class);
 
     private final PersonService service;
 
@@ -49,7 +49,7 @@ public class PersonController extends BaseController<Person> {
                 .updateTime(super.timeGenerator.currentTime())
                 .isDeleted(NO_DELETED);
 
-        Integer result = service.insert(entity);
+        int result = service.insert(entity);
         if (result < 1) {
             return new ResultModel(AditumCode.ERROR);
         }

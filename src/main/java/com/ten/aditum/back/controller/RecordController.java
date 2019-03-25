@@ -1,12 +1,10 @@
 package com.ten.aditum.back.controller;
 
-import com.ten.aditum.back.entity.Community;
 import com.ten.aditum.back.entity.Record;
 import com.ten.aditum.back.model.AditumCode;
 import com.ten.aditum.back.model.ResultModel;
 import com.ten.aditum.back.service.RecordService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,10 +13,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+@Slf4j
 @RestController
 @RequestMapping(value = "/record")
 public class RecordController extends BaseController<Record> {
-    private static final Logger logger = LoggerFactory.getLogger(RecordController.class);
 
     private final RecordService service;
 
@@ -47,12 +45,12 @@ public class RecordController extends BaseController<Record> {
                 .visiteStatus(record.getVisiteStatus())
                 .isDeleted(NO_DELETED);
 
-        Integer result = service.insert(entity);
+        int result = service.insert(entity);
         if (result < 1) {
             return new ResultModel(AditumCode.ERROR);
         }
 
-        logger.info("post new record : " + entity);
+        log.info("post new record : " + entity);
 
         return new ResultModel(AditumCode.OK);
     }
