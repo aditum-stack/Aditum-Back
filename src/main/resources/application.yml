@@ -1,12 +1,14 @@
-# apollo 客户端配置
-app:
-  # 配置中心应用ID
-  id: AditumApp
+server:
+  port: 8080
 
-apollo:
-  # apollo server 本地默认端口
-  meta: http://127.0.0.1:8080
-  bootstrap:
-    enabled: true
-    # 使用公共命名空间和微服务私有命名空间
-    namespaces: application,ADITUM.back
+# mysql
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/你的数据库名?useUnicode=true&characterEncoding=utf8
+    username: 账号
+    password: 密码
+
+  # mybatis
+  # 对应实体类的包名
+mybatis:
+  mapperLocations: classpath:mapper/*.xml
