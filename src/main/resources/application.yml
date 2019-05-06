@@ -5,14 +5,15 @@ server:
   port: 9006
 
 spring:
-    datasource:
-        name: aditum
-        url: jdbc:mysql://47.100.236.64:3306/aditum
-        username: root
-        password: wangshihao
-        type: com.alibaba.druid.pool.DruidDataSource
-        driver-class-name: com.mysql.jdbc.Driver
+  # 设置数据库访问信息
+  datasource:
+    name: aditum
+    url: jdbc:mysql://47.100.236.64:3306/aditum
+    username: root
+    password: wangshihao
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.jdbc.Driver
 
 mybatis:
-    mapperLocations: classpath*:mapper/*.xml
-    typeAliasesPackage: com.ten.aditum.back.entity
+  mapperLocations: classpath*:mapper/*.xml
+  typeAliasesPackage: com.ten.aditum.back.entity
