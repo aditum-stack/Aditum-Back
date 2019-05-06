@@ -1,8 +1,13 @@
 package com.ten.aditum.back.entity;
 
+import lombok.Data;
+import lombok.experimental.Accessors;
+
 /**
  * 社区信息表
  */
+@Data
+@Accessors(chain = true)
 public class Community {
     /**
      * 主键ID Auto

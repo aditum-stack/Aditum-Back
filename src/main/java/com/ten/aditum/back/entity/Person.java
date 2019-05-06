@@ -1,8 +1,13 @@
 package com.ten.aditum.back.entity;
 
+import lombok.Data;
+import lombok.experimental.Accessors;
+
 /**
  * 用户信息表
  */
+@Data
+@Accessors(chain = true)
 public class Person {
     /**
      * 主键ID Auto

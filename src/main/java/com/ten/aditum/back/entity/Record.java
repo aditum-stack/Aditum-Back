@@ -1,8 +1,13 @@
 package com.ten.aditum.back.entity;
 
+import lombok.Data;
+import lombok.experimental.Accessors;
+
 /**
  * 访问记录表
  */
+@Data
+@Accessors(chain = true)
 public class Record {
     /**
      * 主键ID Auto

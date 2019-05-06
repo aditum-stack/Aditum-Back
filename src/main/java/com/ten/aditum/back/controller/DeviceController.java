@@ -5,6 +5,8 @@ import com.ten.aditum.back.model.AditumCode;
 import com.ten.aditum.back.model.ResultModel;
 import com.ten.aditum.back.service.CommunityService;
 import com.ten.aditum.back.service.DeviceService;
+import com.ten.aditum.back.util.TimeGenerator;
+import com.ten.aditum.back.util.UidGenerator;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,29 +32,35 @@ public class DeviceController extends BaseController<Device> {
     @Override
     @RequestMapping(method = RequestMethod.GET)
     public ResultModel get(Device device) {
+        log.info("Device [GET] : {}", device);
         List<Device> deviceList = deviceService.select(device);
         if (deviceList == null) {
+            log.warn("Device [GET] FAILURE : {}", device);
             return new ResultModel(AditumCode.ERROR);
         }
+        log.info("Device [GET] SUCCESS : {} -> {}", device, deviceList);
         return new ResultModel(AditumCode.OK, deviceList);
     }
 
     @Override
     @RequestMapping(method = RequestMethod.POST)
     public ResultModel post(Device device) {
+        log.info("Device [POST] : {}", device);
         Device entity = new Device()
-                .imei(super.uidGenerator.generateUid())
-                .alias(device.getAlias())
-                .communityId(device.getCommunityId())
-                .deviceStatus(0)
-                .createTime(super.timeGenerator.currentTime())
-                .updateTime(super.timeGenerator.currentTime())
-                .isDeleted(NO_DELETED);
+                .setImei(UidGenerator.generateUid())
+                .setAlias(device.getAlias())
+                .setCommunityId(device.getCommunityId())
+                .setDeviceStatus(0)
+                .setCreateTime(TimeGenerator.currentTime())
+                .setUpdateTime(TimeGenerator.currentTime())
+                .setIsDeleted(NO_DELETED);
 
         int result = deviceService.insert(entity);
         if (result < 1) {
+            log.warn("Device [POST] FAILURE : {}", device);
             return new ResultModel(AditumCode.ERROR);
         }
+        log.info("Device [POST] SUCCESS : {}", device);
         return new ResultModel(AditumCode.OK);
     }
 

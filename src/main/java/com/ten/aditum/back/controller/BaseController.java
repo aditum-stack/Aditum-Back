@@ -14,16 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public abstract class BaseController<Entity> {
 
-    protected static final int NO_DELETED = 0;
-    protected static final int IS_DELETED = 1;
-
-    // UUID 生成器
-    @Autowired
-    UidGenerator uidGenerator;
-
-    // TIME 生成器
-    @Autowired
-    TimeGenerator timeGenerator;
+    static final int NO_DELETED = 0;
+    static final int IS_DELETED = 1;
 
     /* Restful Interface */
 
@@ -38,4 +30,5 @@ public abstract class BaseController<Entity> {
 
     @RequestMapping(method = RequestMethod.DELETE)
     public abstract ResultModel delete(Entity entity);
+
 }
