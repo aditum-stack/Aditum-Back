@@ -5,8 +5,8 @@ package com.ten.aditum.back.model;
  */
 public enum AditumCode {
     /**
-     * @param 0 success
-     * @param 100 failure
+     * 0 success
+     * 100 failure
      */
     OK(0, "成功"),
     ERROR(100, "失败");

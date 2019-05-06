@@ -1,12 +1,18 @@
-# apollo 客户端配置
-app:
-  # 配置中心应用ID
-  id: AditumApp
+server:
+  tomcat:
+    max-threads: 800
+    uri-encoding: UTF-8
+  port: 9006
 
-apollo:
-  # apollo server 本地默认端口
-  meta: http://127.0.0.1:8080
-  bootstrap:
-    enabled: true
-    # 使用公共命名空间和微服务私有命名空间
-    namespaces: application,ADITUM.back
+spring:
+    datasource:
+        name: aditum
+        url: jdbc:mysql://localhost:3306/aditum
+        username: root
+        password: wangshihao
+        type: com.alibaba.druid.pool.DruidDataSource
+        driver-class-name: com.mysql.jdbc.Driver
+
+mybatis:
+    mapperLocations: classpath*:mapper/*.xml
+    typeAliasesPackage: com.ten.aditum.back.entity
