@@ -58,7 +58,7 @@ public class RecordController extends BaseController<Record> {
 
         log.info("New record : " + entity);
 
-        log.info("Record [POST] SUCCESS : {}", record);
+        log.info("Record [POST] SUCCESS : {}", entity);
         return new ResultModel(AditumCode.OK);
     }
 

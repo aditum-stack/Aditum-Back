@@ -62,7 +62,7 @@ public class CommunityController extends BaseController<Community> {
             log.warn("Community [POST] FAILURE : {}", community);
             return new ResultModel(AditumCode.ERROR);
         }
-        log.info("Community [POST] SUCCESS : {}", community);
+        log.info("Community [POST] SUCCESS : {}", entity);
         return new ResultModel(AditumCode.OK);
     }
 

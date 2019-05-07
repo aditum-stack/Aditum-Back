@@ -61,7 +61,7 @@ public class PersonController extends BaseController<Person> {
             log.warn("Person [POST] FAILURE : {}", person);
             return new ResultModel(AditumCode.ERROR);
         }
-        log.info("Person [POST] SUCCESS : {}", person);
+        log.info("Person [POST] SUCCESS : {}", entity);
         return new ResultModel(AditumCode.OK);
     }
 

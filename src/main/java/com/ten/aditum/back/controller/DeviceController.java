@@ -61,7 +61,7 @@ public class DeviceController extends BaseController<Device> {
             log.warn("Device [POST] FAILURE : {}", device);
             return new ResultModel(AditumCode.ERROR);
         }
-        log.info("Device [POST] SUCCESS : {}", device);
+        log.info("Device [POST] SUCCESS : {}", entity);
         return new ResultModel(AditumCode.OK);
     }
 
