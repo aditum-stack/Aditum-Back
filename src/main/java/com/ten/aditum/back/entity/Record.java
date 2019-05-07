@@ -1,8 +1,13 @@
 package com.ten.aditum.back.entity;
 
+import lombok.Data;
+import lombok.experimental.Accessors;
+
 /**
  * 访问记录表
  */
+@Data
+@Accessors(chain = true)
 public class Record {
     /**
      * 主键ID Auto
@@ -28,97 +33,4 @@ public class Record {
      * 删除标记
      */
     private Integer isDeleted;
-
-    public Record() {
-    }
-
-    @Override
-    public String toString() {
-        return "Record{" +
-                "id=" + id +
-                ", imei='" + imei + '\'' +
-                ", personnelId='" + personnelId + '\'' +
-                ", visiteTime='" + visiteTime + '\'' +
-                ", visiteStatus=" + visiteStatus +
-                ", isDeleted=" + isDeleted +
-                '}';
-    }
-
-    public Record id(Integer id) {
-        this.id = id;
-        return this;
-    }
-
-    public Record imei(String imei) {
-        this.imei = imei;
-        return this;
-    }
-
-    public Record personnelId(String personnelId) {
-        this.personnelId = personnelId;
-        return this;
-    }
-
-    public Record visiteTime(String visiteTime) {
-        this.visiteTime = visiteTime;
-        return this;
-    }
-
-    public Record visiteStatus(Integer visiteStatus) {
-        this.visiteStatus = visiteStatus;
-        return this;
-    }
-
-    public Record isDeleted(Integer isDeleted) {
-        this.isDeleted = isDeleted;
-        return this;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getImei() {
-        return imei;
-    }
-
-    public void setImei(String imei) {
-        this.imei = imei;
-    }
-
-    public String getPersonnelId() {
-        return personnelId;
-    }
-
-    public void setPersonnelId(String personnelId) {
-        this.personnelId = personnelId;
-    }
-
-    public String getVisiteTime() {
-        return visiteTime;
-    }
-
-    public void setVisiteTime(String visiteTime) {
-        this.visiteTime = visiteTime;
-    }
-
-    public Integer getVisiteStatus() {
-        return visiteStatus;
-    }
-
-    public void setVisiteStatus(Integer visiteStatus) {
-        this.visiteStatus = visiteStatus;
-    }
-
-    public Integer getIsDeleted() {
-        return isDeleted;
-    }
-
-    public void setIsDeleted(Integer isDeleted) {
-        this.isDeleted = isDeleted;
-    }
 }
