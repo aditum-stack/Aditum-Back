@@ -14,9 +14,9 @@ import org.springframework.scheduling.annotation.Scheduled;
 public class IntervalAnalyzer {
 
     /**
-     * 每天分析用户访问间隔
+     * 每天2点分析用户访问间隔
      */
-    @Scheduled(cron = "0 0 0 1/1 * ?")
+    @Scheduled(cron = "0 0 2 1/1 * ?")
     public void analysis() {
 
     }

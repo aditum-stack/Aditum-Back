@@ -40,7 +40,7 @@ public class AddressAnalyzer implements Analyzer {
     }
 
     /**
-     * 每天分析用户访问地址
+     * 每天0点分析用户访问地址
      */
     @Scheduled(cron = "0 0 0 1/1 * ?")
     public void analysis() {

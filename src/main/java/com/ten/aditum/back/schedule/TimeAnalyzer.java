@@ -1,17 +1,23 @@
 package com.ten.aditum.back.schedule;
 
 
-import com.ten.aditum.back.entity.*;
-import com.ten.aditum.back.service.*;
+import com.ten.aditum.back.entity.AccessTime;
+import com.ten.aditum.back.entity.Person;
+import com.ten.aditum.back.entity.Record;
+import com.ten.aditum.back.service.AccessTimeService;
+import com.ten.aditum.back.service.PersonService;
+import com.ten.aditum.back.service.RecordService;
 import com.ten.aditum.back.util.TimeGenerator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Slf4j
@@ -20,32 +26,26 @@ import java.util.*;
 @EnableAutoConfiguration
 public class TimeAnalyzer implements Analyzer {
 
-    private final CommunityService communityService;
-    private final DeviceService deviceService;
     private final PersonService personService;
     private final RecordService recordService;
 
-    private final AccessAddressService accessAddressService;
+    private final AccessTimeService accessTimeService;
 
     @Autowired
-    public TimeAnalyzer(AccessAddressService accessAddressService,
+    public TimeAnalyzer(AccessTimeService accessTimeService,
                         RecordService recordService,
-                        PersonService personService,
-                        DeviceService deviceService,
-                        CommunityService communityService) {
-        this.accessAddressService = accessAddressService;
+                        PersonService personService) {
+        this.accessTimeService = accessTimeService;
         this.recordService = recordService;
         this.personService = personService;
-        this.deviceService = deviceService;
-        this.communityService = communityService;
     }
 
     /**
-     * 每天分析用户访问地址
+     * 每天1点分析用户访问时间
      */
-    @Scheduled(cron = "0 0 0 1/1 * ?")
+    @Scheduled(cron = "0 0 1 1/1 * ? ")
     public void analysis() {
-        log.info("开始分析用户访问地址...");
+        log.info("开始分析用户访问时间...");
 
         // 查询所有person
         Person personEntity = new Person()
@@ -56,7 +56,7 @@ public class TimeAnalyzer implements Analyzer {
 
         personList.forEach(this::analysisPerson);
 
-        log.info("用户访问地址分析完成...");
+        log.info("用户访问时间分析完成...");
     }
 
     /**
@@ -65,7 +65,7 @@ public class TimeAnalyzer implements Analyzer {
     private void analysisPerson(Person person) {
 
         // person的访问地址集合
-        Map<String, Integer> personAddressMap = new HashMap<>();
+        Map<String, List<String>> recordDayMap = new HashMap<>();
 
         log.info("开始分析此person : {}", person);
 
@@ -75,124 +75,198 @@ public class TimeAnalyzer implements Analyzer {
                 .setIsDeleted(NO_DELETED);
         List<Record> recordList = recordService.select(recordEntity);
 
+        if (recordList.size() == 0) {
+            log.warn("此person {}没有任何访问记录!", person.getPersonnelName());
+            return;
+        }
+
         log.info("查询此person下的所有record集合 : {}", recordList);
 
         recordList.forEach(record -> {
             log.info("开始分析此record : {}", record);
 
-            // 查询record对应的device
-            String imei = record.getImei();
-            Device deviceEntity = new Device()
-                    .setImei(imei)
-                    .setIsDeleted(NO_DELETED);
-            List<Device> deviceList = deviceService.select(deviceEntity);
-            if (deviceList.size() < 1) {
-                throw new RuntimeException("Record对应Device为空!");
+            String visiteTime = record.getVisiteTime().substring(0, 19);
+            record.setVisiteTime(visiteTime);
+            String formatDate = formatDate(visiteTime);
+
+            // 若已经包含此日期，添加访问时间到集合
+            if (recordDayMap.containsKey(formatDate)) {
+                List<String> originRecordDayList = recordDayMap.get(formatDate);
+                originRecordDayList.add(record.getVisiteTime());
             }
-
-            Device theDevice = deviceList.get(0);
-
-            log.info("查询此record下的device : {}", theDevice);
-
-            // 查询device对应的community
-            String communityId = theDevice.getCommunityId();
-            Community communityEntity = new Community()
-                    .setCommunityId(communityId)
-                    .setIsDeleted(NO_DELETED);
-            List<Community> communityList = communityService.select(communityEntity);
-            if (communityList.size() < 1) {
-                throw new RuntimeException("Device对应Community为空!");
-            }
-
-            Community theCommunity = communityList.get(0);
-
-            log.info("查询此device下的community : {}", theCommunity);
-
-            // 获取community地址
-            String communityCity = theCommunity.getCommunityCity();
-            String communityAddress = theCommunity.getCommunityAddress();
-
-            String address = communityCity + communityAddress;
-
-            // 若已经包含此地址，次数+1
-            if (personAddressMap.containsKey(address)) {
-                Integer count = personAddressMap.get(address);
-                personAddressMap.put(address, count + 1);
-
-                log.info("已包含此地址，次数+1 : {} by {}", address, person.getPersonnelName());
-            }
-            // 若未包含此地址，次数=1
+            // 若未包含此日期，初始化
             else {
-                personAddressMap.put(address, 1);
-
-                log.info("未包含此地址，次数=1 : {} by {}", address, person.getPersonnelName());
+                List<String> newRecordDayList = new ArrayList<>();
+                newRecordDayList.add(record.getVisiteTime());
+                recordDayMap.put(formatDate, newRecordDayList);
             }
         });
 
         // ------------------------------------------ 一个person的所有record遍历结束
 
-        // 获取访问过的所有地址
-        Set<String> addressSet = personAddressMap.keySet();
+        // 每天最早访问时间集合
+        List<String> earliestAccessTimeList = new ArrayList<>();
 
-        // 拼接所有地址
-        List<String> addressList = new ArrayList(addressSet);
-        String collection = String.join(",", addressList);
+        // 每天最晚访问时间集合
+        List<String> latestAccessTimeList = new ArrayList<>();
 
-        log.info("获取到此person {} 下的所有地址 {}", person.getPersonnelName(), collection);
+        // 每天访问次数
+        List<Integer> dailyFrequencyList = new ArrayList<>();
 
-        // 获取访问次数最多的地址
-        String maxCountAddress = getMaxCount(personAddressMap);
-        // 获取访问次数最多的次数
-        Integer maxCount = personAddressMap.get(maxCountAddress);
+        // 按天遍历集合
+        for (Map.Entry<String, List<String>> recordDay : recordDayMap.entrySet()) {
+            List<String> timeList = recordDay.getValue();
 
-        log.info("获取到此person {} 下的最常访问地址 {} {}次", person.getPersonnelName(), maxCountAddress, maxCount);
+            if (timeList.size() < 1) {
+                log.error("TimeList is null!");
+                continue;
+            }
+            // 每天最早时间
+            String earlies = timeList.stream().min(String::compareTo).get();
+            // 每天最晚时间
+            String latest = timeList.stream().max(String::compareTo).get();
+            // 每天访问次数
+            Integer count = timeList.size();
 
-        Integer collectionCount = addressList.size();
+            earliestAccessTimeList.add(formatTime(earlies));
+            latestAccessTimeList.add(formatTime(latest));
+            dailyFrequencyList.add(count);
+        }
+
+        int dayCount = recordDayMap.entrySet().size();
+
+        if (dayCount == 0) {
+            log.warn("此person {}没有任何访问记录!", person.getPersonnelName());
+            return;
+        }
+
+        log.info("最早时间集合{}", earliestAccessTimeList);
+        log.info("最晚时间集合{}", latestAccessTimeList);
+        log.info("每天访问次数{}", dailyFrequencyList);
+
+        String min = averageTime(earliestAccessTimeList);
+        String max = averageTime(latestAccessTimeList);
+        Integer countMean = dailyFrequencyList
+                .stream()
+                .reduce(0, ((integer, integer2) -> integer + integer2))
+                / dayCount;
+
+        log.info("获取到此person {} 下的所有时间 {}min {}max {}count", person.getPersonnelName(), min, max, countMean);
 
         // 生成数据对象
-        AccessAddress accessAddress = new AccessAddress()
+        AccessTime accessTime = new AccessTime()
                 .setPersonnelId(person.getPersonnelId())
-                .setFirstAddress(maxCountAddress)
-                .setFirstAddressCount(maxCount)
-                .setTotalAddress(collection)
-                .setTotalAddressCount(collectionCount)
-                .setTotalCount(recordList.size())
+                .setAverageEarliestAccessTime(min)
+                .setAverageEarliestAccessCount(dayCount)
+                .setAverageLatestAccessTime(max)
+                .setAverageLatestAccessCount(dayCount)
+                .setAverageDailyFrequency(countMean)
+                .setAverageDailyFrequencyCount(dayCount)
                 .setIsDeleted(NO_DELETED);
 
         // 查询此person的原纪录
-        AccessAddress accessAddressEntity = new AccessAddress()
+        AccessTime accessTimeEntity = new AccessTime()
                 .setPersonnelId(person.getPersonnelId())
                 .setIsDeleted(NO_DELETED);
-        List<AccessAddress> accessAddressList = accessAddressService.select(accessAddressEntity);
+        List<AccessTime> accessTimeList = accessTimeService.select(accessTimeEntity);
         // 当前用户不存在记录，创建
-        if (accessAddressList.size() < 1) {
-            accessAddress
+        if (accessTimeList.size() < 1) {
+            accessTime
                     .setCreateTime(TimeGenerator.currentTime());
-            accessAddressService.insert(accessAddress);
+            accessTimeService.insert(accessTime);
 
-            log.info("此person {} 还没有地址记录，插入 {}", person.getPersonnelName(), accessAddress);
+            log.info("此person {} 还没有时间记录，插入 {}", person.getPersonnelName(), accessTime);
         }
         // 当前用户已有记录，更新
         else {
-            AccessAddress origin = accessAddressList.get(0);
+            AccessTime origin = accessTimeList.get(0);
             Integer id = origin.getId();
-            accessAddress
+            accessTime
                     .setId(id)
                     .setUpdateTime(TimeGenerator.currentTime());
-            accessAddressService.update(accessAddress);
+            accessTimeService.update(accessTime);
 
-            log.info("此person {} 已经有地址记录，更新 {}", person.getPersonnelName(), accessAddress);
+            log.info("此person {} 已经有时间记录，更新 {}", person.getPersonnelName(), accessTime);
         }
     }
 
-    private String getMaxCount(Map<String, Integer> map) {
-        List<Map.Entry<String, Integer>> list = new ArrayList<>(map.entrySet());
-        list.sort(Comparator.comparingInt(Map.Entry::getValue));
-        if (list.size() > 0) {
-            return list.get(0).getKey();
-        } else {
+    private static final String DATE_FORMAT = "yyyy-MM-dd";
+
+    private String formatDate(String value) {
+        if (value == null) {
             return "";
         }
+        DateFormat fmt = new SimpleDateFormat(DATE_FORMAT);
+        Date date;
+        try {
+            date = fmt.parse(value);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return "";
+        }
+        return new SimpleDateFormat(DATE_FORMAT).format(date);
+    }
+
+    private static final String TIME_FORMAT = "hh:mm:ss";
+
+    private String formatTime(String value) {
+        if (value == null) {
+            return "";
+        }
+        // 去掉日期，保留时间
+        return value.substring(11);
+    }
+
+    /**
+     * 时间转秒
+     */
+    private long getTotalSec(String s) {
+        String[] my = s.split(":");
+        int hour = Integer.parseInt(my[0]);
+        int min = Integer.parseInt(my[1]);
+        int sec = Integer.parseInt(my[2]);
+        return (long) (hour * 3600 + min * 60 + sec);
+    }
+
+    /**
+     * 秒转时间
+     */
+    private String getTimeFromSec(long sec) {
+        // 毫秒数
+        long ms = sec * 1000;
+        SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
+        // 设置时区，防止+8小时
+        formatter.setTimeZone(TimeZone.getTimeZone("GMT+00:00"));
+        return formatter.format(ms);
+    }
+
+    /**
+     * 计算平均访问时间
+     */
+    private String averageTime(List<String> timeList) {
+        if (timeList.size() == 0) {
+            return "";
+        }
+
+        long[] times = new long[timeList.size()];
+
+        for (int i = 0; i < timeList.size(); i++) {
+            long totalSec = getTotalSec(timeList.get(i));
+            times[i] = totalSec;
+        }
+
+        long total = 0;
+        for (long time1 : times) {
+            total += time1;
+        }
+
+        long mean = total / times.length;
+
+        String time = getTimeFromSec(mean);
+
+        log.debug("平均秒数为{},平均时间为{}", mean, time);
+
+        return time;
     }
 
 }
