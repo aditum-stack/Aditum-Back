@@ -190,23 +190,6 @@ public class TimeAnalyzer implements Analyzer {
         }
     }
 
-    private static final String DATE_FORMAT = "yyyy-MM-dd";
-
-    private String formatDate(String value) {
-        if (value == null) {
-            return "";
-        }
-        DateFormat fmt = new SimpleDateFormat(DATE_FORMAT);
-        Date date;
-        try {
-            date = fmt.parse(value);
-        } catch (ParseException e) {
-            e.printStackTrace();
-            return "";
-        }
-        return new SimpleDateFormat(DATE_FORMAT).format(date);
-    }
-
     private static final String TIME_FORMAT = "hh:mm:ss";
 
     private String formatTime(String value) {

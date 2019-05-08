@@ -18,6 +18,10 @@ public class DeviceAccessLog {
      */
     private String imei;
     /**
+     * 日志ID Unique
+     */
+    private String recordId;
+    /**
      * 访问时间
      */
     private String accessTime;
