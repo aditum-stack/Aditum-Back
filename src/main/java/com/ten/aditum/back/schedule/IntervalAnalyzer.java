@@ -11,13 +11,13 @@ import org.springframework.scheduling.annotation.Scheduled;
 @Configuration
 @EnableScheduling
 @EnableAutoConfiguration
-public class PersonProducer {
+public class IntervalAnalyzer {
 
     /**
-     * 每1小时产生一位模拟用户
+     * 每天分析用户访问间隔
      */
-    @Scheduled(cron = "0 0 0/1 * * ?")
-    public void reWrite() {
+    @Scheduled(cron = "0 0 0 1/1 * ?")
+    public void analysis() {
 
     }
 
