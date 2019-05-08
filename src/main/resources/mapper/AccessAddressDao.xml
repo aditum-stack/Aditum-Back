@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ten.aditum.back.mapper.AccessAddressDao">
+
+    <!--auto generated Code-->
+    <resultMap id="AllColumnMap" type="com.ten.aditum.back.entity.AccessAddress">
+        <result column="id" property="id"/>
+        <result column="personnel_id" property="personnelId"/>
+        <result column="first_address" property="firstAddress"/>
+        <result column="first_address_count" property="firstAddressCount"/>
+        <result column="second_address" property="secondAddress"/>
+        <result column="second_address_count" property="secondAddressCount"/>
+        <result column="total_address" property="totalAddress"/>
+        <result column="total_address_count" property="totalAddressCount"/>
+        <result column="total_count" property="totalCount"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="is_deleted" property="isDeleted"/>
+    </resultMap>
+
+    <!--auto generated Code-->
+    <sql id="all_column">
+        id,
+        personnel_id,
+        first_address,
+        first_address_count,
+        second_address,
+        second_address_count,
+        total_address,
+        total_address_count,
+        total_count,
+        create_time,
+        update_time,
+        is_deleted
+    </sql>
+
+    <!--auto generated Code-->
+    <insert id="insert">
+        INSERT INTO access_address
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="pojo.id != null">id,</if>
+            <if test="pojo.personnelId != null">personnel_id,</if>
+            <if test="pojo.firstAddress != null">first_address,</if>
+            <if test="pojo.firstAddressCount != null">first_address_count,</if>
+            <if test="pojo.secondAddress != null">second_address,</if>
+            <if test="pojo.secondAddressCount != null">second_address_count,</if>
+            <if test="pojo.totalAddress != null">total_address,</if>
+            <if test="pojo.totalAddressCount != null">total_address_count,</if>
+            <if test="pojo.totalCount != null">total_count,</if>
+            <if test="pojo.createTime != null">create_time,</if>
+            <if test="pojo.updateTime != null">update_time,</if>
+            <if test="pojo.isDeleted != null">is_deleted,</if>
+        </trim>
+        VALUES
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="pojo.id != null">#{pojo.id},</if>
+            <if test="pojo.personnelId != null">#{pojo.personnelId},</if>
+            <if test="pojo.firstAddress != null">#{pojo.firstAddress},</if>
+            <if test="pojo.firstAddressCount != null">#{pojo.firstAddressCount},</if>
+            <if test="pojo.secondAddress != null">#{pojo.secondAddress},</if>
+            <if test="pojo.secondAddressCount != null">#{pojo.secondAddressCount},</if>
+            <if test="pojo.totalAddress != null">#{pojo.totalAddress},</if>
+            <if test="pojo.totalAddressCount != null">#{pojo.totalAddressCount},</if>
+            <if test="pojo.totalCount != null">#{pojo.totalCount},</if>
+            <if test="pojo.createTime != null">#{pojo.createTime},</if>
+            <if test="pojo.updateTime != null">#{pojo.updateTime},</if>
+            <if test="pojo.isDeleted != null">#{pojo.isDeleted},</if>
+        </trim>
+    </insert>
+
+    <!--auto generated Code-->
+    <insert id="insertList">
+        INSERT INTO access_address(
+        <include refid="all_column"/>
+        )VALUES
+        <foreach collection="pojos" item="pojo" index="index" separator=",">
+            (
+            #{pojo.id},
+            #{pojo.personnelId},
+            #{pojo.firstAddress},
+            #{pojo.firstAddressCount},
+            #{pojo.secondAddress},
+            #{pojo.secondAddressCount},
+            #{pojo.totalAddress},
+            #{pojo.totalAddressCount},
+            #{pojo.totalCount},
+            #{pojo.createTime},
+            #{pojo.updateTime},
+            #{pojo.isDeleted}
+            )
+        </foreach>
+    </insert>
+
+    <!--auto generated Code-->
+    <update id="update">
+        UPDATE access_address
+        <set>
+            <if test="pojo.id != null">id = #{pojo.id},</if>
+            <if test="pojo.personnelId != null">personnel_id = #{pojo.personnelId},</if>
+            <if test="pojo.firstAddress != null">first_address = #{pojo.firstAddress},</if>
+            <if test="pojo.firstAddressCount != null">first_address_count = #{pojo.firstAddressCount},</if>
+            <if test="pojo.secondAddress != null">second_address = #{pojo.secondAddress},</if>
+            <if test="pojo.secondAddressCount != null">second_address_count = #{pojo.secondAddressCount},</if>
+            <if test="pojo.totalAddress != null">total_address = #{pojo.totalAddress},</if>
+            <if test="pojo.totalAddressCount != null">total_address_count = #{pojo.totalAddressCount},</if>
+            <if test="pojo.totalCount != null">total_count = #{pojo.totalCount},</if>
+            <if test="pojo.createTime != null">create_time = #{pojo.createTime},</if>
+            <if test="pojo.isDeleted != null">is_deleted = #{pojo.isDeleted},</if>
+        </set>
+        WHERE id = #{pojo.id}
+    </update>
+
+    <!--auto generated Code-->
+    <select id="select" resultMap="AllColumnMap">
+        SELECT
+        <include refid="all_column"/>
+        FROM access_address
+        <where>
+            <if test="pojo.id != null">AND id = #{pojo.id}</if>
+            <if test="pojo.personnelId != null">AND personnel_id = #{pojo.personnelId}</if>
+            <if test="pojo.firstAddress != null">AND first_address = #{pojo.firstAddress}</if>
+            <if test="pojo.firstAddressCount != null">AND first_address_count = #{pojo.firstAddressCount}</if>
+            <if test="pojo.secondAddress != null">AND second_address = #{pojo.secondAddress}</if>
+            <if test="pojo.secondAddressCount != null">AND second_address_count = #{pojo.secondAddressCount}</if>
+            <if test="pojo.totalAddress != null">AND total_address = #{pojo.totalAddress}</if>
+            <if test="pojo.totalAddressCount != null">AND total_address_count = #{pojo.totalAddressCount}</if>
+            <if test="pojo.totalCount != null">AND total_count = #{pojo.totalCount}</if>
+            <if test="pojo.createTime != null">AND create_time = #{pojo.createTime}</if>
+            <if test="pojo.updateTime != null">AND update_time = #{pojo.updateTime}</if>
+            <if test="pojo.isDeleted != null">AND is_deleted = #{pojo.isDeleted}</if>
+        </where>
+        LIMIT 1000
+    </select>
+
+    <!--auto generated Code-->
+    <delete id="delete">
+        DELETE FROM access_address where id = #{id}
+    </delete>
+</mapper>

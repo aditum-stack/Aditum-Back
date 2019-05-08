@@ -1,0 +1,13 @@
+-- auto Generated on 2019-05-08 10:49:23 
+-- DROP TABLE IF EXISTS `personas_portrait`; 
+CREATE TABLE personas_portrait(
+    `id` INTEGER(20) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'id',
+    `personnel_id` VARCHAR(50) NOT NULL DEFAULT '' COMMENT '用户ID Unique',
+    `personas_ext` VARCHAR(500) NOT NULL DEFAULT '' COMMENT '用户标签集合',
+    `create_time` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'createTime',
+    `update_time` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'updateTime',
+    `is_deleted` TINYINT(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '删除标记',
+    PRIMARY KEY (`id`)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT 'personas_portrait';
+
+

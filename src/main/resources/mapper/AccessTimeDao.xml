@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ten.aditum.back.mapper.AccessTimeDao">
+
+    <!--auto generated Code-->
+    <resultMap id="AllColumnMap" type="com.ten.aditum.back.entity.AccessTime">
+        <result column="id" property="id"/>
+        <result column="personnel_id" property="personnelId"/>
+        <result column="average_earliest_access_time" property="averageEarliestAccessTime"/>
+        <result column="average_earliest_access_count" property="averageEarliestAccessCount"/>
+        <result column="average_latest_access_time" property="averageLatestAccessTime"/>
+        <result column="average_latest_access_count" property="averageLatestAccessCount"/>
+        <result column="average_daily_frequency" property="averageDailyFrequency"/>
+        <result column="average_daily_frequency_count" property="averageDailyFrequencyCount"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="is_deleted" property="isDeleted"/>
+    </resultMap>
+
+    <!--auto generated Code-->
+    <sql id="all_column">
+        id,
+        personnel_id,
+        average_earliest_access_time,
+        average_earliest_access_count,
+        average_latest_access_time,
+        average_latest_access_count,
+        average_daily_frequency,
+        average_daily_frequency_count,
+        create_time,
+        update_time,
+        is_deleted
+    </sql>
+
+    <!--auto generated Code-->
+    <insert id="insert">
+        INSERT INTO access_time
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="pojo.id != null">id,</if>
+            <if test="pojo.personnelId != null">personnel_id,</if>
+            <if test="pojo.averageEarliestAccessTime != null">average_earliest_access_time,</if>
+            <if test="pojo.averageEarliestAccessCount != null">average_earliest_access_count,</if>
+            <if test="pojo.averageLatestAccessTime != null">average_latest_access_time,</if>
+            <if test="pojo.averageLatestAccessCount != null">average_latest_access_count,</if>
+            <if test="pojo.averageDailyFrequency != null">average_daily_frequency,</if>
+            <if test="pojo.averageDailyFrequencyCount != null">average_daily_frequency_count,</if>
+            <if test="pojo.createTime != null">create_time,</if>
+            <if test="pojo.updateTime != null">update_time,</if>
+            <if test="pojo.isDeleted != null">is_deleted,</if>
+        </trim>
+        VALUES
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="pojo.id != null">#{pojo.id},</if>
+            <if test="pojo.personnelId != null">#{pojo.personnelId},</if>
+            <if test="pojo.averageEarliestAccessTime != null">#{pojo.averageEarliestAccessTime},</if>
+            <if test="pojo.averageEarliestAccessCount != null">#{pojo.averageEarliestAccessCount},</if>
+            <if test="pojo.averageLatestAccessTime != null">#{pojo.averageLatestAccessTime},</if>
+            <if test="pojo.averageLatestAccessCount != null">#{pojo.averageLatestAccessCount},</if>
+            <if test="pojo.averageDailyFrequency != null">#{pojo.averageDailyFrequency},</if>
+            <if test="pojo.averageDailyFrequencyCount != null">#{pojo.averageDailyFrequencyCount},</if>
+            <if test="pojo.createTime != null">#{pojo.createTime},</if>
+            <if test="pojo.updateTime != null">#{pojo.updateTime},</if>
+            <if test="pojo.isDeleted != null">#{pojo.isDeleted},</if>
+        </trim>
+    </insert>
+
+    <!--auto generated Code-->
+    <insert id="insertList">
+        INSERT INTO access_time(
+        <include refid="all_column"/>
+        )VALUES
+        <foreach collection="pojos" item="pojo" index="index" separator=",">
+            (
+            #{pojo.id},
+            #{pojo.personnelId},
+            #{pojo.averageEarliestAccessTime},
+            #{pojo.averageEarliestAccessCount},
+            #{pojo.averageLatestAccessTime},
+            #{pojo.averageLatestAccessCount},
+            #{pojo.averageDailyFrequency},
+            #{pojo.averageDailyFrequencyCount},
+            #{pojo.createTime},
+            #{pojo.updateTime},
+            #{pojo.isDeleted}
+            )
+        </foreach>
+    </insert>
+
+    <!--auto generated Code-->
+    <update id="update">
+        UPDATE access_time
+        <set>
+            <if test="pojo.id != null">id = #{pojo.id},</if>
+            <if test="pojo.personnelId != null">personnel_id = #{pojo.personnelId},</if>
+            <if test="pojo.averageEarliestAccessTime != null">average_earliest_access_time =
+                #{pojo.averageEarliestAccessTime},
+            </if>
+            <if test="pojo.averageEarliestAccessCount != null">average_earliest_access_count =
+                #{pojo.averageEarliestAccessCount},
+            </if>
+            <if test="pojo.averageLatestAccessTime != null">average_latest_access_time =
+                #{pojo.averageLatestAccessTime},
+            </if>
+            <if test="pojo.averageLatestAccessCount != null">average_latest_access_count =
+                #{pojo.averageLatestAccessCount},
+            </if>
+            <if test="pojo.averageDailyFrequency != null">average_daily_frequency = #{pojo.averageDailyFrequency},</if>
+            <if test="pojo.averageDailyFrequencyCount != null">average_daily_frequency_count =
+                #{pojo.averageDailyFrequencyCount},
+            </if>
+            <if test="pojo.createTime != null">create_time = #{pojo.createTime},</if>
+            <if test="pojo.isDeleted != null">is_deleted = #{pojo.isDeleted},</if>
+        </set>
+        WHERE id = #{pojo.id}
+    </update>
+
+    <!--auto generated Code-->
+    <select id="select" resultMap="AllColumnMap">
+        SELECT
+        <include refid="all_column"/>
+        FROM access_time
+        <where>
+            <if test="pojo.id != null">AND id = #{pojo.id}</if>
+            <if test="pojo.personnelId != null">AND personnel_id = #{pojo.personnelId}</if>
+            <if test="pojo.averageEarliestAccessTime != null">AND average_earliest_access_time =
+                #{pojo.averageEarliestAccessTime}
+            </if>
+            <if test="pojo.averageEarliestAccessCount != null">AND average_earliest_access_count =
+                #{pojo.averageEarliestAccessCount}
+            </if>
+            <if test="pojo.averageLatestAccessTime != null">AND average_latest_access_time =
+                #{pojo.averageLatestAccessTime}
+            </if>
+            <if test="pojo.averageLatestAccessCount != null">AND average_latest_access_count =
+                #{pojo.averageLatestAccessCount}
+            </if>
+            <if test="pojo.averageDailyFrequency != null">AND average_daily_frequency = #{pojo.averageDailyFrequency}
+            </if>
+            <if test="pojo.averageDailyFrequencyCount != null">AND average_daily_frequency_count =
+                #{pojo.averageDailyFrequencyCount}
+            </if>
+            <if test="pojo.createTime != null">AND create_time = #{pojo.createTime}</if>
+            <if test="pojo.updateTime != null">AND update_time = #{pojo.updateTime}</if>
+            <if test="pojo.isDeleted != null">AND is_deleted = #{pojo.isDeleted}</if>
+        </where>
+        LIMIT 1000
+    </select>
+
+    <!--auto generated Code-->
+    <delete id="delete">
+        DELETE FROM access_time where id = #{id}
+    </delete>
+</mapper>
