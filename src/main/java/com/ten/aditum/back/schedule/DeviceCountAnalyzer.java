@@ -103,6 +103,7 @@ public class DeviceCountAnalyzer implements Analyzer {
                     .setIsDeleted(NO_DELETED);
 
             List<DeviceAccessCount> select = deviceAccessCountService.select(accessCountSelectEntity);
+            // 此日子已经存在，更新
             if (select.size() > 0) {
                 accessCountEntity.setId(select.get(0).getId());
                 deviceAccessCountService.update(accessCountEntity);

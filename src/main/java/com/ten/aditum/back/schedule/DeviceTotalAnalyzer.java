@@ -72,7 +72,10 @@ public class DeviceTotalAnalyzer implements Analyzer {
         // 访问的record集合
         List<String> dayList = new ArrayList<>();
 
+        // 总访问天数
         AtomicInteger totalDayCount = new AtomicInteger();
+
+        // 总访问次数
         int totalAccessCount = recordList.size();
 
         recordList.forEach(record -> {
@@ -93,11 +96,26 @@ public class DeviceTotalAnalyzer implements Analyzer {
                 .setImei(device.getImei())
                 .setTotalAccessCount(totalAccessCount)
                 .setTotalDayCount(totalDayCount.get())
-                .setCreateTime(TimeGenerator.currentTime())
-                .setUpdateTime(TimeGenerator.currentTime())
                 .setIsDeleted(NO_DELETED);
 
-        deviceAccessTotalService.insert(accessTotal);
+        DeviceAccessTotal accessTotalEntity = new DeviceAccessTotal()
+                .setImei(device.getImei())
+                .setIsDeleted(NO_DELETED);
+
+        List<DeviceAccessTotal> select = deviceAccessTotalService.select(accessTotalEntity);
+        // 已有记录
+        if (select.size() > 0) {
+            accessTotal
+                    .setId(select.get(0).getId())
+                    .setUpdateTime(TimeGenerator.currentTime());
+            deviceAccessTotalService.update(accessTotal);
+        }
+        // 未有记录
+        else {
+            accessTotal
+                    .setCreateTime(TimeGenerator.currentTime());
+            deviceAccessTotalService.insert(accessTotal);
+        }
 
         log.info("此device完成更新 总访问次数:{}, 使用天数:{}", totalAccessCount, totalDayCount.get());
     }
