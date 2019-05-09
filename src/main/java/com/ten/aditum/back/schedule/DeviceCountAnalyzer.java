@@ -97,7 +97,18 @@ public class DeviceCountAnalyzer implements Analyzer {
                     .setUpdateTime(TimeGenerator.currentTime())
                     .setIsDeleted(NO_DELETED);
 
-            deviceAccessCountService.insert(accessCountEntity);
+            DeviceAccessCount accessCountSelectEntity = new DeviceAccessCount()
+                    .setImei(device.getImei())
+                    .setLogDate(accessCount.getKey())
+                    .setIsDeleted(NO_DELETED);
+
+            List<DeviceAccessCount> select = deviceAccessCountService.select(accessCountSelectEntity);
+            if (select.size() > 0) {
+                accessCountEntity.setId(select.get(0).getId());
+                deviceAccessCountService.update(accessCountEntity);
+            } else {
+                deviceAccessCountService.insert(accessCountEntity);
+            }
 
             log.info("此device完成更新 date:{}, count:{}", accessCount.getKey(), accessCount.getValue());
         }

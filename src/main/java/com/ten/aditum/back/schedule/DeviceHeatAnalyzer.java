@@ -95,6 +95,17 @@ public class DeviceHeatAnalyzer implements Analyzer {
             }
         });
 
+        DeviceAccessHeat selectEntity = new DeviceAccessHeat()
+                .setImei(device.getImei())
+                .setCurrentHourTime(beforeCurrentHour)
+                .setIsDeleted(NO_DELETED);
+
+        List<DeviceAccessHeat> select = deviceAccessHeatService.select(selectEntity);
+        if (select.size() > 0) {
+            log.warn("当前时间已更新 {}", beforeCurrentHour);
+            return;
+        }
+
         DeviceAccessHeat accessHeat = new DeviceAccessHeat()
                 .setImei(device.getImei())
                 .setCurrentHourTime(beforeCurrentHour)

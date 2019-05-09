@@ -7,6 +7,9 @@ import java.util.Calendar;
 import java.util.Date;
 
 public interface Analyzer {
+
+    String TEST_TIME = "0 0/1 * * * ?";
+
     int NO_DELETED = 0;
 
     String DATE_FORMAT = "yyyy-MM-dd";
