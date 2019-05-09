@@ -30,25 +30,25 @@
     <insert id="insert">
         INSERT INTO device_access_log
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="pojo.id != null"> id, </if>
-            <if test="pojo.imei != null"> imei, </if>
-            <if test="pojo.recordId != null"> record_id, </if>
-            <if test="pojo.accessTime != null"> access_time, </if>
-            <if test="pojo.accessType != null"> access_type, </if>
-            <if test="pojo.createTime != null"> create_time, </if>
-            <if test="pojo.updateTime != null"> update_time, </if>
-            <if test="pojo.isDeleted != null"> is_deleted, </if>
+            <if test="pojo.id != null">id,</if>
+            <if test="pojo.imei != null">imei,</if>
+            <if test="pojo.recordId != null">record_id,</if>
+            <if test="pojo.accessTime != null">access_time,</if>
+            <if test="pojo.accessType != null">access_type,</if>
+            <if test="pojo.createTime != null">create_time,</if>
+            <if test="pojo.updateTime != null">update_time,</if>
+            <if test="pojo.isDeleted != null">is_deleted,</if>
         </trim>
         VALUES
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="pojo.id != null"> #{pojo.id}, </if>
-            <if test="pojo.imei != null"> #{pojo.imei}, </if>
-            <if test="pojo.recordId != null"> #{pojo.recordId}, </if>
-            <if test="pojo.accessTime != null"> #{pojo.accessTime}, </if>
-            <if test="pojo.accessType != null"> #{pojo.accessType}, </if>
-            <if test="pojo.createTime != null"> #{pojo.createTime}, </if>
-            <if test="pojo.updateTime != null"> #{pojo.updateTime}, </if>
-            <if test="pojo.isDeleted != null"> #{pojo.isDeleted}, </if>
+            <if test="pojo.id != null">#{pojo.id},</if>
+            <if test="pojo.imei != null">#{pojo.imei},</if>
+            <if test="pojo.recordId != null">#{pojo.recordId},</if>
+            <if test="pojo.accessTime != null">#{pojo.accessTime},</if>
+            <if test="pojo.accessType != null">#{pojo.accessType},</if>
+            <if test="pojo.createTime != null">#{pojo.createTime},</if>
+            <if test="pojo.updateTime != null">#{pojo.updateTime},</if>
+            <if test="pojo.isDeleted != null">#{pojo.isDeleted},</if>
         </trim>
     </insert>
 
@@ -75,32 +75,33 @@
     <update id="update">
         UPDATE device_access_log
         <set>
-            <if test="pojo.id != null"> id = #{pojo.id}, </if>
-            <if test="pojo.imei != null"> imei = #{pojo.imei}, </if>
-            <if test="pojo.recordId != null"> record_id = #{pojo.recordId}, </if>
-            <if test="pojo.accessTime != null"> access_time = #{pojo.accessTime}, </if>
-            <if test="pojo.accessType != null"> access_type = #{pojo.accessType}, </if>
-            <if test="pojo.createTime != null"> create_time = #{pojo.createTime}, </if>
-            <if test="pojo.isDeleted != null"> is_deleted = #{pojo.isDeleted}, </if>
+            <if test="pojo.id != null">id = #{pojo.id},</if>
+            <if test="pojo.imei != null">imei = #{pojo.imei},</if>
+            <if test="pojo.recordId != null">record_id = #{pojo.recordId},</if>
+            <if test="pojo.accessTime != null">access_time = #{pojo.accessTime},</if>
+            <if test="pojo.accessType != null">access_type = #{pojo.accessType},</if>
+            <if test="pojo.createTime != null">create_time = #{pojo.createTime},</if>
+            <if test="pojo.isDeleted != null">is_deleted = #{pojo.isDeleted},</if>
         </set>
-         WHERE id = #{pojo.id}
+        WHERE id = #{pojo.id}
     </update>
 
     <!--auto generated Code-->
     <select id="select" resultMap="AllColumnMap">
-        SELECT <include refid="all_column"/>
+        SELECT
+        <include refid="all_column"/>
         FROM device_access_log
         <where>
-            <if test="pojo.id != null"> AND id = #{pojo.id} </if>
-            <if test="pojo.imei != null"> AND imei = #{pojo.imei} </if>
-            <if test="pojo.recordId != null"> AND record_id = #{pojo.recordId} </if>
-            <if test="pojo.accessTime != null"> AND access_time = #{pojo.accessTime} </if>
-            <if test="pojo.accessType != null"> AND access_type = #{pojo.accessType} </if>
-            <if test="pojo.createTime != null"> AND create_time = #{pojo.createTime} </if>
-            <if test="pojo.updateTime != null"> AND update_time = #{pojo.updateTime} </if>
-            <if test="pojo.isDeleted != null"> AND is_deleted = #{pojo.isDeleted} </if>
+            <if test="pojo.id != null">AND id = #{pojo.id}</if>
+            <if test="pojo.imei != null">AND imei = #{pojo.imei}</if>
+            <if test="pojo.recordId != null">AND record_id = #{pojo.recordId}</if>
+            <if test="pojo.accessTime != null">AND access_time = #{pojo.accessTime}</if>
+            <if test="pojo.accessType != null">AND access_type = #{pojo.accessType}</if>
+            <if test="pojo.createTime != null">AND create_time = #{pojo.createTime}</if>
+            <if test="pojo.updateTime != null">AND update_time = #{pojo.updateTime}</if>
+            <if test="pojo.isDeleted != null">AND is_deleted = #{pojo.isDeleted}</if>
         </where>
-        LIMIT 1000 
+        LIMIT 1000
     </select>
 
     <!--auto generated Code-->

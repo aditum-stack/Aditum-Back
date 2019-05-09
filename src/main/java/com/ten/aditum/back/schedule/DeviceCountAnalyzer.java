@@ -41,6 +41,7 @@ public class DeviceCountAnalyzer implements Analyzer {
     /**
      * 每天3点20分更新设备按天访问日志
      */
+//    @Scheduled(cron = TEST_TIME)
     @Scheduled(cron = "0 20 3 1/1 * ?")
     public void analysis() {
         log.info("开始更新设备访问日志...");

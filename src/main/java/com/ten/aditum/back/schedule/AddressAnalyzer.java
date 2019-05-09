@@ -40,9 +40,10 @@ public class AddressAnalyzer implements Analyzer {
     }
 
     /**
-     * 每天0点分析用户访问地址
+     * 每天1点分析用户访问地址
      */
-    @Scheduled(cron = "0 0 0 1/1 * ?")
+//    @Scheduled(cron = TEST_TIME)
+    @Scheduled(cron = "0 0 1 1/1 * ?")
     public void analysis() {
         log.info("开始分析用户访问地址...");
 

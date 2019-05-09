@@ -39,6 +39,7 @@ public class DeviceHeatAnalyzer implements Analyzer {
     /**
      * 每小时更新设备实时访问日志(热度)
      */
+//    @Scheduled(cron = TEST_TIME)
     @Scheduled(cron = "0 0 0/1 * * ?")
     public void analysis() {
         log.info("开始更新设备热度...");

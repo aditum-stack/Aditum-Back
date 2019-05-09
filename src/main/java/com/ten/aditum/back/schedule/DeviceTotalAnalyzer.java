@@ -43,6 +43,7 @@ public class DeviceTotalAnalyzer implements Analyzer {
     /**
      * 每天3点30分更新设备总访问日志
      */
+//    @Scheduled(cron = TEST_TIME)
     @Scheduled(cron = "0 30 3 1/1 * ?")
     public void analysis() {
         log.info("开始更新设备总访问日志...");

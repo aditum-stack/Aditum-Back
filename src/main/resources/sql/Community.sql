@@ -2,15 +2,20 @@
 -- DROP TABLE IF EXISTS `community`; 
 CREATE TABLE community(
     `id` INTEGER(20) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'id',
-    `community_id` VARCHAR(50) NOT NULL DEFAULT '' COMMENT 'ÉçÇøID Unique',
-    `community_name` VARCHAR(50) NOT NULL DEFAULT '' COMMENT 'ÉçÇøÃû³Æ',
-    `community_city` VARCHAR(50) NOT NULL DEFAULT '' COMMENT 'ÉçÇø³ÇÊÐ',
-    `community_address` VARCHAR(50) NOT NULL DEFAULT '' COMMENT 'ÉçÇøµØÖ·',
-    `device_count` INTEGER(12) NOT NULL DEFAULT -1 COMMENT 'ÉçÇøÉè±¸×ÜÊý',
-    `device_online_count` INTEGER(12) NOT NULL DEFAULT -1 COMMENT 'ÉçÇøÔÚÏßÉè±¸Êý',
+    `community_id` VARCHAR(50) NOT NULL DEFAULT '' COMMENT 'ç¤¾åŒºID Unique',
+    `community_name` VARCHAR(50) NOT NULL DEFAULT '' COMMENT 'ç¤¾åŒºåç§°',
+    `community_city` VARCHAR(50) NOT NULL DEFAULT '' COMMENT 'ç¤¾åŒºåŸŽå¸‚',
+    `community_address` VARCHAR(50) NOT NULL DEFAULT '' COMMENT 'ç¤¾åŒºåœ°å€',
+    `device_count` INTEGER(12) NOT NULL DEFAULT -1 COMMENT 'ç¤¾åŒºè®¾å¤‡æ€»æ•°',
+    `device_online_count` INTEGER(12) NOT NULL DEFAULT -1 COMMENT 'ç¤¾åŒºåœ¨çº¿è®¾å¤‡æ•°',
+    `person_count` INTEGER(12) NOT NULL DEFAULT -1 COMMENT 'ç¤¾åŒºç”¨æˆ·æ€»æ•°',
     `create_time` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'createTime',
     `update_time` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'updateTime',
-    `is_deleted` TINYINT(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT 'É¾³ý±ê¼Ç',
+    `is_deleted` TINYINT(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT 'åˆ é™¤æ ‡è®°',
     PRIMARY KEY (`id`),
     UNIQUE KEY(`community_id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT 'community';
+
+
+ALTER TABLE community
+ADD COLUMN `person_count` INTEGER(12) NOT NULL DEFAULT -1 COMMENT 'ç¤¾åŒºç”¨æˆ·æ€»æ•°' AFTER `device_online_count`;

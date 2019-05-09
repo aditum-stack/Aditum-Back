@@ -11,6 +11,7 @@
         <result column="community_address" property="communityAddress"/>
         <result column="device_count" property="deviceCount"/>
         <result column="device_online_count" property="deviceOnlineCount"/>
+        <result column="person_count" property="personCount"/>
         <result column="create_time" property="createTime"/>
         <result column="update_time" property="updateTime"/>
         <result column="is_deleted" property="isDeleted"/>
@@ -25,6 +26,7 @@
         community_address,
         device_count,
         device_online_count,
+        person_count,
         create_time,
         update_time,
         is_deleted
@@ -41,6 +43,7 @@
             <if test="pojo.communityAddress != null">community_address,</if>
             <if test="pojo.deviceCount != null">device_count,</if>
             <if test="pojo.deviceOnlineCount != null">device_online_count,</if>
+            <if test="pojo.personCount != null">person_count,</if>
             <if test="pojo.createTime != null">create_time,</if>
             <if test="pojo.updateTime != null">update_time,</if>
             <if test="pojo.isDeleted != null">is_deleted,</if>
@@ -54,6 +57,7 @@
             <if test="pojo.communityAddress != null">#{pojo.communityAddress},</if>
             <if test="pojo.deviceCount != null">#{pojo.deviceCount},</if>
             <if test="pojo.deviceOnlineCount != null">#{pojo.deviceOnlineCount},</if>
+            <if test="pojo.personCount != null">#{pojo.personCount},</if>
             <if test="pojo.createTime != null">#{pojo.createTime},</if>
             <if test="pojo.updateTime != null">#{pojo.updateTime},</if>
             <if test="pojo.isDeleted != null">#{pojo.isDeleted},</if>
@@ -74,6 +78,7 @@
             #{pojo.communityAddress},
             #{pojo.deviceCount},
             #{pojo.deviceOnlineCount},
+            #{pojo.personCount},
             #{pojo.createTime},
             #{pojo.updateTime},
             #{pojo.isDeleted}
@@ -92,6 +97,7 @@
             <if test="pojo.communityAddress != null">community_address = #{pojo.communityAddress},</if>
             <if test="pojo.deviceCount != null">device_count = #{pojo.deviceCount},</if>
             <if test="pojo.deviceOnlineCount != null">device_online_count = #{pojo.deviceOnlineCount},</if>
+            <if test="pojo.personCount != null">person_count = #{pojo.personCount},</if>
             <if test="pojo.createTime != null">create_time = #{pojo.createTime},</if>
             <if test="pojo.isDeleted != null">is_deleted = #{pojo.isDeleted},</if>
         </set>
@@ -111,6 +117,7 @@
             <if test="pojo.communityAddress != null">AND community_address = #{pojo.communityAddress}</if>
             <if test="pojo.deviceCount != null">AND device_count = #{pojo.deviceCount}</if>
             <if test="pojo.deviceOnlineCount != null">AND device_online_count = #{pojo.deviceOnlineCount}</if>
+            <if test="pojo.personCount != null">AND person_count = #{pojo.personCount}</if>
             <if test="pojo.createTime != null">AND create_time = #{pojo.createTime}</if>
             <if test="pojo.updateTime != null">AND update_time = #{pojo.updateTime}</if>
             <if test="pojo.isDeleted != null">AND is_deleted = #{pojo.isDeleted}</if>

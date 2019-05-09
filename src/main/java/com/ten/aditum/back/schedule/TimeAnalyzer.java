@@ -43,6 +43,7 @@ public class TimeAnalyzer implements Analyzer {
     /**
      * 每天1点分析用户访问时间
      */
+//    @Scheduled(cron = TEST_TIME)
     @Scheduled(cron = "0 0 1 1/1 * ? ")
     public void analysis() {
         log.info("开始分析用户访问时间...");
