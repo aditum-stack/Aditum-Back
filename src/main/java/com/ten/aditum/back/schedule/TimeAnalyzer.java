@@ -190,16 +190,6 @@ public class TimeAnalyzer implements Analyzer {
         }
     }
 
-    private static final String TIME_FORMAT = "hh:mm:ss";
-
-    private String formatTime(String value) {
-        if (value == null) {
-            return "";
-        }
-        // 去掉日期，保留时间
-        return value.substring(11);
-    }
-
     /**
      * 时间转秒
      */
