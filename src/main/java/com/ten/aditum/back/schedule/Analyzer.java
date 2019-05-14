@@ -29,7 +29,7 @@ public interface Analyzer {
         return new SimpleDateFormat(DATE_FORMAT).format(date);
     }
 
-    String TIME_FORMAT = "hh:mm:ss";
+    String TIME_FORMAT = "HH:mm:ss";
 
     default String formatTime(String value) {
         if (value == null) {
@@ -39,7 +39,7 @@ public interface Analyzer {
         return value.substring(11);
     }
 
-    String DATE_TIME_FORMAT = "yyyy-MM-dd hh:mm:ss";
+    String DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
     default String currentDateTime() {
         DateFormat fmt = new SimpleDateFormat(DATE_TIME_FORMAT);
