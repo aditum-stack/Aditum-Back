@@ -22,7 +22,6 @@ public class AddressAnalyzer extends BaseAnalysor {
 
     private final CommunityService communityService;
     private final DeviceService deviceService;
-    private final PersonService personService;
     private final RecordService recordService;
 
     private final AccessAddressService accessAddressService;
@@ -30,21 +29,19 @@ public class AddressAnalyzer extends BaseAnalysor {
     @Autowired
     public AddressAnalyzer(AccessAddressService accessAddressService,
                            RecordService recordService,
-                           PersonService personService,
                            DeviceService deviceService,
                            CommunityService communityService) {
         this.accessAddressService = accessAddressService;
         this.recordService = recordService;
-        this.personService = personService;
         this.deviceService = deviceService;
         this.communityService = communityService;
     }
 
     /**
-     * 每天1点分析用户访问地址
+     * 每天1点10分分析用户访问地址
      */
 //    @Scheduled(cron = TEST_TIME)
-    @Scheduled(cron = "0 0 1 1/1 * ?")
+    @Scheduled(cron = "0 10 1 1/1 * ?")
     public void analysis() {
         log.info("开始分析用户访问地址...");
 
@@ -71,11 +68,7 @@ public class AddressAnalyzer extends BaseAnalysor {
                 .setIsDeleted(NO_DELETED);
         List<Record> recordList = recordService.select(recordEntity);
 
-        log.info("查询此person下的所有record集合 : {}", recordList);
-
         recordList.forEach(record -> {
-            log.info("开始分析此record : {}", record);
-
             // 查询record对应的device
             String imei = record.getImei();
             Device deviceEntity = new Device()
@@ -88,8 +81,6 @@ public class AddressAnalyzer extends BaseAnalysor {
 
             Device theDevice = deviceList.get(0);
 
-            log.info("查询此record下的device : {}", theDevice);
-
             // 查询device对应的community
             String communityId = theDevice.getCommunityId();
             Community communityEntity = new Community()
@@ -101,8 +92,6 @@ public class AddressAnalyzer extends BaseAnalysor {
             }
 
             Community theCommunity = communityList.get(0);
-
-            log.info("查询此device下的community : {}", theCommunity);
 
             // 获取community地址
             String communityCity = theCommunity.getCommunityCity();

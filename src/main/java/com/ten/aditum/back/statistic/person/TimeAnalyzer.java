@@ -29,18 +29,15 @@ import static com.ten.aditum.back.util.TimeGenerator.*;
 @EnableAutoConfiguration
 public class TimeAnalyzer extends BaseAnalysor {
 
-    private final PersonService personService;
     private final RecordService recordService;
 
     private final AccessTimeService accessTimeService;
 
     @Autowired
     public TimeAnalyzer(AccessTimeService accessTimeService,
-                        RecordService recordService,
-                        PersonService personService) {
+                        RecordService recordService) {
         this.accessTimeService = accessTimeService;
         this.recordService = recordService;
-        this.personService = personService;
     }
 
     /**
@@ -79,11 +76,7 @@ public class TimeAnalyzer extends BaseAnalysor {
             return;
         }
 
-        log.info("查询此person下的所有record集合 : {}", recordList);
-
         recordList.forEach(record -> {
-            log.info("开始分析此record : {}", record);
-
             String visiteTime = record.getVisiteTime().substring(0, 19);
             record.setVisiteTime(visiteTime);
             String formatDate = formatDate(visiteTime);
