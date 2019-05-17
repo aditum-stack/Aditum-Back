@@ -41,10 +41,10 @@ public class CommunityAnalyzer extends BaseAnalysor {
     }
 
     /**
-     * 每天0点更新社区信息
+     * 每天2点更新社区信息
      */
 //    @Scheduled(cron = TEST_TIME)
-    @Scheduled(cron = "0 0 0 1/1 * ?")
+    @Scheduled(cron = "0 0 2 1/1 * ?")
     public void analysis() {
         log.info("开始更新社区信息...");
 
