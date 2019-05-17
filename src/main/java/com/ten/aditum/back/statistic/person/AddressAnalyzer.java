@@ -1,8 +1,9 @@
-package com.ten.aditum.back.schedule;
+package com.ten.aditum.back.statistic.person;
 
 
 import com.ten.aditum.back.entity.*;
 import com.ten.aditum.back.service.*;
+import com.ten.aditum.back.statistic.Analyzer;
 import com.ten.aditum.back.util.TimeGenerator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

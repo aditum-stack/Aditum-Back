@@ -1,4 +1,4 @@
-package com.ten.aditum.back.schedule;
+package com.ten.aditum.back.statistic.person;
 
 
 import com.ten.aditum.back.entity.AccessTime;
@@ -7,6 +7,7 @@ import com.ten.aditum.back.entity.Record;
 import com.ten.aditum.back.service.AccessTimeService;
 import com.ten.aditum.back.service.PersonService;
 import com.ten.aditum.back.service.RecordService;
+import com.ten.aditum.back.statistic.Analyzer;
 import com.ten.aditum.back.util.TimeGenerator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +16,6 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 

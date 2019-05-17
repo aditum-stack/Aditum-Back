@@ -1,4 +1,4 @@
-package com.ten.aditum.back.schedule;
+package com.ten.aditum.back.statistic;
 
 import java.text.DateFormat;
 import java.text.ParseException;
