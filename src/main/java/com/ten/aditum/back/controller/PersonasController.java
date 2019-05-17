@@ -138,7 +138,7 @@ public class PersonasController {
 
         List<PersonasPortrait> personasPortraitList = personasPortraitService.select(personasPortrait);
 
-        // personas label array
+        // personas model array
         List<String> labelList = new ArrayList<>();
         boolean existed;
         int portraitId = 0;
@@ -159,7 +159,7 @@ public class PersonasController {
             labelList.addAll(Arrays.asList(personasList));
         }
 
-        // select label
+        // select model
         PersonasLabel personasLabel = new PersonasLabel()
                 .setLabelId(personas.getLabelId())
                 .setIsDeleted(NO_DELETED);
@@ -204,6 +204,77 @@ public class PersonasController {
     }
 
     /**
+     * 根据personId更新该用户的用户画像标签，可直接通过Name添加，而无需在Label表中有对应项
+     */
+    @RequestMapping(value = "/name", method = RequestMethod.POST)
+    public ResultModel updatePersonasByLabelName(Personas personas) {
+        log.debug("Personas by name [POST] : {}", personas);
+
+        if (personas.getPersonnelId() == null || personas.getLabelName() == null) {
+            return new ResultModel(AditumCode.ERROR);
+        }
+
+        // select portrait
+        PersonasPortrait personasPortrait = new PersonasPortrait()
+                .setPersonnelId(personas.getPersonnelId())
+                .setIsDeleted(NO_DELETED);
+
+        List<PersonasPortrait> personasPortraitList = personasPortraitService.select(personasPortrait);
+
+        // personas model array
+        List<String> labelList = new ArrayList<>();
+        boolean existed;
+        int portraitId = 0;
+
+        // 当前用户画像不存在
+        if (personasPortraitList.size() < 1) {
+            existed = false;
+            labelList.add("新用户");
+            labelList.add("青铜会员");
+        }
+        // 当前用户画像已存在
+        else {
+            existed = true;
+            PersonasPortrait select = personasPortraitList.get(0);
+            portraitId = select.getId();
+            String personasExt = select.getPersonasExt();
+            String[] personasList = personasExt.split(",");
+            labelList.addAll(Arrays.asList(personasList));
+        }
+
+        String labelName = personas.getLabelName();
+
+        // 未包含此标签
+        if (!labelList.contains(labelName)) {
+            labelList.add(labelName);
+        }
+
+        // 已存在，更新
+        if (existed) {
+            PersonasPortrait update = new PersonasPortrait()
+                    .setId(portraitId)
+                    .setPersonasExt(String.join(",", labelList))
+                    .setUpdateTime(TimeGenerator.currentTime());
+            personasPortraitService.update(update);
+
+            log.debug("Personas by name [POST] update SUCCESS : {} -> {}", personas, update);
+            return new ResultModel(AditumCode.OK, update);
+        }
+        // 未存在，创建
+        else {
+            PersonasPortrait create = new PersonasPortrait()
+                    .setPersonnelId(personas.getPersonnelId())
+                    .setPersonasExt(String.join(",", labelList))
+                    .setCreateTime(TimeGenerator.currentTime())
+                    .setIsDeleted(NO_DELETED);
+            personasPortraitService.insert(create);
+
+            log.debug("Personas by name [POST] create SUCCESS : {} -> {}", personas, create);
+            return new ResultModel(AditumCode.OK, create);
+        }
+    }
+
+    /**
      * 根据personId删除该用户的用户画像标签
      */
     @RequestMapping(method = RequestMethod.DELETE)
@@ -231,7 +302,7 @@ public class PersonasController {
         String[] personasList = personasExt.split(",");
         List<String> labelList = new ArrayList<>(Arrays.asList(personasList));
 
-        // select label
+        // select model
         PersonasLabel personasLabel = new PersonasLabel()
                 .setLabelId(personas.getLabelId())
                 .setIsDeleted(NO_DELETED);

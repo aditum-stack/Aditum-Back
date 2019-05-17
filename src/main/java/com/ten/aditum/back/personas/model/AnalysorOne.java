@@ -1,4 +1,4 @@
-package com.ten.aditum.back.personas.label;
+package com.ten.aditum.back.personas.model;
 
 import com.ten.aditum.back.entity.AccessTime;
 import com.ten.aditum.back.entity.Person;

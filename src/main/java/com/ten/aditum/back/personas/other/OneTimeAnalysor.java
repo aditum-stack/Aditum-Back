@@ -1,4 +1,4 @@
-package com.ten.aditum.back.personas;
+package com.ten.aditum.back.personas.other;
 
 
 import com.ten.aditum.back.BaseAnalysor;

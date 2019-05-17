@@ -1,10 +1,11 @@
-package com.ten.aditum.back.personas.label;
+package com.ten.aditum.back.personas.model;
 
 import com.ten.aditum.back.entity.AccessTime;
 import com.ten.aditum.back.entity.Person;
 import com.ten.aditum.back.entity.PersonasLabel;
 import com.ten.aditum.back.BaseAnalysor;
 import com.ten.aditum.back.service.AccessTimeService;
+import com.ten.aditum.back.util.TimeGenerator;
 import com.ten.aditum.back.vo.Personas;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,48 +18,56 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 基于用户信息的数据分析
+ * 基于早或晚时间的一维分析
  */
 @Slf4j
 @Component
 @EnableScheduling
 @EnableAutoConfiguration
-public class AnalysorFour extends BaseAnalysor {
+public class AnalysorTwo extends BaseAnalysor {
 
     private final AccessTimeService accessTimeService;
 
     @Autowired
-    public AnalysorFour(AccessTimeService accessTimeService) {
+    public AnalysorTwo(AccessTimeService accessTimeService) {
         this.accessTimeService = accessTimeService;
     }
 
     @Override
     public void showModelLabel() {
         PersonasLabel label1 = new PersonasLabel()
-                .setLabelId("10")
-                .setLabelName("新用户")
-                .setLabelDesc("用户创建时间小于一星期");
+                .setLabelId("4")
+                .setLabelName("加班狂")
+                .setLabelDesc("晚上访问时间晚于十点");
         PersonasLabel label2 = new PersonasLabel()
-                .setLabelId("11")
-                .setLabelName("老用户")
-                .setLabelDesc("用户创建时间大于一个月");
+                .setLabelId("5")
+                .setLabelName("早起达人")
+                .setLabelDesc("早上访问时间早于八点");
+        PersonasLabel label3 = new PersonasLabel()
+                .setLabelId("17")
+                .setLabelName("夜猫子")
+                .setLabelDesc("晚上时间晚于11点");
     }
 
 //    @Scheduled(cron = TEST_TIME)
 
     /**
-     * 每天4点30分更新
+     * 每天4点10分更新
      */
-    @Scheduled(cron = "0 30 4 1/1 * ?")
+    @Scheduled(cron = "0 10 4 1/1 * ?")
     public void analysis() {
-        log.info("基于用户信息的数据分析...开始");
+        log.info("基于早或晚时间的一维分析...开始");
 
         List<Person> personList = selectAllPerson();
 
         personList.forEach(this::analysisPerson);
 
-        log.info("基于用户信息的数据分析...结束");
+        log.info("基于早或晚时间的一维分析...结束");
     }
+
+    private long label1 = TimeGenerator.getTotalSec("22:00:00");
+    private long label2 = TimeGenerator.getTotalSec("8:00:00");
+    private long label3 = TimeGenerator.getTotalSec("23:00:00");
 
     private void analysisPerson(Person person) {
         // 获取AccessTime
@@ -73,44 +82,39 @@ public class AnalysorFour extends BaseAnalysor {
 
         // 获取AccessTime
         AccessTime theAccessTime = select.get(0);
-        int totalDay = theAccessTime.getAverageDailyFrequencyCount();
+        String earliest = theAccessTime.getAverageEarliestAccessTime();
+        String latest = theAccessTime.getAverageLatestAccessTime();
+        long es = TimeGenerator.getTotalSec(earliest);
+        long ls = TimeGenerator.getTotalSec(latest);
 
-        // 标签集合
         List<String> labelSet = new ArrayList<>();
-        // 标签删除集合
-        List<String> removeSet = new ArrayList<>();
 
-        // 用户创建时间小于一星期
-        if (totalDay < 7) {
-            labelSet.add("新用户");
+        // 晚上访问时间晚于十点
+        if (ls > label1) {
+            labelSet.add("加班狂");
             Personas personas = new Personas()
                     .setPersonnelId(person.getPersonnelId())
-                    .setLabelId("10");
+                    .setLabelId("4");
             personasController.updatePersonas(personas);
-
-            removeSet.add("老用户");
-            Personas remove = new Personas()
-                    .setPersonnelId(person.getPersonnelId())
-                    .setLabelId("11");
-            personasController.removePersonas(remove);
         }
-        // 用户创建时间大于一个月
-        if (totalDay > 30) {
-            labelSet.add("老用户");
+        // 早上访问时间早于八点
+        if (es < label2) {
+            labelSet.add("早起达人");
             Personas personas = new Personas()
                     .setPersonnelId(person.getPersonnelId())
-                    .setLabelId("11");
+                    .setLabelId("5");
             personasController.updatePersonas(personas);
-
-            removeSet.add("新用户");
-            Personas remove = new Personas()
+        }
+        // 晚上时间晚于11点
+        if (ls > label3) {
+            labelSet.add("夜猫子");
+            Personas personas = new Personas()
                     .setPersonnelId(person.getPersonnelId())
-                    .setLabelId("10");
-            personasController.removePersonas(remove);
+                    .setLabelId("17");
+            personasController.updatePersonas(personas);
         }
 
-        log.info("用户 {} 计算完成。添加 : {} , 删除 : {}",
-                person.getPersonnelName(), String.join(",", labelSet), String.join(",", removeSet));
+        log.info("用户 {} 计算完成，{}", person.getPersonnelName(), String.join(",", labelSet));
     }
 
 }

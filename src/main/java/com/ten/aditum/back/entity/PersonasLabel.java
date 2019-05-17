@@ -37,6 +37,8 @@ public class PersonasLabel {
      * 5 基于用户访问地理信息的分析
      * 6 基于访问时长的分析
      * 7 基于排名的数据分析
+     * <p>
+     * 0 其他标签，随机标签
      */
     private String labelDesc;
     /**

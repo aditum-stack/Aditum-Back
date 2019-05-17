@@ -1,7 +1,6 @@
-package com.ten.aditum.back.personas.label;
+package com.ten.aditum.back.personas.model;
 
 import com.ten.aditum.back.entity.AccessAddress;
-import com.ten.aditum.back.entity.AccessTime;
 import com.ten.aditum.back.entity.Person;
 import com.ten.aditum.back.entity.PersonasLabel;
 import com.ten.aditum.back.BaseAnalysor;

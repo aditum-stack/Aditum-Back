@@ -1,11 +1,10 @@
-package com.ten.aditum.back.personas.label;
+package com.ten.aditum.back.personas.model;
 
 import com.ten.aditum.back.entity.AccessTime;
 import com.ten.aditum.back.entity.Person;
 import com.ten.aditum.back.entity.PersonasLabel;
 import com.ten.aditum.back.BaseAnalysor;
 import com.ten.aditum.back.service.AccessTimeService;
-import com.ten.aditum.back.util.TimeGenerator;
 import com.ten.aditum.back.vo.Personas;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

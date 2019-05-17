@@ -1,6 +1,5 @@
-package com.ten.aditum.back.personas.label;
+package com.ten.aditum.back.personas.model;
 
-import com.ten.aditum.back.entity.AccessInterval;
 import com.ten.aditum.back.entity.AccessInterval;
 import com.ten.aditum.back.entity.Person;
 import com.ten.aditum.back.entity.PersonasLabel;
@@ -15,7 +14,6 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 

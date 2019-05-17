@@ -1,11 +1,10 @@
-package com.ten.aditum.back.personas.label;
+package com.ten.aditum.back.personas.model;
 
 import com.ten.aditum.back.BaseAnalysor;
 import com.ten.aditum.back.entity.AccessTime;
 import com.ten.aditum.back.entity.Person;
 import com.ten.aditum.back.entity.PersonasLabel;
 import com.ten.aditum.back.service.AccessTimeService;
-import com.ten.aditum.back.util.TimeGenerator;
 import com.ten.aditum.back.vo.Personas;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -17,10 +16,8 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * 基于排名的数据分析
@@ -70,7 +67,7 @@ public class AnalysorSeven extends BaseAnalysor {
     /**
      * 每天5点00分更新
      */
-    @Scheduled(cron = "0 00 5 1/1 * ?")
+    @Scheduled(cron = "0 0 0 5 1/1 * ?")
     public void analysis() {
         log.info("基于排名的数据分析...开始");
 
