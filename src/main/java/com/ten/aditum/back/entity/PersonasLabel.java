@@ -27,6 +27,16 @@ public class PersonasLabel {
     private Integer labelType;
     /**
      * 标签描述
+     * <p>
+     * xx 混合分析，标签结合
+     * <p>
+     * 1 基于早晚访问时间的二维分析
+     * 2 基于早或晚时间的一维分析
+     * 3 基于访问频次的一维分析
+     * 4 基于用户信息的数据分析
+     * 5 基于用户访问地理信息的分析
+     * 6 基于访问时长的分析
+     * 7 基于排名的数据分析
      */
     private String labelDesc;
     /**

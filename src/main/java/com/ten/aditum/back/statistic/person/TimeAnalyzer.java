@@ -1,13 +1,13 @@
 package com.ten.aditum.back.statistic.person;
 
 
+import com.ten.aditum.back.BaseAnalysor;
 import com.ten.aditum.back.entity.AccessTime;
 import com.ten.aditum.back.entity.Person;
 import com.ten.aditum.back.entity.Record;
 import com.ten.aditum.back.service.AccessTimeService;
 import com.ten.aditum.back.service.PersonService;
 import com.ten.aditum.back.service.RecordService;
-import com.ten.aditum.back.statistic.Analyzer;
 import com.ten.aditum.back.util.TimeGenerator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,14 +16,18 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import static com.ten.aditum.back.util.TimeGenerator.*;
 
 @Slf4j
 @Component
 @EnableScheduling
 @EnableAutoConfiguration
-public class TimeAnalyzer implements Analyzer {
+public class TimeAnalyzer extends BaseAnalysor {
 
     private final PersonService personService;
     private final RecordService recordService;
@@ -47,12 +51,7 @@ public class TimeAnalyzer implements Analyzer {
     public void analysis() {
         log.info("开始分析用户访问时间...");
 
-        // 查询所有person
-        Person personEntity = new Person()
-                .setIsDeleted(NO_DELETED);
-        List<Person> personList = personService.select(personEntity);
-
-        log.info("查询所有person集合 : {}", personList);
+        List<Person> personList = selectAllPerson();
 
         personList.forEach(this::analysisPerson);
 
@@ -188,58 +187,6 @@ public class TimeAnalyzer implements Analyzer {
 
             log.info("此person {} 已经有时间记录，更新 {}", person.getPersonnelName(), accessTime);
         }
-    }
-
-    /**
-     * 时间转秒
-     */
-    private long getTotalSec(String s) {
-        String[] my = s.split(":");
-        int hour = Integer.parseInt(my[0]);
-        int min = Integer.parseInt(my[1]);
-        int sec = Integer.parseInt(my[2]);
-        return (long) (hour * 3600 + min * 60 + sec);
-    }
-
-    /**
-     * 秒转时间
-     */
-    private String getTimeFromSec(long sec) {
-        // 毫秒数
-        long ms = sec * 1000;
-        SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
-        // 设置时区，防止+8小时
-        formatter.setTimeZone(TimeZone.getTimeZone("GMT+00:00"));
-        return formatter.format(ms);
-    }
-
-    /**
-     * 计算平均访问时间
-     */
-    private String averageTime(List<String> timeList) {
-        if (timeList.size() == 0) {
-            return "";
-        }
-
-        long[] times = new long[timeList.size()];
-
-        for (int i = 0; i < timeList.size(); i++) {
-            long totalSec = getTotalSec(timeList.get(i));
-            times[i] = totalSec;
-        }
-
-        long total = 0;
-        for (long time1 : times) {
-            total += time1;
-        }
-
-        long mean = total / times.length;
-
-        String time = getTimeFromSec(mean);
-
-        log.debug("平均秒数为{},平均时间为{}", mean, time);
-
-        return time;
     }
 
 }

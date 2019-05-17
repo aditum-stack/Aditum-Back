@@ -138,21 +138,19 @@ public class PersonasController {
 
         List<PersonasPortrait> personasPortraitList = personasPortraitService.select(personasPortrait);
         if (personasPortraitList.size() < 1) {
-            log.warn("Personas [POST] FAILURE : {}", personas);
+            log.warn("Personas [POST] Portrait FAILURE : {}", personas);
             return new ResultModel(AditumCode.ERROR);
         }
 
-
         PersonasPortrait select = personasPortraitList.get(0);
-
         int portraitId = select.getId();
 
         // get ext array
         String personasExt = select.getPersonasExt();
         String[] personasList = personasExt.split(",");
-        List<String> list = Arrays.asList(personasList);
-        if (list.size() == 0) {
-            list.add("小白");
+        List<String> labelList = new ArrayList<>(Arrays.asList(personasList));
+        if (labelList.size() == 0) {
+            labelList.add("小白");
         }
 
         // select label
@@ -162,22 +160,21 @@ public class PersonasController {
 
         List<PersonasLabel> personasLabelList = personasLabelService.select(personasLabel);
         if (personasLabelList.size() < 1) {
-            log.warn("Personas [POST] FAILURE : {}", personas);
+            log.warn("Personas [POST] Label FAILURE : {}", personas);
             return new ResultModel(AditumCode.ERROR);
         }
 
         PersonasLabel selectLabel = personasLabelList.get(0);
-
         String labelName = selectLabel.getLabelName();
 
         // 未包含此标签
-        if (!list.contains(labelName)) {
-            list.add(labelName);
+        if (!labelList.contains(labelName)) {
+            labelList.add(labelName);
         }
 
         PersonasPortrait update = new PersonasPortrait()
                 .setId(portraitId)
-                .setPersonasExt(String.join(",", list))
+                .setPersonasExt(String.join(",", labelList))
                 .setUpdateTime(TimeGenerator.currentTime());
 
         personasPortraitService.update(update);

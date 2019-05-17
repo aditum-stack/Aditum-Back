@@ -1,13 +1,13 @@
 package com.ten.aditum.back.statistic.device;
 
 
+import com.ten.aditum.back.BaseAnalysor;
 import com.ten.aditum.back.entity.Device;
 import com.ten.aditum.back.entity.DeviceAccessCount;
 import com.ten.aditum.back.entity.Record;
 import com.ten.aditum.back.service.DeviceAccessCountService;
 import com.ten.aditum.back.service.DeviceService;
 import com.ten.aditum.back.service.RecordService;
-import com.ten.aditum.back.statistic.Analyzer;
 import com.ten.aditum.back.util.TimeGenerator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,11 +20,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.ten.aditum.back.util.TimeGenerator.formatDate;
+
 @Slf4j
 @Component
 @EnableScheduling
 @EnableAutoConfiguration
-public class DeviceCountAnalyzer implements Analyzer {
+public class DeviceCountAnalyzer  extends BaseAnalysor {
 
     private final DeviceService deviceService;
     private final RecordService recordService;
@@ -50,8 +52,6 @@ public class DeviceCountAnalyzer implements Analyzer {
         Device deviceEntity = new Device()
                 .setIsDeleted(NO_DELETED);
         List<Device> deviceList = deviceService.select(deviceEntity);
-
-        log.info("查询所有device集合 : {}", deviceList);
 
         deviceList.forEach(this::analysisDevice);
 

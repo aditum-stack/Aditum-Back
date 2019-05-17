@@ -1,11 +1,11 @@
 package com.ten.aditum.back.statistic.device;
 
 
+import com.ten.aditum.back.BaseAnalysor;
 import com.ten.aditum.back.entity.DeviceAccessLog;
 import com.ten.aditum.back.entity.Record;
 import com.ten.aditum.back.service.DeviceAccessLogService;
 import com.ten.aditum.back.service.RecordService;
-import com.ten.aditum.back.statistic.Analyzer;
 import com.ten.aditum.back.util.TimeGenerator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +20,7 @@ import java.util.List;
 @Component
 @EnableScheduling
 @EnableAutoConfiguration
-public class DeviceLogAnalyzer implements Analyzer {
+public class DeviceLogAnalyzer  extends BaseAnalysor {
 
     private final RecordService recordService;
     private final DeviceAccessLogService deviceAccessLogService;
@@ -44,8 +44,6 @@ public class DeviceLogAnalyzer implements Analyzer {
         Record recordEntity = new Record()
                 .setIsDeleted(NO_DELETED);
         List<Record> recordList = recordService.select(recordEntity);
-
-        log.info("查询所有record集合 : {}", recordList);
 
         recordList.forEach(this::analysisRecord);
 

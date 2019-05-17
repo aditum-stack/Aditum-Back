@@ -1,5 +1,6 @@
 package com.ten.aditum.back.statistic.base;
 
+import com.ten.aditum.back.BaseAnalysor;
 import com.ten.aditum.back.entity.Community;
 import com.ten.aditum.back.entity.Device;
 import com.ten.aditum.back.entity.Person;
@@ -7,7 +8,6 @@ import com.ten.aditum.back.service.CommunityService;
 import com.ten.aditum.back.service.DeviceService;
 import com.ten.aditum.back.service.PersonService;
 import com.ten.aditum.back.service.RecordService;
-import com.ten.aditum.back.statistic.Analyzer;
 import com.ten.aditum.back.util.TimeGenerator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +22,7 @@ import java.util.List;
 @Component
 @EnableScheduling
 @EnableAutoConfiguration
-public class CommunityAnalyzer implements Analyzer {
+public class CommunityAnalyzer extends BaseAnalysor {
 
     private final CommunityService communityService;
     private final DeviceService deviceService;

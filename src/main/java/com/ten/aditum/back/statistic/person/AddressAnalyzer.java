@@ -1,9 +1,9 @@
 package com.ten.aditum.back.statistic.person;
 
 
+import com.ten.aditum.back.BaseAnalysor;
 import com.ten.aditum.back.entity.*;
 import com.ten.aditum.back.service.*;
-import com.ten.aditum.back.statistic.Analyzer;
 import com.ten.aditum.back.util.TimeGenerator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +18,7 @@ import java.util.*;
 @Component
 @EnableScheduling
 @EnableAutoConfiguration
-public class AddressAnalyzer implements Analyzer {
+public class AddressAnalyzer extends BaseAnalysor {
 
     private final CommunityService communityService;
     private final DeviceService deviceService;
@@ -48,12 +48,7 @@ public class AddressAnalyzer implements Analyzer {
     public void analysis() {
         log.info("开始分析用户访问地址...");
 
-        // 查询所有person
-        Person personEntity = new Person()
-                .setIsDeleted(NO_DELETED);
-        List<Person> personList = personService.select(personEntity);
-
-        log.info("查询所有person集合 : {}", personList);
+        List<Person> personList = selectAllPerson();
 
         personList.forEach(this::analysisPerson);
 

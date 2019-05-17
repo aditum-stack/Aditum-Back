@@ -1,13 +1,13 @@
 package com.ten.aditum.back.statistic.device;
 
 
+import com.ten.aditum.back.BaseAnalysor;
 import com.ten.aditum.back.entity.Device;
 import com.ten.aditum.back.entity.DeviceAccessHeat;
 import com.ten.aditum.back.entity.Record;
 import com.ten.aditum.back.service.DeviceAccessHeatService;
 import com.ten.aditum.back.service.DeviceService;
 import com.ten.aditum.back.service.RecordService;
-import com.ten.aditum.back.statistic.Analyzer;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -15,14 +15,17 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import java.util.*;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
+
+import static com.ten.aditum.back.util.TimeGenerator.hourBeforeDateTime;
+
 
 @Slf4j
 @Component
 @EnableScheduling
 @EnableAutoConfiguration
-public class DeviceHeatAnalyzer implements Analyzer {
+public class DeviceHeatAnalyzer extends BaseAnalysor {
 
     private final DeviceService deviceService;
     private final RecordService recordService;
@@ -48,8 +51,6 @@ public class DeviceHeatAnalyzer implements Analyzer {
         Device deviceEntity = new Device()
                 .setIsDeleted(NO_DELETED);
         List<Device> deviceList = deviceService.select(deviceEntity);
-
-        log.info("查询所有device集合 : {}", deviceList);
 
         deviceList.forEach(this::analysisDevice);
 

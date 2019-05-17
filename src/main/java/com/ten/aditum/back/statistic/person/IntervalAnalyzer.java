@@ -1,6 +1,7 @@
 package com.ten.aditum.back.statistic.person;
 
 
+import com.ten.aditum.back.BaseAnalysor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -11,7 +12,7 @@ import org.springframework.stereotype.Component;
 @Component
 @EnableScheduling
 @EnableAutoConfiguration
-public class IntervalAnalyzer {
+public class IntervalAnalyzer extends BaseAnalysor {
 
     /**
      * 每天2点分析用户访问间隔
