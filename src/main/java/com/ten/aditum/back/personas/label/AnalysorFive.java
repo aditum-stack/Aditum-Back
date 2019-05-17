@@ -49,12 +49,12 @@ public class AnalysorFive extends BaseAnalysor {
                 .setLabelDesc("最常访问的社区次数大于100次");
     }
 
-    @Scheduled(cron = TEST_TIME)
+//    @Scheduled(cron = TEST_TIME)
 
     /**
      * 每天4点40分更新
      */
-//    @Scheduled(cron = "0 40 4 1/1 * ?")
+    @Scheduled(cron = "0 40 4 1/1 * ?")
     public void analysis() {
         log.info("基于用户访问地理信息的分析...开始");
 
@@ -95,6 +95,12 @@ public class AnalysorFive extends BaseAnalysor {
                     .setPersonnelId(person.getPersonnelId())
                     .setLabelId("13");
             personasController.updatePersonas(personas);
+
+            removeSet.add("宅");
+            Personas remove = new Personas()
+                    .setPersonnelId(person.getPersonnelId())
+                    .setLabelId("14");
+            personasController.removePersonas(remove);
         }
         // 只去过一个地方
         if (totalAddressCount < 2) {
@@ -103,6 +109,12 @@ public class AnalysorFive extends BaseAnalysor {
                     .setPersonnelId(person.getPersonnelId())
                     .setLabelId("14");
             personasController.updatePersonas(personas);
+
+            removeSet.add("出差狂魔");
+            Personas remove = new Personas()
+                    .setPersonnelId(person.getPersonnelId())
+                    .setLabelId("13");
+            personasController.removePersonas(remove);
         }
         // 最常访问的社区次数大于100次
         if (firstAddressCount > 100) {

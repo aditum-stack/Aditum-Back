@@ -1,7 +1,7 @@
 package com.ten.aditum.back.personas.label;
 
-import com.ten.aditum.back.entity.PersonasLabel;
 import com.ten.aditum.back.BaseAnalysor;
+import com.ten.aditum.back.entity.PersonasLabel;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -9,29 +9,32 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 /**
- * 混合分析，标签结合
+ * 基于排名的数据分析
  */
 @Slf4j
 @Component
 @EnableScheduling
 @EnableAutoConfiguration
-public class AnalysorMix extends BaseAnalysor {
+public class AnalysorSeven extends BaseAnalysor {
 
     @Override
     public void showModelLabel() {
         PersonasLabel label1 = new PersonasLabel()
-                .setLabelId("15")
-                .setLabelType(35)
-                .setLabelName("居家达人")
-                .setLabelDesc("每天访问一个地方的频率大于十次");
+                .setLabelId("19")
+                .setLabelName("高级会员")
+                .setLabelDesc("访问量前10%");
+        PersonasLabel label2 = new PersonasLabel()
+                .setLabelId("20")
+                .setLabelName("普通会员")
+                .setLabelDesc("访问量10-50%");
     }
 
 //    @Scheduled(cron = TEST_TIME)
 
     /**
-     * 每天5点10分更新
+     * 每天5点00分更新
      */
-    @Scheduled(cron = "0 10 5 1/1 * ?")
+    @Scheduled(cron = "0 00 5 1/1 * ?")
     public void analysis() {
         log.info("开始更新社区信息...");
 
