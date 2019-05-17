@@ -66,7 +66,7 @@ public class AnalysorFive extends BaseAnalysor {
     }
 
     private void analysisPerson(Person person) {
-        // 获取AccessTime
+        // 获取AccessAddress
         AccessAddress accessAddressEntity = new AccessAddress()
                 .setPersonnelId(person.getPersonnelId())
                 .setIsDeleted(NO_DELETED);

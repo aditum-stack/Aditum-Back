@@ -65,12 +65,12 @@ public class AnalysorSeven extends BaseAnalysor {
         Integer totalCount;
     }
 
-    @Scheduled(cron = TEST_TIME)
+//    @Scheduled(cron = TEST_TIME)
 
     /**
      * 每天5点00分更新
      */
-//    @Scheduled(cron = "0 00 5 1/1 * ?")
+    @Scheduled(cron = "0 00 5 1/1 * ?")
     public void analysis() {
         log.info("基于排名的数据分析...开始");
 
