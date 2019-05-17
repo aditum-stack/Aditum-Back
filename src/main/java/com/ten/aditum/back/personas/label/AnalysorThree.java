@@ -9,6 +9,7 @@ import com.ten.aditum.back.util.TimeGenerator;
 import com.ten.aditum.back.vo.Personas;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -22,6 +23,7 @@ import java.util.List;
 @Slf4j
 @Component
 @EnableScheduling
+@EnableAutoConfiguration
 public class AnalysorThree extends BaseAnalysor {
 
     private final AccessTimeService accessTimeService;

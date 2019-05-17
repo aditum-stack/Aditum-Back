@@ -3,6 +3,7 @@ package com.ten.aditum.back.personas.label;
 import com.ten.aditum.back.entity.PersonasLabel;
 import com.ten.aditum.back.BaseAnalysor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @Component
 @EnableScheduling
+@EnableAutoConfiguration
 public class AnalysorSix extends BaseAnalysor {
 
     @Override
