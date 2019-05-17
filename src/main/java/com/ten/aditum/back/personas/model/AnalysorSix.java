@@ -1,9 +1,9 @@
 package com.ten.aditum.back.personas.model;
 
+import com.ten.aditum.back.BaseAnalysor;
 import com.ten.aditum.back.entity.AccessInterval;
 import com.ten.aditum.back.entity.Person;
 import com.ten.aditum.back.entity.PersonasLabel;
-import com.ten.aditum.back.BaseAnalysor;
 import com.ten.aditum.back.service.AccessIntervalService;
 import com.ten.aditum.back.util.TimeGenerator;
 import com.ten.aditum.back.vo.Personas;

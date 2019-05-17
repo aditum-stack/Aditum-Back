@@ -1,21 +1,15 @@
 package com.ten.aditum.back.personas.model;
 
 import com.ten.aditum.back.BaseAnalysor;
-import com.ten.aditum.back.entity.AccessAddress;
-import com.ten.aditum.back.entity.AccessTime;
 import com.ten.aditum.back.entity.Person;
 import com.ten.aditum.back.entity.PersonasLabel;
-import com.ten.aditum.back.service.AccessAddressService;
-import com.ten.aditum.back.service.AccessTimeService;
 import com.ten.aditum.back.vo.Personas;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -51,7 +45,7 @@ public class AnalysorZero extends BaseAnalysor {
     /**
      * 每天5点10分执行
      */
-    @Scheduled(cron = "0 0 10 5 1/1 * ?")
+    @Scheduled(cron = "0 10 5 1/1 * ?")
     public void analysis() {
         log.info("随机标签生成...开始");
 
