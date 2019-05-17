@@ -18,7 +18,7 @@ import java.util.List;
 @Component
 @EnableScheduling
 @EnableAutoConfiguration
-public class Analysor extends BaseAnalysor {
+public class OneTimeAnalysor extends BaseAnalysor {
 
     /**
      * 一次性任务
