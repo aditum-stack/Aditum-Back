@@ -39,10 +39,12 @@ public class AnalysorThree extends BaseAnalysor {
                 .setLabelDesc("用户每天访问频率大于20次");
     }
 
+//    @Scheduled(cron = TEST_TIME)
+
     /**
-     *
+     * 每天4点20分更新
      */
-    @Scheduled(cron = "0 0 0 1/1 * ?")
+    @Scheduled(cron = "0 20 4 1/1 * ?")
     public void analysis() {
         log.info("开始更新社区信息...");
 

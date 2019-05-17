@@ -31,10 +31,12 @@ public class AnalysorSix extends BaseAnalysor {
                 .setLabelDesc("每天在外面12个小时");
     }
 
+//    @Scheduled(cron = TEST_TIME)
+
     /**
-     *
+     * 每天4点50分更新
      */
-    @Scheduled(cron = "0 0 0 1/1 * ?")
+    @Scheduled(cron = "0 50 4 1/1 * ?")
     public void analysis() {
         log.info("开始更新社区信息...");
 

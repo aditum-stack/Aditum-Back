@@ -31,10 +31,12 @@ public class AnalysorFive extends BaseAnalysor {
                 .setLabelDesc("最常访问的社区次数大于100次");
     }
 
+//    @Scheduled(cron = TEST_TIME)
+
     /**
-     *
+     * 每天4点40分更新
      */
-    @Scheduled(cron = "0 0 0 1/1 * ?")
+    @Scheduled(cron = "0 40 4 1/1 * ?")
     public void analysis() {
         log.info("开始更新社区信息...");
 

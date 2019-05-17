@@ -53,11 +53,12 @@ public class AnalysorOne extends BaseAnalysor {
                 .setLabelDesc("朝八晚十");
     }
 
+//    @Scheduled(cron = TEST_TIME)
+
     /**
-     *
+     * 每天4点00分更新
      */
-    @Scheduled(cron = TEST_TIME)
-//    @Scheduled(cron = "0 0 0 1/1 * ?")
+    @Scheduled(cron = "0 0 4 1/1 * ?")
     public void analysis() {
         log.info("基于早晚访问时间的二维分析...开始");
 
@@ -137,7 +138,6 @@ public class AnalysorOne extends BaseAnalysor {
                     index = i;
                 }
             }
-
         }
 
         return index;

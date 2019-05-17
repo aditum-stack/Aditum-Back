@@ -27,10 +27,12 @@ public class AnalysorFour extends BaseAnalysor {
                 .setLabelDesc("用户创建时间大于一个月");
     }
 
+//    @Scheduled(cron = TEST_TIME)
+
     /**
-     *
+     * 每天4点30分更新
      */
-    @Scheduled(cron = "0 0 0 1/1 * ?")
+    @Scheduled(cron = "0 30 4 1/1 * ?")
     public void analysis() {
         log.info("开始更新社区信息...");
 

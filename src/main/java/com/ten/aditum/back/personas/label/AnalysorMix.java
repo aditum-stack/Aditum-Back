@@ -24,10 +24,12 @@ public class AnalysorMix extends BaseAnalysor {
                 .setLabelDesc("每天访问一个地方的频率大于十次");
     }
 
+//    @Scheduled(cron = TEST_TIME)
+
     /**
-     *
+     * 每天5点00分更新
      */
-    @Scheduled(cron = "0 0 0 1/1 * ?")
+    @Scheduled(cron = "0 00 5 1/1 * ?")
     public void analysis() {
         log.info("开始更新社区信息...");
 
