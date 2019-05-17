@@ -203,4 +203,59 @@ public class PersonasController {
         }
     }
 
+    /**
+     * 根据personId删除该用户的用户画像标签
+     */
+    @RequestMapping(method = RequestMethod.DELETE)
+    public ResultModel removePersonas(Personas personas) {
+        log.info("Personas [DELETE] : {}", personas);
+
+        if (personas.getPersonnelId() == null || personas.getLabelId() == null) {
+            return new ResultModel(AditumCode.ERROR);
+        }
+
+        // select portrait
+        PersonasPortrait personasPortrait = new PersonasPortrait()
+                .setPersonnelId(personas.getPersonnelId())
+                .setIsDeleted(NO_DELETED);
+
+        List<PersonasPortrait> personasPortraitList = personasPortraitService.select(personasPortrait);
+        if (personasPortraitList.size() < 1) {
+            log.warn("Personas [DELETE] 当前用户画像不存在 : {}", personas);
+            return new ResultModel(AditumCode.ERROR);
+        }
+
+        PersonasPortrait select = personasPortraitList.get(0);
+        int portraitId = select.getId();
+        String personasExt = select.getPersonasExt();
+        String[] personasList = personasExt.split(",");
+        List<String> labelList = new ArrayList<>(Arrays.asList(personasList));
+
+        // select label
+        PersonasLabel personasLabel = new PersonasLabel()
+                .setLabelId(personas.getLabelId())
+                .setIsDeleted(NO_DELETED);
+
+        List<PersonasLabel> personasLabelList = personasLabelService.select(personasLabel);
+        if (personasLabelList.size() < 1) {
+            log.warn("Personas [DELETE] Label FAILURE : {}", personas);
+            return new ResultModel(AditumCode.ERROR);
+        }
+
+        PersonasLabel selectLabel = personasLabelList.get(0);
+        String labelName = selectLabel.getLabelName();
+
+        // 若包含此标签，删除
+        labelList.remove(labelName);
+
+        PersonasPortrait update = new PersonasPortrait()
+                .setId(portraitId)
+                .setPersonasExt(String.join(",", labelList))
+                .setUpdateTime(TimeGenerator.currentTime());
+        personasPortraitService.update(update);
+
+        log.info("Personas [DELETE] remove SUCCESS : {} -> {}", personas, update);
+        return new ResultModel(AditumCode.OK, update);
+    }
+
 }
