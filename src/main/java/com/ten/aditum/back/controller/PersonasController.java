@@ -146,8 +146,8 @@ public class PersonasController {
         // 当前用户画像不存在
         if (personasPortraitList.size() < 1) {
             existed = false;
-            labelList.add("小白用户");
-            labelList.add("初级会员");
+            labelList.add("新用户");
+            labelList.add("青铜会员");
         }
         // 当前用户画像已存在
         else {
