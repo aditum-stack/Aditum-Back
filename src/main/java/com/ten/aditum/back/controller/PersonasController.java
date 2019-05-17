@@ -43,7 +43,7 @@ public class PersonasController {
      */
     @RequestMapping(method = RequestMethod.GET)
     public ResultModel getPersonas(Personas personas) {
-        log.info("Personas [GET] : {}", personas);
+        log.debug("Personas [GET] : {}", personas);
 
         if (personas.getPersonnelId() == null) {
             return new ResultModel(AditumCode.ERROR);
@@ -71,7 +71,7 @@ public class PersonasController {
                 .setPersonnelId(select.getPersonnelId())
                 .setPersonasList(Arrays.asList(personasList));
 
-        log.info("Personas [GET] SUCCESS : {} -> {}", personas, personasEntity);
+        log.debug("Personas [GET] SUCCESS : {} -> {}", personas, personasEntity);
         return new ResultModel(AditumCode.OK, personasEntity);
     }
 
@@ -80,7 +80,7 @@ public class PersonasController {
      */
     @RequestMapping(value = "/weight", method = RequestMethod.GET)
     public ResultModel getPersonasWeight(Personas personas) {
-        log.info("PersonasWeight [GET] : {}", personas);
+        log.debug("PersonasWeight [GET] : {}", personas);
 
         if (personas.getPersonnelId() == null) {
             return new ResultModel(AditumCode.ERROR);
@@ -116,7 +116,7 @@ public class PersonasController {
                 .setPersonnelId(select.getPersonnelId())
                 .setPersonasWeightList(weightsLabelList);
 
-        log.info("PersonasWeight [GET] SUCCESS : {} -> {}", personas, personasEntity);
+        log.debug("PersonasWeight [GET] SUCCESS : {} -> {}", personas, personasEntity);
         return new ResultModel(AditumCode.OK, personasEntity);
     }
 
@@ -125,7 +125,7 @@ public class PersonasController {
      */
     @RequestMapping(method = RequestMethod.POST)
     public ResultModel updatePersonas(Personas personas) {
-        log.info("Personas [POST] : {}", personas);
+        log.debug("Personas [POST] : {}", personas);
 
         if (personas.getPersonnelId() == null || personas.getLabelId() == null) {
             return new ResultModel(AditumCode.ERROR);
@@ -186,7 +186,7 @@ public class PersonasController {
                     .setUpdateTime(TimeGenerator.currentTime());
             personasPortraitService.update(update);
 
-            log.info("Personas [POST] update SUCCESS : {} -> {}", personas, update);
+            log.debug("Personas [POST] update SUCCESS : {} -> {}", personas, update);
             return new ResultModel(AditumCode.OK, update);
         }
         // 未存在，创建
@@ -198,7 +198,7 @@ public class PersonasController {
                     .setIsDeleted(NO_DELETED);
             personasPortraitService.insert(create);
 
-            log.info("Personas [POST] create SUCCESS : {} -> {}", personas, create);
+            log.debug("Personas [POST] create SUCCESS : {} -> {}", personas, create);
             return new ResultModel(AditumCode.OK, create);
         }
     }
@@ -208,7 +208,7 @@ public class PersonasController {
      */
     @RequestMapping(method = RequestMethod.DELETE)
     public ResultModel removePersonas(Personas personas) {
-        log.info("Personas [DELETE] : {}", personas);
+        log.debug("Personas [DELETE] : {}", personas);
 
         if (personas.getPersonnelId() == null || personas.getLabelId() == null) {
             return new ResultModel(AditumCode.ERROR);
@@ -254,7 +254,7 @@ public class PersonasController {
                 .setUpdateTime(TimeGenerator.currentTime());
         personasPortraitService.update(update);
 
-        log.info("Personas [DELETE] remove SUCCESS : {} -> {}", personas, update);
+        log.debug("Personas [DELETE] remove SUCCESS : {} -> {}", personas, update);
         return new ResultModel(AditumCode.OK, update);
     }
 

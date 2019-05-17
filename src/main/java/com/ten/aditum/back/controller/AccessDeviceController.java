@@ -45,7 +45,7 @@ public class AccessDeviceController {
      */
     @RequestMapping(value = "/log", method = RequestMethod.GET)
     public ResultModel getLog(Device device) {
-        log.info("AccessDeviceLog [GET] : {}", device);
+        log.debug("AccessDeviceLog [GET] : {}", device);
 
         if (device.getImei() == null) {
             return new ResultModel(AditumCode.ERROR);
@@ -61,7 +61,7 @@ public class AccessDeviceController {
             return new ResultModel(AditumCode.ERROR);
         }
 
-        log.info("AccessDeviceLog [GET] SUCCESS : {} -> {}", device, deviceAccessLogs);
+        log.debug("AccessDeviceLog [GET] SUCCESS : {} -> {}", device, deviceAccessLogs);
         return new ResultModel(AditumCode.OK, deviceAccessLogs);
     }
 
@@ -70,7 +70,7 @@ public class AccessDeviceController {
      */
     @RequestMapping(value = "/heat", method = RequestMethod.GET)
     public ResultModel getHeat(Device device) {
-        log.info("AccessDeviceHeat [GET] : {}", device);
+        log.debug("AccessDeviceHeat [GET] : {}", device);
 
         if (device.getImei() == null) {
             return new ResultModel(AditumCode.ERROR);
@@ -86,7 +86,7 @@ public class AccessDeviceController {
             return new ResultModel(AditumCode.ERROR);
         }
 
-        log.info("AccessDeviceHeat [GET] SUCCESS : {} -> {}", device, deviceAccessHeats);
+        log.debug("AccessDeviceHeat [GET] SUCCESS : {} -> {}", device, deviceAccessHeats);
 
         // 获取最近二十四条
         List<DeviceAccessHeat> deviceAccessHeatList = deviceAccessHeats.stream()
@@ -105,7 +105,7 @@ public class AccessDeviceController {
      */
     @RequestMapping(value = "/count", method = RequestMethod.GET)
     public ResultModel getCount(Device device) {
-        log.info("AccessDeviceCount [GET] : {}", device);
+        log.debug("AccessDeviceCount [GET] : {}", device);
 
         if (device.getImei() == null) {
             return new ResultModel(AditumCode.ERROR);
@@ -121,7 +121,7 @@ public class AccessDeviceController {
             return new ResultModel(AditumCode.ERROR);
         }
 
-        log.info("AccessDeviceCount [GET] SUCCESS : {} -> {}", device, deviceAccessCounts);
+        log.debug("AccessDeviceCount [GET] SUCCESS : {} -> {}", device, deviceAccessCounts);
 
         // 获取最近三十天
         List<DeviceAccessCount> deviceAccessCountList = deviceAccessCounts.stream()
@@ -141,7 +141,7 @@ public class AccessDeviceController {
      */
     @RequestMapping(value = "/total", method = RequestMethod.GET)
     public ResultModel getTotal(Device device) {
-        log.info("AccessDeviceTotal [GET] : {}", device);
+        log.debug("AccessDeviceTotal [GET] : {}", device);
 
         if (device.getImei() == null) {
             return new ResultModel(AditumCode.ERROR);
@@ -157,7 +157,7 @@ public class AccessDeviceController {
             return new ResultModel(AditumCode.ERROR);
         }
 
-        log.info("AccessDeviceTotal [GET] SUCCESS : {} -> {}", device, deviceAccessTotals.get(0));
+        log.debug("AccessDeviceTotal [GET] SUCCESS : {} -> {}", device, deviceAccessTotals.get(0));
         return new ResultModel(AditumCode.OK, deviceAccessTotals.get(0));
     }
 

@@ -40,7 +40,7 @@ public class AccessPersonController {
      */
     @RequestMapping(value = "/time", method = RequestMethod.GET)
     public ResultModel getTime(Person person) {
-        log.info("AccessPersonTime [GET] : {}", person);
+        log.debug("AccessPersonTime [GET] : {}", person);
 
         if (person.getPersonnelId() == null) {
             return new ResultModel(AditumCode.ERROR);
@@ -56,7 +56,7 @@ public class AccessPersonController {
             return new ResultModel(AditumCode.ERROR);
         }
 
-        log.info("AccessPersonTime [GET] SUCCESS : {} -> {}", person, accessTimeList.get(0));
+        log.debug("AccessPersonTime [GET] SUCCESS : {} -> {}", person, accessTimeList.get(0));
         return new ResultModel(AditumCode.OK, accessTimeList.get(0));
     }
 
@@ -65,7 +65,7 @@ public class AccessPersonController {
      */
     @RequestMapping(value = "/address", method = RequestMethod.GET)
     public ResultModel getAddress(Person person) {
-        log.info("AccessPersonAddress [GET] : {}", person);
+        log.debug("AccessPersonAddress [GET] : {}", person);
 
         if (person.getPersonnelId() == null) {
             return new ResultModel(AditumCode.ERROR);
@@ -81,7 +81,7 @@ public class AccessPersonController {
             return new ResultModel(AditumCode.ERROR);
         }
 
-        log.info("AccessPersonAddress [GET] SUCCESS : {} -> {}", person, accessAddressList.get(0));
+        log.debug("AccessPersonAddress [GET] SUCCESS : {} -> {}", person, accessAddressList.get(0));
         return new ResultModel(AditumCode.OK, accessAddressList.get(0));
     }
 

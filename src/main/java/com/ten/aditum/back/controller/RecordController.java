@@ -29,20 +29,20 @@ public class RecordController extends BaseController<Record> {
     @Override
     @RequestMapping(method = RequestMethod.GET)
     public ResultModel get(Record record) {
-        log.info("Record [GET] : {}", record);
+        log.debug("Record [GET] : {}", record);
         List<Record> recordList = service.select(record);
         if (recordList == null) {
             log.warn("Record [GET] FAILURE : {}", record);
             return new ResultModel(AditumCode.ERROR);
         }
-        log.info("Record [GET] SUCCESS : {} -> {}", record, recordList);
+        log.debug("Record [GET] SUCCESS : {} -> {}", record, recordList);
         return new ResultModel(AditumCode.OK, recordList);
     }
 
     @Override
     @RequestMapping(method = RequestMethod.POST)
     public ResultModel post(@RequestBody Record record) {
-        log.info("Record [POST] : {}", record);
+        log.debug("Record [POST] : {}", record);
         Record entity = new Record()
                 .setImei(record.getImei())
                 .setPersonnelId(record.getPersonnelId())
@@ -56,9 +56,9 @@ public class RecordController extends BaseController<Record> {
             return new ResultModel(AditumCode.ERROR);
         }
 
-        log.info("New record : " + entity);
+        log.debug("New record : " + entity);
 
-        log.info("Record [POST] SUCCESS : {}", entity);
+        log.debug("Record [POST] SUCCESS : {}", entity);
         return new ResultModel(AditumCode.OK);
     }
 
