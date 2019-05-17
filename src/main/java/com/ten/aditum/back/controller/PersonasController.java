@@ -137,20 +137,26 @@ public class PersonasController {
                 .setIsDeleted(NO_DELETED);
 
         List<PersonasPortrait> personasPortraitList = personasPortraitService.select(personasPortrait);
+
+        // personas label array
+        List<String> labelList = new ArrayList<>();
+        boolean existed;
+        int portraitId = 0;
+
+        // 当前用户画像不存在
         if (personasPortraitList.size() < 1) {
-            log.warn("Personas [POST] Portrait FAILURE : {}", personas);
-            return new ResultModel(AditumCode.ERROR);
+            existed = false;
+            labelList.add("小白用户");
+            labelList.add("初级会员");
         }
-
-        PersonasPortrait select = personasPortraitList.get(0);
-        int portraitId = select.getId();
-
-        // get ext array
-        String personasExt = select.getPersonasExt();
-        String[] personasList = personasExt.split(",");
-        List<String> labelList = new ArrayList<>(Arrays.asList(personasList));
-        if (labelList.size() == 0) {
-            labelList.add("小白");
+        // 当前用户画像已存在
+        else {
+            existed = true;
+            PersonasPortrait select = personasPortraitList.get(0);
+            portraitId = select.getId();
+            String personasExt = select.getPersonasExt();
+            String[] personasList = personasExt.split(",");
+            labelList.addAll(Arrays.asList(personasList));
         }
 
         // select label
@@ -172,15 +178,29 @@ public class PersonasController {
             labelList.add(labelName);
         }
 
-        PersonasPortrait update = new PersonasPortrait()
-                .setId(portraitId)
-                .setPersonasExt(String.join(",", labelList))
-                .setUpdateTime(TimeGenerator.currentTime());
+        // 已存在，更新
+        if (existed) {
+            PersonasPortrait update = new PersonasPortrait()
+                    .setId(portraitId)
+                    .setPersonasExt(String.join(",", labelList))
+                    .setUpdateTime(TimeGenerator.currentTime());
+            personasPortraitService.update(update);
 
-        personasPortraitService.update(update);
+            log.info("Personas [POST] update SUCCESS : {} -> {}", personas, update);
+            return new ResultModel(AditumCode.OK, update);
+        }
+        // 未存在，创建
+        else {
+            PersonasPortrait create = new PersonasPortrait()
+                    .setPersonnelId(personas.getPersonnelId())
+                    .setPersonasExt(String.join(",", labelList))
+                    .setCreateTime(TimeGenerator.currentTime())
+                    .setIsDeleted(NO_DELETED);
+            personasPortraitService.insert(create);
 
-        log.info("Personas [POST] SUCCESS : {} -> {}", personas, update);
-        return new ResultModel(AditumCode.OK, update);
+            log.info("Personas [POST] create SUCCESS : {} -> {}", personas, create);
+            return new ResultModel(AditumCode.OK, create);
+        }
     }
 
 }
