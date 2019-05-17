@@ -26,6 +26,10 @@ public class PersonasLabel {
      */
     private Integer labelType;
     /**
+     * 标签描述
+     */
+    private String labelDesc;
+    /**
      * 信息创建时间
      */
     private String createTime;

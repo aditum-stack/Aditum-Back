@@ -8,6 +8,7 @@
         <result column="label_id" property="labelId"/>
         <result column="label_name" property="labelName"/>
         <result column="label_type" property="labelType"/>
+        <result column="label_desc" property="labelDesc"/>
         <result column="create_time" property="createTime"/>
         <result column="update_time" property="updateTime"/>
         <result column="is_deleted" property="isDeleted"/>
@@ -19,6 +20,7 @@
         label_id,
         label_name,
         label_type,
+        label_desc,
         create_time,
         update_time,
         is_deleted
@@ -28,23 +30,25 @@
     <insert id="insert">
         INSERT INTO personas_label
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="pojo.id != null">id,</if>
-            <if test="pojo.labelId != null">label_id,</if>
-            <if test="pojo.labelName != null">label_name,</if>
-            <if test="pojo.labelType != null">label_type,</if>
-            <if test="pojo.createTime != null">create_time,</if>
-            <if test="pojo.updateTime != null">update_time,</if>
-            <if test="pojo.isDeleted != null">is_deleted,</if>
+            <if test="pojo.id != null"> id, </if>
+            <if test="pojo.labelId != null"> label_id, </if>
+            <if test="pojo.labelName != null"> label_name, </if>
+            <if test="pojo.labelType != null"> label_type, </if>
+            <if test="pojo.labelDesc != null"> label_desc, </if>
+            <if test="pojo.createTime != null"> create_time, </if>
+            <if test="pojo.updateTime != null"> update_time, </if>
+            <if test="pojo.isDeleted != null"> is_deleted, </if>
         </trim>
         VALUES
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="pojo.id != null">#{pojo.id},</if>
-            <if test="pojo.labelId != null">#{pojo.labelId},</if>
-            <if test="pojo.labelName != null">#{pojo.labelName},</if>
-            <if test="pojo.labelType != null">#{pojo.labelType},</if>
-            <if test="pojo.createTime != null">#{pojo.createTime},</if>
-            <if test="pojo.updateTime != null">#{pojo.updateTime},</if>
-            <if test="pojo.isDeleted != null">#{pojo.isDeleted},</if>
+            <if test="pojo.id != null"> #{pojo.id}, </if>
+            <if test="pojo.labelId != null"> #{pojo.labelId}, </if>
+            <if test="pojo.labelName != null"> #{pojo.labelName}, </if>
+            <if test="pojo.labelType != null"> #{pojo.labelType}, </if>
+            <if test="pojo.labelDesc != null"> #{pojo.labelDesc}, </if>
+            <if test="pojo.createTime != null"> #{pojo.createTime}, </if>
+            <if test="pojo.updateTime != null"> #{pojo.updateTime}, </if>
+            <if test="pojo.isDeleted != null"> #{pojo.isDeleted}, </if>
         </trim>
     </insert>
 
@@ -59,6 +63,7 @@
             #{pojo.labelId},
             #{pojo.labelName},
             #{pojo.labelType},
+            #{pojo.labelDesc},
             #{pojo.createTime},
             #{pojo.updateTime},
             #{pojo.isDeleted}
@@ -70,31 +75,32 @@
     <update id="update">
         UPDATE personas_label
         <set>
-            <if test="pojo.id != null">id = #{pojo.id},</if>
-            <if test="pojo.labelId != null">label_id = #{pojo.labelId},</if>
-            <if test="pojo.labelName != null">label_name = #{pojo.labelName},</if>
-            <if test="pojo.labelType != null">label_type = #{pojo.labelType},</if>
-            <if test="pojo.createTime != null">create_time = #{pojo.createTime},</if>
-            <if test="pojo.isDeleted != null">is_deleted = #{pojo.isDeleted},</if>
+            <if test="pojo.id != null"> id = #{pojo.id}, </if>
+            <if test="pojo.labelId != null"> label_id = #{pojo.labelId}, </if>
+            <if test="pojo.labelName != null"> label_name = #{pojo.labelName}, </if>
+            <if test="pojo.labelType != null"> label_type = #{pojo.labelType}, </if>
+            <if test="pojo.labelDesc != null"> label_desc = #{pojo.labelDesc}, </if>
+            <if test="pojo.createTime != null"> create_time = #{pojo.createTime}, </if>
+            <if test="pojo.isDeleted != null"> is_deleted = #{pojo.isDeleted}, </if>
         </set>
-        WHERE id = #{pojo.id}
+         WHERE id = #{pojo.id}
     </update>
 
     <!--auto generated Code-->
     <select id="select" resultMap="AllColumnMap">
-        SELECT
-        <include refid="all_column"/>
+        SELECT <include refid="all_column"/>
         FROM personas_label
         <where>
-            <if test="pojo.id != null">AND id = #{pojo.id}</if>
-            <if test="pojo.labelId != null">AND label_id = #{pojo.labelId}</if>
-            <if test="pojo.labelName != null">AND label_name = #{pojo.labelName}</if>
-            <if test="pojo.labelType != null">AND label_type = #{pojo.labelType}</if>
-            <if test="pojo.createTime != null">AND create_time = #{pojo.createTime}</if>
-            <if test="pojo.updateTime != null">AND update_time = #{pojo.updateTime}</if>
-            <if test="pojo.isDeleted != null">AND is_deleted = #{pojo.isDeleted}</if>
+            <if test="pojo.id != null"> AND id = #{pojo.id} </if>
+            <if test="pojo.labelId != null"> AND label_id = #{pojo.labelId} </if>
+            <if test="pojo.labelName != null"> AND label_name = #{pojo.labelName} </if>
+            <if test="pojo.labelType != null"> AND label_type = #{pojo.labelType} </if>
+            <if test="pojo.labelDesc != null"> AND label_desc = #{pojo.labelDesc} </if>
+            <if test="pojo.createTime != null"> AND create_time = #{pojo.createTime} </if>
+            <if test="pojo.updateTime != null"> AND update_time = #{pojo.updateTime} </if>
+            <if test="pojo.isDeleted != null"> AND is_deleted = #{pojo.isDeleted} </if>
         </where>
-        LIMIT 1000
+        LIMIT 1000 
     </select>
 
     <!--auto generated Code-->
