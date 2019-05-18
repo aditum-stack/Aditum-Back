@@ -50,12 +50,12 @@ public class TripsAnalysor extends BaseAnalysor {
         Integer totalCount;
     }
 
-    @Scheduled(cron = TEST_TIME)
+//    @Scheduled(cron = TEST_TIME)
 
     /**
-     * 每天0点10分执行
+     * 每天0点30分执行
      */
-//    @Scheduled(cron = "0 10 0 1/1 * ?")
+    @Scheduled(cron = "0 30 0 1/1 * ?")
     public void analysis() {
         log.info("出行量排名动态标签...开始");
 
