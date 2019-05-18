@@ -121,7 +121,7 @@ public class AnalysorSeven extends BaseAnalysor {
                 .setIsDeleted(NO_DELETED);
         List<AccessTime> select = accessTimeService.select(accessTimeEntity);
         if (select.size() < 1) {
-            log.info("此用户还没有AccessTime记录, {}", person);
+            log.info("此用户还没有AccessTime记录, {}", person.getPersonnelName());
             return null;
         }
         // 获取AccessTime

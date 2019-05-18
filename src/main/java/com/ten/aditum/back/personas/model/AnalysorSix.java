@@ -74,7 +74,7 @@ public class AnalysorSix extends BaseAnalysor {
                 .setIsDeleted(NO_DELETED);
         List<AccessInterval> select = accessIntervalService.select(accessIntervalEntity);
         if (select.size() < 1) {
-            log.info("此用户还没有AccessInterval记录, {}", person);
+            log.info("此用户还没有AccessInterval记录, {}", person.getPersonnelName());
             return;
         }
 

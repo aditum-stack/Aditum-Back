@@ -71,7 +71,7 @@ public class AnalysorFive extends BaseAnalysor {
                 .setIsDeleted(NO_DELETED);
         List<AccessAddress> select = accessAddressService.select(accessAddressEntity);
         if (select.size() < 1) {
-            log.info("此用户还没有AccessAddress记录, {}", person);
+            log.info("此用户还没有AccessAddress记录, {}", person.getPersonnelName());
             return;
         }
 
