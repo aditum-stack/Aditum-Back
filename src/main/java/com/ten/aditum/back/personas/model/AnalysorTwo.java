@@ -95,7 +95,7 @@ public class AnalysorTwo extends BaseAnalysor {
             Personas personas = new Personas()
                     .setPersonnelId(person.getPersonnelId())
                     .setLabelId("4");
-            personasController.updatePersonas(personas);
+            personasService.updatePersonas(personas);
         }
         // 早上访问时间早于八点
         if (es < label2) {
@@ -103,7 +103,7 @@ public class AnalysorTwo extends BaseAnalysor {
             Personas personas = new Personas()
                     .setPersonnelId(person.getPersonnelId())
                     .setLabelId("5");
-            personasController.updatePersonas(personas);
+            personasService.updatePersonas(personas);
         }
         // 晚上时间晚于11点
         if (ls > label3) {
@@ -111,7 +111,7 @@ public class AnalysorTwo extends BaseAnalysor {
             Personas personas = new Personas()
                     .setPersonnelId(person.getPersonnelId())
                     .setLabelId("17");
-            personasController.updatePersonas(personas);
+            personasService.updatePersonas(personas);
         }
 
         log.info("用户 {} 计算完成，{}", person.getPersonnelName(), String.join(",", labelSet));

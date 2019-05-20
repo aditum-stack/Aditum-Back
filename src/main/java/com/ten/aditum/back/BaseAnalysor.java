@@ -1,9 +1,9 @@
 package com.ten.aditum.back;
 
-import com.ten.aditum.back.controller.PersonasController;
 import com.ten.aditum.back.entity.Person;
 import com.ten.aditum.back.service.PersonService;
 import com.ten.aditum.back.service.PersonasPortraitService;
+import com.ten.aditum.back.service.PersonasService;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.annotation.Resource;
@@ -30,7 +30,7 @@ public abstract class BaseAnalysor {
     protected static final int NO_DELETED = 0;
 
     @Resource
-    protected PersonasController personasController;
+    protected PersonasService personasService;
     @Resource
     protected PersonService personService;
     @Resource

@@ -1,9 +1,7 @@
 package com.ten.aditum.back.personas.other;
 
-import com.github.pagehelper.util.StringUtil;
 import com.ten.aditum.back.BaseAnalysor;
 import com.ten.aditum.back.entity.AccessTime;
-import com.ten.aditum.back.entity.Community;
 import com.ten.aditum.back.entity.Person;
 import com.ten.aditum.back.service.AccessTimeService;
 import com.ten.aditum.back.service.CommunityService;
@@ -120,7 +118,7 @@ public class TripsAnalysor extends BaseAnalysor {
         Personas label = new Personas()
                 .setPersonnelId(person.getPersonnelId())
                 .setLabelName(labelName);
-        personasController.updatePersonasByLabelName(label);
+        personasService.updatePersonasByLabelName(label);
         log.info("用户 {} 访问排名计算完成，{}", person.getPersonnelName(), labelName);
     }
 

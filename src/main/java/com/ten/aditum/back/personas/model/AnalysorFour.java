@@ -86,13 +86,13 @@ public class AnalysorFour extends BaseAnalysor {
             Personas personas = new Personas()
                     .setPersonnelId(person.getPersonnelId())
                     .setLabelId("10");
-            personasController.updatePersonas(personas);
+            personasService.updatePersonas(personas);
 
             removeSet.add("老用户");
             Personas remove = new Personas()
                     .setPersonnelId(person.getPersonnelId())
                     .setLabelId("11");
-            personasController.removePersonas(remove);
+            personasService.removePersonas(remove);
         }
         // 用户创建时间大于一个月
         if (totalDay > 30) {
@@ -100,13 +100,13 @@ public class AnalysorFour extends BaseAnalysor {
             Personas personas = new Personas()
                     .setPersonnelId(person.getPersonnelId())
                     .setLabelId("11");
-            personasController.updatePersonas(personas);
+            personasService.updatePersonas(personas);
 
             removeSet.add("新用户");
             Personas remove = new Personas()
                     .setPersonnelId(person.getPersonnelId())
                     .setLabelId("10");
-            personasController.removePersonas(remove);
+            personasService.removePersonas(remove);
         }
 
         log.info("用户 {} 计算完成。添加 : {} , 删除 : {}",

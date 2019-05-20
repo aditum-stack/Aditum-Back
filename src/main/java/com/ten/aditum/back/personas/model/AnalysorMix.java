@@ -102,7 +102,7 @@ public class AnalysorMix extends BaseAnalysor {
             Personas personas = new Personas()
                     .setPersonnelId(person.getPersonnelId())
                     .setLabelId("15");
-            personasController.updatePersonas(personas);
+            personasService.updatePersonas(personas);
         }
 
         log.info("用户 {} 计算完成，{}", person.getPersonnelName(), String.join(",", labelSet));

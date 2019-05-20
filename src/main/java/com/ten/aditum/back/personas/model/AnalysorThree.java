@@ -102,13 +102,13 @@ public class AnalysorThree extends BaseAnalysor {
             Personas personas = new Personas()
                     .setPersonnelId(person.getPersonnelId())
                     .setLabelId("8");
-            personasController.updatePersonas(personas);
+            personasService.updatePersonas(personas);
 
             removeSet.add("门禁无感用户");
             Personas remove = new Personas()
                     .setPersonnelId(person.getPersonnelId())
                     .setLabelId("9");
-            personasController.removePersonas(remove);
+            personasService.removePersonas(remove);
         }
         // 门禁总访问量小于10
         if (totalCount < 10) {
@@ -116,13 +116,13 @@ public class AnalysorThree extends BaseAnalysor {
             Personas personas = new Personas()
                     .setPersonnelId(person.getPersonnelId())
                     .setLabelId("9");
-            personasController.updatePersonas(personas);
+            personasService.updatePersonas(personas);
 
             removeSet.add("门禁忠实用户");
             Personas remove = new Personas()
                     .setPersonnelId(person.getPersonnelId())
                     .setLabelId("8");
-            personasController.removePersonas(remove);
+            personasService.removePersonas(remove);
         }
 
         // 访问频率
@@ -133,13 +133,13 @@ public class AnalysorThree extends BaseAnalysor {
             Personas personas = new Personas()
                     .setPersonnelId(person.getPersonnelId())
                     .setLabelId("6");
-            personasController.updatePersonas(personas);
+            personasService.updatePersonas(personas);
 
             removeSet.add("不怎么使用");
             Personas remove = new Personas()
                     .setPersonnelId(person.getPersonnelId())
                     .setLabelId("9");
-            personasController.removePersonas(remove);
+            personasService.removePersonas(remove);
         }
         // 每天访问门禁小于等于两次
         if (everyDayAccess <= 2) {
@@ -147,13 +147,13 @@ public class AnalysorThree extends BaseAnalysor {
             Personas personas = new Personas()
                     .setPersonnelId(person.getPersonnelId())
                     .setLabelId("9");
-            personasController.updatePersonas(personas);
+            personasService.updatePersonas(personas);
 
             removeSet.add("门禁达人");
             Personas remove2 = new Personas()
                     .setPersonnelId(person.getPersonnelId())
                     .setLabelId("6");
-            personasController.removePersonas(remove2);
+            personasService.removePersonas(remove2);
         }
         // 用户每天访问频率大于20次
         if (everyDayAccess >= 20) {
@@ -161,7 +161,7 @@ public class AnalysorThree extends BaseAnalysor {
             Personas personas = new Personas()
                     .setPersonnelId(person.getPersonnelId())
                     .setLabelId("12");
-            personasController.updatePersonas(personas);
+            personasService.updatePersonas(personas);
         }
 
         log.info("用户 {} 计算完成。添加 : {} , 删除 : {}",

@@ -55,7 +55,7 @@ public class PhoneAnalysor extends BaseAnalysor {
                 .setPersonnelId(person.getPersonnelId())
                 .setLabelName(labelName);
 
-        personasController.updatePersonasByLabelName(label);
+        personasService.updatePersonasByLabelName(label);
 
         log.info("用户 {} 运营商标签计算完成，{}", person.getPersonnelName(), labelName);
     }

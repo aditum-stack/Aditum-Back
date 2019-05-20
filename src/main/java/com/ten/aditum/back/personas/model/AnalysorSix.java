@@ -103,7 +103,7 @@ public class AnalysorSix extends BaseAnalysor {
             Personas personas = new Personas()
                     .setPersonnelId(person.getPersonnelId())
                     .setLabelId("16");
-            personasController.updatePersonas(personas);
+            personasService.updatePersonas(personas);
         }
         // 每天从晚上到早上在家10个小时
         if (in > HOUR * 10) {
@@ -111,7 +111,7 @@ public class AnalysorSix extends BaseAnalysor {
             Personas personas = new Personas()
                     .setPersonnelId(person.getPersonnelId())
                     .setLabelId("21");
-            personasController.updatePersonas(personas);
+            personasService.updatePersonas(personas);
         }
         // 每天在外面12个小时
         if (out > HOUR * 12) {
@@ -119,7 +119,7 @@ public class AnalysorSix extends BaseAnalysor {
             Personas personas = new Personas()
                     .setPersonnelId(person.getPersonnelId())
                     .setLabelId("22");
-            personasController.updatePersonas(personas);
+            personasService.updatePersonas(personas);
         }
 
         log.info("用户 {} 计算完成。添加 : {} , 删除 : {}",

@@ -74,7 +74,7 @@ public class AnalysorZero extends BaseAnalysor {
         Personas personas = new Personas()
                 .setPersonnelId(person.getPersonnelId())
                 .setLabelId(label);
-        personasController.updatePersonas(personas);
+        personasService.updatePersonas(personas);
         log.info("用户 {} 随机标签计算完成，{}", person.getPersonnelName(), label);
     }
 

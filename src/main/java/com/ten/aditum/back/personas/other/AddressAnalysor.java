@@ -67,7 +67,7 @@ public class AddressAnalysor extends BaseAnalysor {
                 .setPersonnelId(person.getPersonnelId())
                 .setLabelName(labelName);
 
-        personasController.updatePersonasByLabelName(label);
+        personasService.updatePersonasByLabelName(label);
 
         log.info("用户 {} 居住地标签计算完成，{}", person.getPersonnelName(), labelName);
     }

@@ -93,13 +93,13 @@ public class AnalysorFive extends BaseAnalysor {
             Personas personas = new Personas()
                     .setPersonnelId(person.getPersonnelId())
                     .setLabelId("13");
-            personasController.updatePersonas(personas);
+            personasService.updatePersonas(personas);
 
             removeSet.add("宅");
             Personas remove = new Personas()
                     .setPersonnelId(person.getPersonnelId())
                     .setLabelId("14");
-            personasController.removePersonas(remove);
+            personasService.removePersonas(remove);
         }
         // 只去过一个地方
         if (totalAddressCount < 2) {
@@ -107,13 +107,13 @@ public class AnalysorFive extends BaseAnalysor {
             Personas personas = new Personas()
                     .setPersonnelId(person.getPersonnelId())
                     .setLabelId("14");
-            personasController.updatePersonas(personas);
+            personasService.updatePersonas(personas);
 
             removeSet.add("出差狂魔");
             Personas remove = new Personas()
                     .setPersonnelId(person.getPersonnelId())
                     .setLabelId("13");
-            personasController.removePersonas(remove);
+            personasService.removePersonas(remove);
         }
         // 最常访问的社区次数大于100次
         if (firstAddressCount > 100) {
@@ -121,7 +121,7 @@ public class AnalysorFive extends BaseAnalysor {
             Personas personas = new Personas()
                     .setPersonnelId(person.getPersonnelId())
                     .setLabelId("18");
-            personasController.updatePersonas(personas);
+            personasService.updatePersonas(personas);
         }
 
         log.info("用户 {} 计算完成。添加 : {} , 删除 : {}",

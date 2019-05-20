@@ -145,18 +145,18 @@ public class AnalysorSeven extends BaseAnalysor {
             Personas personas = new Personas()
                     .setPersonnelId(person.getPersonnelId())
                     .setLabelId(labelId);
-            personasController.updatePersonas(personas);
+            personasService.updatePersonas(personas);
 
             removeSet.add("白银会员");
             Personas remove = new Personas()
                     .setPersonnelId(person.getPersonnelId())
                     .setLabelId("20");
-            personasController.removePersonas(remove);
+            personasService.removePersonas(remove);
             removeSet.add("青铜会员");
             Personas remove2 = new Personas()
                     .setPersonnelId(person.getPersonnelId())
                     .setLabelId("24");
-            personasController.removePersonas(remove2);
+            personasService.removePersonas(remove2);
         }
         // 白银会员
         if ("20".equals(labelId)) {
@@ -164,18 +164,18 @@ public class AnalysorSeven extends BaseAnalysor {
             Personas personas = new Personas()
                     .setPersonnelId(person.getPersonnelId())
                     .setLabelId(labelId);
-            personasController.updatePersonas(personas);
+            personasService.updatePersonas(personas);
 
             removeSet.add("黄金会员");
             Personas remove = new Personas()
                     .setPersonnelId(person.getPersonnelId())
                     .setLabelId("19");
-            personasController.removePersonas(remove);
+            personasService.removePersonas(remove);
             removeSet.add("青铜会员");
             Personas remove2 = new Personas()
                     .setPersonnelId(person.getPersonnelId())
                     .setLabelId("24");
-            personasController.removePersonas(remove2);
+            personasService.removePersonas(remove2);
         }
         // 青铜会员
         if ("24".equals(labelId)) {
@@ -183,18 +183,18 @@ public class AnalysorSeven extends BaseAnalysor {
             Personas personas = new Personas()
                     .setPersonnelId(person.getPersonnelId())
                     .setLabelId(labelId);
-            personasController.updatePersonas(personas);
+            personasService.updatePersonas(personas);
 
             removeSet.add("黄金会员");
             Personas remove = new Personas()
                     .setPersonnelId(person.getPersonnelId())
                     .setLabelId("19");
-            personasController.removePersonas(remove);
+            personasService.removePersonas(remove);
             removeSet.add("白银会员");
             Personas remove2 = new Personas()
                     .setPersonnelId(person.getPersonnelId())
                     .setLabelId("20");
-            personasController.removePersonas(remove2);
+            personasService.removePersonas(remove2);
         }
 
         log.info("用户 {} 计算完成。添加 : {} , 删除 : {}",

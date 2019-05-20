@@ -41,11 +41,11 @@ public class OneTimeAnalysor extends BaseAnalysor {
         Personas personas = new Personas()
                 .setPersonnelId(person.getPersonnelId())
                 .setLabelId("job1");
-        personasController.removePersonas(personas);
+        personasService.removePersonas(personas);
         Personas personas2 = new Personas()
                 .setPersonnelId(person.getPersonnelId())
                 .setLabelId("job2");
-        personasController.removePersonas(personas2);
+        personasService.removePersonas(personas2);
 
         log.info("用户 {} 计算完成，{}", person.getPersonnelName());
     }
