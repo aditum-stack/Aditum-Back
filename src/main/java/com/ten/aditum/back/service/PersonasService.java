@@ -194,11 +194,10 @@ public class PersonasService {
         personasPortraitService.update(update);
     }
 
-
     /**
      * 根据personId删除该用户的 模糊匹配 用户画像标签
      */
-    public void removePersonasByKey(Personas personas) {
+    public void removeFuzzyPersonasByKey(Personas personas) {
         if (personas.getPersonnelId() == null || personas.getLabelName() == null) {
             return;
         }

@@ -114,6 +114,11 @@ public class TripsAnalysor extends BaseAnalysor {
     }
 
     private void analysisRank(PersonAccessCount person, String rank) {
+        Personas old = new Personas()
+                .setPersonnelId(person.getPersonnelId())
+                .setLabelName("击败了");
+        personasService.removeFuzzyPersonasByKey(old);
+
         String labelName = "击败了" + rank + "的用户";
         Personas label = new Personas()
                 .setPersonnelId(person.getPersonnelId())
