@@ -42,12 +42,14 @@ public class PyAccessTimeController {
 
     /**
      * 获取用户时间行为偏好聚类数据图
+     * <p>
+     * TODO 根据communityId获取
      *
      * @return base64 img
      */
     @RequestMapping(value = "/time", method = RequestMethod.GET)
-    public ResultModel getTimeClustering() {
-        log.info("PythonAccessTime [GET] clustering");
+    public ResultModel getTimeClustering(String communityId) {
+        log.info("PythonAccessTime [GET] clustering, cId {}", communityId);
 
         String base64Img;
 

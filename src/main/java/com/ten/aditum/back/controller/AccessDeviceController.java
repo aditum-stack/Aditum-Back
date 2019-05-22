@@ -104,7 +104,7 @@ public class AccessDeviceController {
      * 根据IMEI获取设备按天计算的访问热度(最近三十天)
      */
     @RequestMapping(value = "/count", method = RequestMethod.GET)
-    public ResultModel getCount(Device device) {
+    public ResultModel getCountHeat(DeviceAccessCount device) {
         log.debug("AccessDeviceCount [GET] : {}", device);
 
         if (device.getImei() == null) {
@@ -134,6 +134,29 @@ public class AccessDeviceController {
 
 
         return new ResultModel(AditumCode.OK, deviceAccessCountList);
+    }
+
+    /**
+     * 根据日期logDate获取此日期所有的count热度信息
+     */
+    @RequestMapping(value = "/countByDay", method = RequestMethod.GET)
+    public ResultModel getCountByDay(DeviceAccessCount device) {
+        log.debug("AccessDeviceCount ByDay [GET] : {}", device);
+
+        if (device.getLogDate() == null) {
+            return new ResultModel(AditumCode.ERROR);
+        }
+
+        device.setIsDeleted(NO_DELETED);
+
+        List<DeviceAccessCount> deviceAccessCounts = deviceAccessCountService.select(device);
+        if (deviceAccessCounts.size() < 1) {
+            log.warn("AccessDeviceCount ByDay [GET] FAILURE : {}", device);
+            return new ResultModel(AditumCode.ERROR);
+        }
+
+        log.debug("AccessDeviceCount ByDay [GET] SUCCESS : {} -> {}", device, deviceAccessCounts);
+        return new ResultModel(AditumCode.OK, deviceAccessCounts);
     }
 
     /**
