@@ -11,10 +11,34 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 
+/**
+ * Python聚类分析，AccessTime用户时间行为偏好聚类分析
+ *
+ * @author shihaowang
+ * @date 2019/5/22
+ */
 @Slf4j
 @RestController
 @RequestMapping(value = "/py/access/")
 public class PyAccessTimeController {
+
+    /**
+     * 缓存
+     */
+    private ResultModel cache;
+    private long lastUseTime = System.currentTimeMillis();
+
+    /**
+     * 缓存有效时间 五分钟
+     */
+    private static final long VALID_TIME = 1000 * 60 * 5;
+
+    /**
+     * python脚本执行路径
+     */
+    private static final String[] ARGUMENTS = new String[]{
+            PythonConstants.PYTHON_PATH,
+            "D:\\Users\\shihaowang\\Desktop\\Aditum-Personas\\com.ten.aditum\\personas\\AccessTimeClusteringModel.py"};
 
     /**
      * 获取用户时间行为偏好聚类数据图
@@ -25,12 +49,40 @@ public class PyAccessTimeController {
     public ResultModel getTimeClustering() {
         log.info("PythonAccessTime [GET] clustering");
 
+        String base64Img;
+
+        // 初始化缓存
+        if (cache == null) {
+            base64Img = computeBase64();
+            cache = new ResultModel(AditumCode.OK, base64Img);
+            log.info("PythonAccessTime [GET] clustering [INIT] SUCCESS {}", base64Img);
+            return cache;
+        }
+
+        long current = System.currentTimeMillis();
+        // 缓存过期，更新
+        if (current - lastUseTime > VALID_TIME) {
+            lastUseTime = current;
+            base64Img = computeBase64();
+            cache = new ResultModel(AditumCode.OK, base64Img);
+            log.info("PythonAccessTime [GET] clustering [NEW] SUCCESS {}", base64Img);
+            return cache;
+        }
+
+        log.info("PythonAccessTime [GET] clustering [CACHE] SUCCESS {}", cache.getData());
+        return cache;
+    }
+
+    /**
+     * 调用Python脚本执行并返回base64图片字符串
+     */
+    private String computeBase64() {
+        log.info("PythonAccessTime 聚类算法开始计算...预计耗时20s");
+        long start = System.currentTimeMillis();
+
         String base64 = null;
-        String[] arguments = new String[]{
-                PythonConstants.PYTHON_PATH,
-                "D:\\Users\\shihaowang\\Desktop\\Aditum-Personas\\com.ten.aditum\\personas\\AccessTimeClusteringModel.py"};
         try {
-            Process process = Runtime.getRuntime().exec(arguments);
+            Process process = Runtime.getRuntime().exec(ARGUMENTS);
             BufferedReader in = new BufferedReader(new InputStreamReader(process.getInputStream()));
             // python只返回一行base64，故只取第一行
             base64 = in.readLine();
@@ -47,14 +99,17 @@ public class PyAccessTimeController {
 
         if (base64 == null) {
             log.warn("PythonAccessTime base64 image is null");
-            return new ResultModel(AditumCode.ERROR);
+            throw new RuntimeException("PythonAccessTime base64 image is null");
         }
 
         String[] s = base64.split("'");
         String base64Img = PythonConstants.BASE64_PREFIX + s[1];
 
-        log.info("PythonAccessTime [GET] clustering SUCCESS {}", base64Img);
-        return new ResultModel(AditumCode.OK, base64Img);
+        long end = System.currentTimeMillis();
+        long durante = end - start;
+        log.info("PythonAccessTime 聚类算法计算完成...耗时{}s", durante / 1000);
+
+        return base64Img;
     }
 
 }
