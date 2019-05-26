@@ -20,35 +20,16 @@ import java.util.*;
 @EnableAutoConfiguration
 public class AddressAnalyzer extends BaseAnalysor {
 
-    private final CommunityService communityService;
-    private final DeviceService deviceService;
-    private final RecordService recordService;
-
-    private final AccessAddressService accessAddressService;
-
-    @Autowired
-    public AddressAnalyzer(AccessAddressService accessAddressService,
-                           RecordService recordService,
-                           DeviceService deviceService,
-                           CommunityService communityService) {
-        this.accessAddressService = accessAddressService;
-        this.recordService = recordService;
-        this.deviceService = deviceService;
-        this.communityService = communityService;
-    }
+//    @Scheduled(cron = TEST_TIME)
 
     /**
      * 每天1点10分分析用户访问地址
      */
-//    @Scheduled(cron = TEST_TIME)
     @Scheduled(cron = "0 10 1 1/1 * ?")
     public void analysis() {
         log.info("开始分析用户访问地址...");
-
         List<Person> personList = selectAllPerson();
-
         personList.forEach(this::analysisPerson);
-
         log.info("用户访问地址分析完成...");
     }
 

@@ -37,16 +37,13 @@ public class RecordService {
     }
 
     /**
-     * 当前时间对应的日期00:00:00时刻之后的数据
+     * 当前时间对应的时刻之后的数据
      */
-    public List<Record> selectAfterTheDay(Record pojo) {
+    public List<Record> selectAfterTheDateTime(Record pojo) {
         if (pojo.getVisiteTime() == null) {
             return null;
         }
-        String date = pojo.getVisiteTime().substring(0, 11);
-        String dateTime = date + "00:00:00.0";
-        pojo.setVisiteTime(dateTime);
-        return recordDao.selectAfterTheDay(pojo);
+        return recordDao.selectAfterTheVisitTime(pojo);
     }
 
     public int update(Record pojo) {

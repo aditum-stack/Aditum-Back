@@ -63,7 +63,7 @@ public class RecordServiceTest {
         Record pojo = new Record();
         pojo.setVisiteTime(TimeGenerator.currentDateTime());
         System.out.println(pojo);
-        List<Record> recordList = recordService.selectAfterTheDay(pojo);
+        List<Record> recordList = recordService.selectAfterTheDateTime(pojo);
         System.out.println(recordList);
     }
 

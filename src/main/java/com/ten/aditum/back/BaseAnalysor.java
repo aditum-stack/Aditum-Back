@@ -29,6 +29,11 @@ public abstract class BaseAnalysor {
 
     protected static final int NO_DELETED = 0;
 
+    /**
+     * Record.select操作每次取出1000条数据
+     */
+    protected static final int SELECT_SIZE = 1000;
+
     @Resource
     protected CommunityService communityService;
     @Resource

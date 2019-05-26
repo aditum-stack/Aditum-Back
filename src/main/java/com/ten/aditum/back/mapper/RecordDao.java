@@ -16,7 +16,7 @@ public interface RecordDao {
 
     List<Record> selectAfterTheId(@Param("pojo") Record pojo);
 
-    List<Record> selectAfterTheDay(@Param("pojo") Record pojo);
+    List<Record> selectAfterTheVisitTime(@Param("pojo") Record pojo);
 
     int update(@Param("pojo") Record pojo);
 

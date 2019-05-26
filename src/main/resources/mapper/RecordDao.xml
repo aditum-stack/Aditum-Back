@@ -104,10 +104,11 @@
             <if test="pojo.visiteStatus != null">AND visite_status = #{pojo.visiteStatus}</if>
             <if test="pojo.isDeleted != null">AND is_deleted = #{pojo.isDeleted}</if>
         </where>
+        LIMIT 1000
     </select>
 
     <!--auto generated Code-->
-    <select id="selectAfterTheDay" resultMap="AllColumnMap">
+    <select id="selectAfterTheVisitTime" resultMap="AllColumnMap">
         SELECT
         <include refid="all_column"/>
         FROM record

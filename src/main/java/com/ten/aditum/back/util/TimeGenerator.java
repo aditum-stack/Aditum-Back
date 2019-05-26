@@ -9,17 +9,43 @@ import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
 
+/**
+ * 时间工具类
+ */
 public class TimeGenerator {
 
+    private static final String DATE_FORMAT = "yyyy-MM-dd";
+    public static final String TIME_FORMAT = "HH:mm:ss";
+    private static final String DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
+
+    /**
+     * 获取当前时间戳
+     */
     public static String currentTime() {
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         return String.valueOf(timestamp);
     }
 
-    public static final String DATE_FORMAT = "yyyy-MM-dd";
+    /**
+     * 当前时间的年月日时分秒
+     */
+    public static String currentDateTime() {
+        DateFormat fmt = new SimpleDateFormat(DATE_TIME_FORMAT);
+        return fmt.format(new Date());
+    }
 
     /**
-     * 时间字符串转年月日日期字符串
+     * 昨天的的年月日时分秒
+     */
+    public static String yesterdayDateTime() {
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.DATE, -1);
+        DateFormat fmt = new SimpleDateFormat(DATE_TIME_FORMAT);
+        return fmt.format(cal.getTime());
+    }
+
+    /**
+     * 年月日时分秒时间字符串转年月日日期字符串
      */
     public static String formatDate(String value) {
         if (value == null) {
@@ -36,10 +62,8 @@ public class TimeGenerator {
         return new SimpleDateFormat(DATE_FORMAT).format(date);
     }
 
-    public static final String TIME_FORMAT = "HH:mm:ss";
-
     /**
-     * 时间字符串转时分秒时间字符串
+     * 年月日时分秒时间字符串转时分秒时间字符串
      */
     public static String formatTime(String value) {
         if (value == null) {
@@ -49,29 +73,18 @@ public class TimeGenerator {
         return value.substring(11);
     }
 
-    public static final String DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
-
-    /**
-     * 当前时间的年月日时分秒
-     */
-    public static String currentDateTime() {
-        DateFormat fmt = new SimpleDateFormat(DATE_TIME_FORMAT);
-        return fmt.format(new Date());
-    }
-
     /**
      * 返回当前时间的前一个小时的年月日时分秒
      */
     public static String hourBeforeDateTime() {
         Calendar calendar = Calendar.getInstance();
-        /* HOUR_OF_DAY 指示一天中的小时 */
         calendar.set(Calendar.HOUR_OF_DAY, calendar.get(Calendar.HOUR_OF_DAY) - 1);
         SimpleDateFormat df = new SimpleDateFormat(DATE_TIME_FORMAT);
         return df.format(calendar.getTime());
     }
 
     /**
-     * 时间转秒
+     * 时分秒时间转秒
      */
     public static long getTotalSec(String s) {
         String[] my = s.split(":");
@@ -82,7 +95,7 @@ public class TimeGenerator {
     }
 
     /**
-     * 秒转时间
+     * 秒转时间时分秒
      */
     public static String getTimeFromSec(long sec) {
         // 毫秒数
@@ -94,27 +107,22 @@ public class TimeGenerator {
     }
 
     /**
-     * 计算平均访问时间
+     * 计算时分秒的平均时间
      */
     public static String averageTime(List<String> timeList) {
         if (timeList.size() == 0) {
             return "";
         }
-
         long[] times = new long[timeList.size()];
-
         for (int i = 0; i < timeList.size(); i++) {
             long totalSec = getTotalSec(timeList.get(i));
             times[i] = totalSec;
         }
-
         long total = 0;
         for (long time1 : times) {
             total += time1;
         }
-
         long mean = total / times.length;
-
         return getTimeFromSec(mean);
     }
 
