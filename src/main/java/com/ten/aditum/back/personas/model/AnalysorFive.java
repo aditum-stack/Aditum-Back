@@ -25,13 +25,6 @@ import java.util.List;
 @EnableAutoConfiguration
 public class AnalysorFive extends BaseAnalysor {
 
-    private final AccessAddressService accessAddressService;
-
-    @Autowired
-    public AnalysorFive(AccessAddressService accessAddressService) {
-        this.accessAddressService = accessAddressService;
-    }
-
     @Override
     public void showModelLabel() {
         PersonasLabel label1 = new PersonasLabel()

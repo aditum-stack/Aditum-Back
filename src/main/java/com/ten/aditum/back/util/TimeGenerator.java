@@ -56,7 +56,7 @@ public class TimeGenerator {
      */
     public static String currentDateTime() {
         DateFormat fmt = new SimpleDateFormat(DATE_TIME_FORMAT);
-        return fmt.format(new Date().getHours());
+        return fmt.format(new Date());
     }
 
     /**

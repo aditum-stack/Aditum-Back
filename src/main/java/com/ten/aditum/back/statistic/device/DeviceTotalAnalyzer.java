@@ -29,19 +29,6 @@ import static com.ten.aditum.back.util.TimeGenerator.formatDate;
 @EnableAutoConfiguration
 public class DeviceTotalAnalyzer extends BaseAnalysor {
 
-    private final DeviceService deviceService;
-    private final RecordService recordService;
-    private final DeviceAccessTotalService deviceAccessTotalService;
-
-    @Autowired
-    public DeviceTotalAnalyzer(RecordService recordService,
-                               DeviceAccessTotalService deviceAccessTotalService,
-                               DeviceService deviceService) {
-        this.recordService = recordService;
-        this.deviceAccessTotalService = deviceAccessTotalService;
-        this.deviceService = deviceService;
-    }
-
     /**
      * 每天3点30分更新设备总访问日志
      */

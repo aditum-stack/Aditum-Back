@@ -23,13 +23,6 @@ import java.util.List;
 @EnableAutoConfiguration
 public class AddressAnalysor extends BaseAnalysor {
 
-    private final CommunityService communityService;
-
-    @Autowired
-    public AddressAnalysor(CommunityService communityService) {
-        this.communityService = communityService;
-    }
-
 //    @Scheduled(cron = TEST_TIME)
 
     /**

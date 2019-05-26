@@ -22,16 +22,6 @@ import java.util.List;
 @EnableAutoConfiguration
 public class DeviceLogAnalyzer  extends BaseAnalysor {
 
-    private final RecordService recordService;
-    private final DeviceAccessLogService deviceAccessLogService;
-
-    @Autowired
-    public DeviceLogAnalyzer(RecordService recordService,
-                             DeviceAccessLogService deviceAccessLogService) {
-        this.recordService = recordService;
-        this.deviceAccessLogService = deviceAccessLogService;
-    }
-
     /**
      * 每天3点10分更新设备访问日志
      */

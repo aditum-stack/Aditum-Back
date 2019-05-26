@@ -30,15 +30,6 @@ import static com.ten.aditum.back.util.TimeGenerator.averageTime;
 @EnableAutoConfiguration
 public class IntervalAnalyzer extends BaseAnalysor {
 
-    private final AccessTimeService accessTimeService;
-    private final AccessIntervalService accessIntervalService;
-
-    @Autowired
-    public IntervalAnalyzer(AccessTimeService accessTimeService, AccessIntervalService accessIntervalService) {
-        this.accessTimeService = accessTimeService;
-        this.accessIntervalService = accessIntervalService;
-    }
-
     /**
      * 每天1点20分分析用户访问间隔
      */

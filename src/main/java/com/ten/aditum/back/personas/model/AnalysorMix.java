@@ -27,15 +27,6 @@ import java.util.List;
 @EnableAutoConfiguration
 public class AnalysorMix extends BaseAnalysor {
 
-    private final AccessTimeService accessTimeService;
-    private final AccessAddressService accessAddressService;
-
-    @Autowired
-    public AnalysorMix(AccessTimeService accessTimeService, AccessAddressService accessAddressService) {
-        this.accessTimeService = accessTimeService;
-        this.accessAddressService = accessAddressService;
-    }
-
     @Override
     public void showModelLabel() {
         PersonasLabel label1 = new PersonasLabel()

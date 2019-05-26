@@ -26,6 +26,29 @@ public class RecordService {
         return recordDao.select(pojo);
     }
 
+    /**
+     * 获取此ID之后的数据
+     */
+    public List<Record> selectAfterTheId(Record pojo) {
+        if (pojo.getId() == null) {
+            return null;
+        }
+        return recordDao.selectAfterTheId(pojo);
+    }
+
+    /**
+     * 当前时间对应的日期00:00:00时刻之后的数据
+     */
+    public List<Record> selectAfterTheDay(Record pojo) {
+        if (pojo.getVisiteTime() == null) {
+            return null;
+        }
+        String date = pojo.getVisiteTime().substring(0, 11);
+        String dateTime = date + "00:00:00.0";
+        pojo.setVisiteTime(dateTime);
+        return recordDao.selectAfterTheDay(pojo);
+    }
+
     public int update(Record pojo) {
         return recordDao.update(pojo);
     }

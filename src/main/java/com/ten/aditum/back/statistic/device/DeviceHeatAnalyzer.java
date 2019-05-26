@@ -27,19 +27,6 @@ import static com.ten.aditum.back.util.TimeGenerator.hourBeforeDateTime;
 @EnableAutoConfiguration
 public class DeviceHeatAnalyzer extends BaseAnalysor {
 
-    private final DeviceService deviceService;
-    private final RecordService recordService;
-    private final DeviceAccessHeatService deviceAccessHeatService;
-
-    @Autowired
-    public DeviceHeatAnalyzer(RecordService recordService,
-                              DeviceAccessHeatService deviceAccessHeatService,
-                              DeviceService deviceService) {
-        this.recordService = recordService;
-        this.deviceAccessHeatService = deviceAccessHeatService;
-        this.deviceService = deviceService;
-    }
-
     /**
      * 每小时更新设备实时访问日志(热度)
      */

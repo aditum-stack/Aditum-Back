@@ -29,17 +29,6 @@ import static com.ten.aditum.back.util.TimeGenerator.*;
 @EnableAutoConfiguration
 public class TimeAnalyzer extends BaseAnalysor {
 
-    private final RecordService recordService;
-
-    private final AccessTimeService accessTimeService;
-
-    @Autowired
-    public TimeAnalyzer(AccessTimeService accessTimeService,
-                        RecordService recordService) {
-        this.accessTimeService = accessTimeService;
-        this.recordService = recordService;
-    }
-
     /**
      * 每天1点分析用户访问时间
      */

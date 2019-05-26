@@ -28,13 +28,6 @@ import java.util.stream.Collectors;
 @EnableAutoConfiguration
 public class AnalysorSeven extends BaseAnalysor {
 
-    private final AccessTimeService accessTimeService;
-
-    @Autowired
-    public AnalysorSeven(AccessTimeService accessTimeService) {
-        this.accessTimeService = accessTimeService;
-    }
-
     @Override
     public void showModelLabel() {
         PersonasLabel label1 = new PersonasLabel()

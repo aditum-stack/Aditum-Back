@@ -25,13 +25,6 @@ import java.util.List;
 @EnableAutoConfiguration
 public class AnalysorFour extends BaseAnalysor {
 
-    private final AccessTimeService accessTimeService;
-
-    @Autowired
-    public AnalysorFour(AccessTimeService accessTimeService) {
-        this.accessTimeService = accessTimeService;
-    }
-
     @Override
     public void showModelLabel() {
         PersonasLabel label1 = new PersonasLabel()

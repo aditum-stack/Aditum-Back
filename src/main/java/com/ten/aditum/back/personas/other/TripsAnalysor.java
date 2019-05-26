@@ -28,15 +28,6 @@ import java.util.stream.Collectors;
 @EnableAutoConfiguration
 public class TripsAnalysor extends BaseAnalysor {
 
-    private final AccessTimeService accessTimeService;
-    private final CommunityService communityService;
-
-    @Autowired
-    public TripsAnalysor(CommunityService communityService, AccessTimeService accessTimeService) {
-        this.communityService = communityService;
-        this.accessTimeService = accessTimeService;
-    }
-
     /**
      * 用户访问量排序辅助类
      */

@@ -26,13 +26,6 @@ import java.util.List;
 @EnableAutoConfiguration
 public class AnalysorSix extends BaseAnalysor {
 
-    private final AccessIntervalService accessIntervalService;
-
-    @Autowired
-    public AnalysorSix(AccessIntervalService accessIntervalService) {
-        this.accessIntervalService = accessIntervalService;
-    }
-
     @Override
     public void showModelLabel() {
         PersonasLabel label1 = new PersonasLabel()

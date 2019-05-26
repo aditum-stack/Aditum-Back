@@ -28,13 +28,6 @@ import static com.ten.aditum.back.util.TimeGenerator.getTotalSec;
 @EnableAutoConfiguration
 public class AnalysorOne extends BaseAnalysor {
 
-    private final AccessTimeService accessTimeService;
-
-    @Autowired
-    public AnalysorOne(AccessTimeService accessTimeService) {
-        this.accessTimeService = accessTimeService;
-    }
-
     @Override
     public void showModelLabel() {
         PersonasLabel label1 = new PersonasLabel()

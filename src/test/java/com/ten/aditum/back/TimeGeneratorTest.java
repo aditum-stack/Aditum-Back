@@ -1,8 +1,8 @@
 package com.ten.aditum.back;
 
-import org.junit.Test;
-import org.junit.Before;
 import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * TimeGenerator Tester.
@@ -12,6 +12,7 @@ import org.junit.After;
  * @since <pre>ʮһ�� 21, 2018</pre>
  */
 public class TimeGeneratorTest {
+
 
     @Before
     public void before() throws Exception {

@@ -122,7 +122,6 @@
             <if test="pojo.updateTime != null">AND update_time = #{pojo.updateTime}</if>
             <if test="pojo.isDeleted != null">AND is_deleted = #{pojo.isDeleted}</if>
         </where>
-        LIMIT 1000
     </select>
 
     <!--auto generated Code-->
