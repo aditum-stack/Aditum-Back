@@ -15,8 +15,10 @@ import org.springframework.stereotype.Component;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static com.ten.aditum.back.util.TimeGenerator.formatDate;
+import static com.ten.aditum.back.util.TimeGenerator.isYesterday;
 
 @Slf4j
 @Component
@@ -49,11 +51,15 @@ public class DeviceCountAnalyzer extends BaseAnalysor {
                 .setImei(device.getImei())
                 .setVisiteTime(yesterdayZeroDateTime)
                 .setIsDeleted(NO_DELETED);
-        List<Record> recordList = recordService.selectAfterTheDateTime(recordEntity);
-        if (recordList.size() == 0) {
+        List<Record> collect = recordService.selectAfterTheDateTime(recordEntity);
+        if (collect.size() == 0) {
             log.warn("device {} 昨天 {} 没有任何访问记录!", device.getAlias(), yesterdayDateTime);
             return;
         }
+        // 过滤，只剩下昨天的数据
+        List<Record> recordList = collect.stream()
+                .filter(record -> isYesterday(record.getVisiteTime()))
+                .collect(Collectors.toList());
 
         // 按天访问的record集合，一般将会包含昨天和今天两天的信息
         Map<String, Integer> recordDayMap = new HashMap<>(4);

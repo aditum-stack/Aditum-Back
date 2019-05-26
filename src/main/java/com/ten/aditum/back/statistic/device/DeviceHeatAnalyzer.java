@@ -79,8 +79,9 @@ public class DeviceHeatAnalyzer extends BaseAnalysor {
         recordList.forEach(record -> {
             String visiteTime = record.getVisiteTime().substring(0, 19);
             record.setVisiteTime(visiteTime);
-            // 若record时间大于前一小时，访问次数+1
-            if (visiteTime.compareTo(hourBeforeZeroDateTime) > 0) {
+            // 若record时间大于前一小时且小于当前小时，访问次数+1
+            if (visiteTime.compareTo(hourBeforeZeroDateTime) > 0
+                    && TimeGenerator.currentDateTime().compareTo(visiteTime) > 0) {
                 currentHourCount.getAndIncrement();
                 // 出入类型
                 if (record.getVisiteStatus() == 0) {

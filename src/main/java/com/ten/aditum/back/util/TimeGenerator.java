@@ -35,6 +35,16 @@ public class TimeGenerator {
     }
 
     /**
+     * 返回当前时间的前一个小时的年月日时分秒
+     */
+    public static String hourBeforeDateTime() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY, calendar.get(Calendar.HOUR_OF_DAY) - 1);
+        SimpleDateFormat df = new SimpleDateFormat(DATE_TIME_FORMAT);
+        return df.format(calendar.getTime());
+    }
+
+    /**
      * 昨天的的年月日时分秒
      */
     public static String yesterdayDateTime() {
@@ -42,6 +52,15 @@ public class TimeGenerator {
         cal.add(Calendar.DATE, -1);
         DateFormat fmt = new SimpleDateFormat(DATE_TIME_FORMAT);
         return fmt.format(cal.getTime());
+    }
+
+    /**
+     * 判断年月日时分秒是不是昨天
+     */
+    public static boolean isYesterday(String dateTime) {
+        String yesterday = yesterdayDateTime();
+        String today = currentDateTime();
+        return dateTime.compareTo(yesterday) > 0 && today.compareTo(dateTime) > 0;
     }
 
     /**
@@ -71,16 +90,6 @@ public class TimeGenerator {
         }
         // 去掉日期，保留时间
         return value.substring(11);
-    }
-
-    /**
-     * 返回当前时间的前一个小时的年月日时分秒
-     */
-    public static String hourBeforeDateTime() {
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.HOUR_OF_DAY, calendar.get(Calendar.HOUR_OF_DAY) - 1);
-        SimpleDateFormat df = new SimpleDateFormat(DATE_TIME_FORMAT);
-        return df.format(calendar.getTime());
     }
 
     /**

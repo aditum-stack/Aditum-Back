@@ -3,16 +3,15 @@ package com.ten.aditum.back.statistic.person;
 
 import com.ten.aditum.back.BaseAnalysor;
 import com.ten.aditum.back.entity.*;
-import com.ten.aditum.back.service.*;
 import com.ten.aditum.back.util.TimeGenerator;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Slf4j
 @Component
@@ -37,92 +36,68 @@ public class AddressAnalyzer extends BaseAnalysor {
      * 分析单个person的行为
      */
     private void analysisPerson(Person person) {
-
+        AccessAddress access = new AccessAddress()
+                .setPersonnelId(person.getPersonnelId())
+                .setTotalCount(0);
         // person的访问地址集合
         Map<String, Integer> personAddressMap = new HashMap<>();
-
-        log.info("开始分析此person : {}", person);
-
-        // 查询person的所有record
-        Record recordEntity = new Record()
-                .setPersonnelId(person.getPersonnelId())
-                .setIsDeleted(NO_DELETED);
-        List<Record> recordList = recordService.select(recordEntity);
-
-        recordList.forEach(record -> {
-            // 查询record对应的device
-            String imei = record.getImei();
-            Device deviceEntity = new Device()
-                    .setImei(imei)
+        // person的访问设备集合
+        Map<String, Integer> personImeiMap = new HashMap<>();
+        for (int i = 0; ; ) {
+            Record recordEntity = new Record()
+                    .setId(i)
+                    .setPersonnelId(person.getPersonnelId())
                     .setIsDeleted(NO_DELETED);
-            List<Device> deviceList = deviceService.select(deviceEntity);
-            if (deviceList.size() < 1) {
-                throw new RuntimeException("Record对应Device为空!");
+            List<Record> recordList = recordService.selectAfterTheId(recordEntity);
+            if (recordList.size() == 0) {
+                break;
             }
-
-            Device theDevice = deviceList.get(0);
-
-            // 查询device对应的community
-            String communityId = theDevice.getCommunityId();
-            Community communityEntity = new Community()
-                    .setCommunityId(communityId)
-                    .setIsDeleted(NO_DELETED);
-            List<Community> communityList = communityService.select(communityEntity);
-            if (communityList.size() < 1) {
-                throw new RuntimeException("Device对应Community为空!");
+            analysisPersonRecord(access, recordList, personAddressMap, personImeiMap);
+            // 若数量为SELECT_SIZE，说明后面可能还有未取出的数据
+            if (recordList.size() >= SELECT_SIZE) {
+                i = recordList.get(SELECT_SIZE - 1).getId();
             }
-
-            Community theCommunity = communityList.get(0);
-
-            // 获取community地址
-            String communityCity = theCommunity.getCommunityCity();
-            String communityAddress = theCommunity.getCommunityAddress();
-
-            String address = communityCity + communityAddress;
-
-            // 若已经包含此地址，次数+1
-            if (personAddressMap.containsKey(address)) {
-                Integer count = personAddressMap.get(address);
-                personAddressMap.put(address, count + 1);
-
-                log.info("已包含此地址，次数+1 : {} by {}", address, person.getPersonnelName());
-            }
-            // 若未包含此地址，次数=1
+            // 如数量不足SELECT_SIZE，说明后面已经没有数据了
             else {
-                personAddressMap.put(address, 1);
-
-                log.info("未包含此地址，次数=1 : {} by {}", address, person.getPersonnelName());
+                break;
             }
-        });
+        }
 
-        // ------------------------------------------ 一个person的所有record遍历结束
-
-        // 获取访问过的所有地址
+        // 社区分析
         Set<String> addressSet = personAddressMap.keySet();
-
-        // 拼接所有地址
-        List<String> addressList = new ArrayList(addressSet);
+        List<String> addressList = new ArrayList<>(addressSet);
         String collection = String.join(",", addressList);
-
-        log.info("获取到此person {} 下的所有地址 {}", person.getPersonnelName(), collection);
-
-        // 获取访问次数最多的地址
         String maxCountAddress = getMaxCount(personAddressMap);
-        // 获取访问次数最多的次数
         Integer maxCount = personAddressMap.get(maxCountAddress);
+        log.info("Person {} 最常访问社区 {} {}次",
+                person.getPersonnelName(), maxCountAddress, maxCount);
 
-        log.info("获取到此person {} 下的最常访问地址 {} {}次", person.getPersonnelName(), maxCountAddress, maxCount);
+        // 设备分析
+        Set<String> imeiSet = personImeiMap.keySet();
+        List<String> imeiList = new ArrayList<>(imeiSet);
+        String imeiCollection = String.join(",", imeiList);
+        String maxCountImei = getMaxCount(personImeiMap);
+        Integer maxCount2 = personImeiMap.get(maxCountImei);
+        log.info("Person {} 最常访问设备 {} {}次，累计 {}次",
+                person.getPersonnelName(), maxCountImei, maxCount2, access.getTotalCount());
 
-        Integer collectionCount = addressList.size();
+        if (imeiCollection.length() > 500) {
+            imeiCollection = imeiCollection.substring(0, 499);
+            log.error("AccessAddress.totalAddress需要扩容，切割前长度{}", imeiCollection.length());
+        }
 
+        // 访问过的设备
+        Integer collectionCount = imeiList.size();
         // 生成数据对象
         AccessAddress accessAddress = new AccessAddress()
                 .setPersonnelId(person.getPersonnelId())
                 .setFirstAddress(maxCountAddress)
                 .setFirstAddressCount(maxCount)
-                .setTotalAddress(collection)
+                .setSecondAddress(maxCountImei)
+                .setSecondAddressCount(maxCount2)
+                .setTotalAddress(imeiCollection)
                 .setTotalAddressCount(collectionCount)
-                .setTotalCount(recordList.size())
+                .setTotalCount(access.getTotalCount())
                 .setIsDeleted(NO_DELETED);
 
         // 查询此person的原纪录
@@ -135,8 +110,7 @@ public class AddressAnalyzer extends BaseAnalysor {
             accessAddress
                     .setCreateTime(TimeGenerator.currentTime());
             accessAddressService.insert(accessAddress);
-
-            log.info("此person {} 还没有地址记录，插入 {}", person.getPersonnelName(), accessAddress);
+            log.info("Person {} 还没有地址记录，插入 {}", person.getPersonnelName(), accessAddress);
         }
         // 当前用户已有记录，更新
         else {
@@ -146,14 +120,72 @@ public class AddressAnalyzer extends BaseAnalysor {
                     .setId(id)
                     .setUpdateTime(TimeGenerator.currentTime());
             accessAddressService.update(accessAddress);
-
-            log.info("此person {} 已经有地址记录，更新 {}", person.getPersonnelName(), accessAddress);
+            log.info("Person {} 已经有地址记录，更新 {}", person.getPersonnelName(), accessAddress);
         }
     }
 
+    /**
+     * 分析用户地址信息
+     */
+    private void analysisPersonRecord(AccessAddress accessAddress,
+                                      List<Record> recordList,
+                                      Map<String, Integer> personAddressMap,
+                                      Map<String, Integer> personImeiMap) {
+        AtomicInteger total = new AtomicInteger(accessAddress.getTotalCount());
+        recordList.forEach(record -> {
+            // 查询record对应的device
+            String imei = record.getImei();
+            Device deviceEntity = new Device()
+                    .setImei(imei)
+                    .setIsDeleted(NO_DELETED);
+            List<Device> deviceList = deviceService.select(deviceEntity);
+            if (deviceList.size() < 1) {
+                throw new RuntimeException("Record对应Device为空!");
+            }
+
+            Device theDevice = deviceList.get(0);
+            // 查询device对应的community
+            String communityId = theDevice.getCommunityId();
+            Community communityEntity = new Community()
+                    .setCommunityId(communityId)
+                    .setIsDeleted(NO_DELETED);
+            List<Community> communityList = communityService.select(communityEntity);
+            if (communityList.size() < 1) {
+                throw new RuntimeException("Device对应Community为空!");
+            }
+
+            Community theCommunity = communityList.get(0);
+            // 获取community地址
+            String communityCity = theCommunity.getCommunityCity();
+            String communityAddress = theCommunity.getCommunityAddress();
+            String address = communityCity + communityAddress;
+            if (personAddressMap.containsKey(address)) {
+                Integer count = personAddressMap.get(address);
+                personAddressMap.put(address, count + 1);
+            } else {
+                personAddressMap.put(address, 1);
+            }
+
+            // 获取device地址
+            String alia = theDevice.getAlias();
+            if (personImeiMap.containsKey(alia)) {
+                Integer count = personImeiMap.get(alia);
+                personImeiMap.put(alia, count + 1);
+            } else {
+                personImeiMap.put(alia, 1);
+            }
+
+            total.getAndIncrement();
+        });
+        accessAddress.setTotalCount(total.get());
+    }
+
+    /**
+     * 获取访问次数最多的量
+     */
     private String getMaxCount(Map<String, Integer> map) {
         List<Map.Entry<String, Integer>> list = new ArrayList<>(map.entrySet());
-        list.sort(Comparator.comparingInt(Map.Entry::getValue));
+        list.sort((o1, o2) -> o2.getValue().compareTo(o1.getValue()));
         if (list.size() > 0) {
             return list.get(0).getKey();
         } else {

@@ -25,11 +25,11 @@ public class DeviceLogAnalyzer extends BaseAnalysor {
 //    @Scheduled(cron = TEST_TIME)
 
     /**
-     * 每天3点10分更新昨天设备访问日志
+     * 每天3点10分同步昨天设备访问日志
      */
     @Scheduled(cron = "0 10 3 1/1 * ? ")
     public void analysis() {
-        log.info("开始更新设备访问日志...");
+        log.info("开始同步设备访问日志...");
         // 昨天00:00:00时刻
         String yesterdayDateTime = TimeGenerator.yesterdayDateTime();
         String yesterdayDate = yesterdayDateTime.substring(0, 11);
@@ -43,13 +43,19 @@ public class DeviceLogAnalyzer extends BaseAnalysor {
             return;
         }
         recordList.forEach(this::analysisRecord);
-        log.info("设备访问日志更新完成...");
+        log.info("设备访问日志同步完成...");
     }
 
     /**
      * 同步更新昨天的访问记录
      */
     private void analysisRecord(Record record) {
+        // 判断是不是昨天的记录
+        String visiteTime = record.getVisiteTime();
+        if (!TimeGenerator.isYesterday(visiteTime)) {
+            return;
+        }
+
         DeviceAccessLog accessLogEntity = new DeviceAccessLog()
                 .setRecordId(String.valueOf(record.getId()))
                 .setIsDeleted(NO_DELETED);

@@ -30,21 +30,22 @@ import static com.ten.aditum.back.util.TimeGenerator.averageTime;
 @EnableAutoConfiguration
 public class IntervalAnalyzer extends BaseAnalysor {
 
+//    @Scheduled(cron = TEST_TIME)
+
     /**
      * 每天1点20分分析用户访问间隔
      */
-//    @Scheduled(cron = TEST_TIME)
     @Scheduled(cron = "0 20 1 1/1 * ?")
     public void analysis() {
         log.info("开始分析用户访问间隔...");
-
         List<Person> personList = selectAllPerson();
-
         personList.forEach(this::analysisPerson);
-
         log.info("用户访问间隔分析完成...");
     }
 
+    /**
+     * 一天的秒数
+     */
     private static final long DAY = 60 * 60 * 24;
 
     /**
@@ -57,12 +58,13 @@ public class IntervalAnalyzer extends BaseAnalysor {
                 .setIsDeleted(NO_DELETED);
         List<AccessTime> select = accessTimeService.select(accessTimeEntity);
         if (select.size() < 1) {
-            log.info("此用户还没有AccessTime记录, {}", person);
+            log.info("此用户 {} 还没有AccessTime记录", person.getPersonnelName());
             return;
         }
 
         // 获取AccessTime
         AccessTime theAccessTime = select.get(0);
+        // 最早、最晚访问时间
         String earliest = theAccessTime.getAverageEarliestAccessTime();
         String latest = theAccessTime.getAverageLatestAccessTime();
         // 总访问天数
@@ -71,18 +73,21 @@ public class IntervalAnalyzer extends BaseAnalysor {
         long es = TimeGenerator.getTotalSec(earliest);
         long ls = TimeGenerator.getTotalSec(latest);
 
-        // FIXME 若只有一次访问，则为0
-        long workTimeS = ls - es;
-        long lifeTimeS = DAY - workTimeS;
-
+        // 外出时间、滞留时间(秒)
+        long workTimeS;
+        long lifeTimeS;
+        if (es == ls) {
+            log.warn("此用户 {} 只有一次访问时间记录", person.getPersonnelName());
+            return;
+        } else {
+            workTimeS = ls - es;
+            lifeTimeS = DAY - workTimeS;
+        }
         // 每天外出工作时间
         String workTime = getTimeFromSec(workTimeS);
         // 每天在家滞留时间
         String lifeTime = getTimeFromSec(lifeTimeS);
 
-        // 插入数据
-
-        // 生成数据对象
         AccessInterval accessInterval = new AccessInterval()
                 .setPersonnelId(person.getPersonnelId())
                 .setMeanTimeRetention(lifeTime)
@@ -91,7 +96,6 @@ public class IntervalAnalyzer extends BaseAnalysor {
                 .setSecondAddressCount(dayCount)
                 .setIsDeleted(NO_DELETED);
 
-        // 查询此person的原纪录
         AccessInterval accessIntervalEntity = new AccessInterval()
                 .setPersonnelId(person.getPersonnelId())
                 .setIsDeleted(NO_DELETED);
@@ -101,8 +105,7 @@ public class IntervalAnalyzer extends BaseAnalysor {
             accessInterval
                     .setCreateTime(TimeGenerator.currentTime());
             accessIntervalService.insert(accessInterval);
-
-            log.info("此person {} 还没有时间间隔记录，插入 {}", person.getPersonnelName(), accessInterval);
+            log.info("Person {} 插入 w {} l {}", person.getPersonnelName(), workTime, lifeTime);
         }
         // 当前用户已有记录，更新
         else {
@@ -112,8 +115,7 @@ public class IntervalAnalyzer extends BaseAnalysor {
                     .setId(id)
                     .setUpdateTime(TimeGenerator.currentTime());
             accessIntervalService.update(accessInterval);
-
-            log.info("此person {} 已经有时间间隔记录，更新 {}", person.getPersonnelName(), accessInterval);
+            log.info("Person {} 更新 w {} l {}", person.getPersonnelName(), workTime, lifeTime);
         }
     }
 
