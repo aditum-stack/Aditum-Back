@@ -81,22 +81,7 @@ public class PersonasService {
         }
 
         // 已存在，更新
-        if (existed) {
-            PersonasPortrait update = new PersonasPortrait()
-                    .setId(portraitId)
-                    .setPersonasExt(String.join(",", labelList))
-                    .setUpdateTime(TimeGenerator.currentTime());
-            personasPortraitService.update(update);
-        }
-        // 未存在，创建
-        else {
-            PersonasPortrait create = new PersonasPortrait()
-                    .setPersonnelId(personas.getPersonnelId())
-                    .setPersonasExt(String.join(",", labelList))
-                    .setCreateTime(TimeGenerator.currentTime())
-                    .setIsDeleted(NO_DELETED);
-            personasPortraitService.insert(create);
-        }
+        createOrUpdatePortrait(personas, labelList, existed, portraitId);
     }
 
     /**
@@ -111,8 +96,8 @@ public class PersonasService {
         PersonasPortrait personasPortrait = new PersonasPortrait()
                 .setPersonnelId(personas.getPersonnelId())
                 .setIsDeleted(NO_DELETED);
-
-        List<PersonasPortrait> personasPortraitList = personasPortraitService.select(personasPortrait);
+        List<PersonasPortrait> personasPortraitList =
+                personasPortraitService.select(personasPortrait);
 
         // personas model array
         List<String> labelList = new ArrayList<>();
@@ -136,13 +121,19 @@ public class PersonasService {
         }
 
         String labelName = personas.getLabelName();
-
         // 未包含此标签
         if (!labelList.contains(labelName)) {
             labelList.add(labelName);
+        } else {
+            log.info("用户 {} 已包含标签 {}", personas.getPersonnelId(), personas.getLabelName());
+            return;
         }
 
         // 已存在，更新
+        createOrUpdatePortrait(personas, labelList, existed, portraitId);
+    }
+
+    private void createOrUpdatePortrait(Personas personas, List<String> labelList, boolean existed, int portraitId) {
         if (existed) {
             PersonasPortrait update = new PersonasPortrait()
                     .setId(portraitId)

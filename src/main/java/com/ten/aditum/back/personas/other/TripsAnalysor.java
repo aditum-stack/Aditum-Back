@@ -47,14 +47,13 @@ public class TripsAnalysor extends BaseAnalysor {
     @Scheduled(cron = "0 30 0 1/1 * ?")
     public void analysis() {
         log.info("出行量排名动态标签...开始");
-
         List<Person> personList = selectAllPerson();
-
         // 用户访问量队列
         List<PersonAccessCount> personAccessCountList = new ArrayList<>(personList.size());
 
         for (Person person : personList) {
             PersonAccessCount obj = analysisPerson(person);
+            // 0访问量用户也参与排名
             if (obj == null) {
                 obj = new PersonAccessCount(person.getPersonnelId(), person.getPersonnelName(), 0);
             }
@@ -67,7 +66,6 @@ public class TripsAnalysor extends BaseAnalysor {
                 .collect(Collectors.toList());
 
         int size = sorted.size();
-
         for (int i = 0; i < size; i++) {
             // 击败了多少的用户
             int index = i + 1;
@@ -81,21 +79,18 @@ public class TripsAnalysor extends BaseAnalysor {
             }
             this.analysisRank(personAccessCountList.get(i), rankS);
         }
-
         log.info("出行量排名动态标签...结束");
     }
 
+    /**
+     * 分析用户访问量排名
+     */
     private PersonAccessCount analysisPerson(Person person) {
-        // 获取AccessTime
-        AccessTime accessTimeEntity = new AccessTime()
-                .setPersonnelId(person.getPersonnelId())
-                .setIsDeleted(NO_DELETED);
-        List<AccessTime> select = accessTimeService.select(accessTimeEntity);
+        List<AccessTime> select = selectPersonAccessTime(person.getPersonnelId());
         if (select.size() < 1) {
-            log.info("此用户还没有AccessTime记录, {}", person.getPersonnelName());
+            log.info("Person {} 还没有AccessTime记录", person.getPersonnelName());
             return null;
         }
-        // 获取AccessTime
         AccessTime theAccessTime = select.get(0);
         int totalDay = theAccessTime.getAverageDailyFrequencyCount();
         int everyDayAccess = theAccessTime.getAverageDailyFrequency();
@@ -104,12 +99,16 @@ public class TripsAnalysor extends BaseAnalysor {
         return new PersonAccessCount(person.getPersonnelId(), person.getPersonnelName(), totalCount);
     }
 
+    /**
+     * 生成访问量的用户画像标签
+     */
     private void analysisRank(PersonAccessCount person, String rank) {
+        // 删除原有标签
         Personas old = new Personas()
                 .setPersonnelId(person.getPersonnelId())
                 .setLabelName("击败了");
         personasService.removeFuzzyPersonasByKey(old);
-
+        // 添加新标签
         String labelName = "击败了" + rank + "的用户";
         Personas label = new Personas()
                 .setPersonnelId(person.getPersonnelId())

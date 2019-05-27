@@ -31,32 +31,27 @@ public class PhoneAnalysor extends BaseAnalysor {
     @Scheduled(cron = "0 20 0 1/1 * ?")
     public void analysis() {
         log.info("电话号运营商动态标签...开始");
-
         List<Person> personList = selectAllPerson();
-
         personList.forEach(this::analysisPerson);
-
         log.info("电话号运营商动态标签...结束");
     }
 
+    /**
+     * 分析运营商并更新用户画像
+     */
     private void analysisPerson(Person person) {
         String phone = person.getPersonnelPhone();
-
         if (StringUtil.isEmpty(phone)) {
             log.warn("用户 {} 没有电话号", person.getPersonnelName());
             return;
         }
 
         String operator = chinaMobilePhone(phone);
-
         String labelName = "运营商:" + operator;
-
         Personas label = new Personas()
                 .setPersonnelId(person.getPersonnelId())
                 .setLabelName(labelName);
-
         personasService.updatePersonasByLabelName(label);
-
         log.info("用户 {} 运营商标签计算完成，{}", person.getPersonnelName(), labelName);
     }
 

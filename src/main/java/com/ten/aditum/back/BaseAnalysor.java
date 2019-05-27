@@ -1,5 +1,6 @@
 package com.ten.aditum.back;
 
+import com.ten.aditum.back.entity.AccessTime;
 import com.ten.aditum.back.entity.Community;
 import com.ten.aditum.back.entity.Device;
 import com.ten.aditum.back.entity.Person;
@@ -129,6 +130,20 @@ public abstract class BaseAnalysor {
         List<Person> personList = personService.select(personEntity);
         log.info("Person集合 : {}", personList);
         return personList;
+    }
+
+    // -------------------------------------------------------------- UBT data
+
+    /**
+     * 根据用户ID获取访问时间记录
+     */
+    protected List<AccessTime> selectPersonAccessTime(String personnelId) {
+        AccessTime accessTimeEntity = new AccessTime()
+                .setPersonnelId(personnelId)
+                .setIsDeleted(NO_DELETED);
+        List<AccessTime> select = accessTimeService.select(accessTimeEntity);
+        log.info("AccessTime集合 : {}", select);
+        return select;
     }
 
 }
