@@ -5,6 +5,7 @@ import com.ten.aditum.back.entity.Community;
 import com.ten.aditum.back.entity.Device;
 import com.ten.aditum.back.entity.Person;
 import com.ten.aditum.back.service.*;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.annotation.Resource;
@@ -13,15 +14,33 @@ import java.util.List;
 @Slf4j
 public abstract class BaseAnalysor {
 
-    /*
-     * 1 基于早晚访问时间的二维分析
-     * 2 基于早或晚时间的一维分析
-     * 3 基于访问频次的一维分析
-     * 4 基于用户信息的数据分析
-     * 5 基于用户访问地理信息的分析
-     * 6 基于访问时长的分析
-     * 7 基于排名的数据分析
-     */
+    @Getter
+    public enum LabelType {
+        /**
+         * 0 随机标签
+         * 1 基于早晚访问时间的二维分析
+         * 2 基于早或晚时间的一维分析
+         * 3 基于访问频次的一维分析
+         * 4 基于用户信息的数据分析
+         * 5 基于用户访问地理信息的分析
+         * 6 基于访问时长的分析
+         * 7 基于排名的数据分析
+         */
+        RANDOM(0),
+        TIME_TWO(1),
+        TIME_ONE(2),
+        FREQUENCY(3),
+        BASIC_DATA(4),
+        ADDRESS(5),
+        INTERVAL(6),
+        RANK(7);
+
+        int type;
+
+        LabelType(int type) {
+            this.type = type;
+        }
+    }
 
     /**
      * 测试时间，每分钟执行一次
@@ -68,7 +87,7 @@ public abstract class BaseAnalysor {
     protected PersonasPortraitService personasPortraitService;
 
     /**
-     * 在子类中展示本类要分析的标签
+     * 在子类中展示本类要分析的标签，需要和数据库表中的标签信息相对应
      */
     public void showModelLabel() {
     }

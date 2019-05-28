@@ -45,11 +45,8 @@ public class AnalysorFour extends BaseAnalysor {
     @Scheduled(cron = "0 30 4 1/1 * ?")
     public void analysis() {
         log.info("基于用户信息的数据分析...开始");
-
         List<Person> personList = selectAllPerson();
-
         personList.forEach(this::analysisPerson);
-
         log.info("基于用户信息的数据分析...结束");
     }
 

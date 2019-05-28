@@ -44,11 +44,8 @@ public class AnalysorMix extends BaseAnalysor {
     @Scheduled(cron = "0 10 5 1/1 * ?")
     public void analysis() {
         log.info("混合分析，标签结合...开始");
-
         List<Person> personList = selectAllPerson();
-
         personList.forEach(this::analysisPerson);
-
         log.info("混合分析，标签结合...开始");
     }
 

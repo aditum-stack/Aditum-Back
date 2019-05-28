@@ -23,19 +23,16 @@ import java.util.List;
 @EnableAutoConfiguration
 public class AddressAnalysor extends BaseAnalysor {
 
-//    @Scheduled(cron = TEST_TIME)
+    @Scheduled(cron = TEST_TIME)
 
     /**
      * 每天0点10分执行
      */
-    @Scheduled(cron = "0 10 0 1/1 * ?")
+//    @Scheduled(cron = "0 10 0 1/1 * ?")
     public void analysis() {
         log.info("居住地动态标签...开始");
-
         List<Person> personList = selectAllPerson();
-
         personList.forEach(this::analysisPerson);
-
         log.info("居住地动态标签...结束");
     }
 

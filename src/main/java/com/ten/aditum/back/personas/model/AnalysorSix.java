@@ -50,11 +50,8 @@ public class AnalysorSix extends BaseAnalysor {
     @Scheduled(cron = "0 50 4 1/1 * ?")
     public void analysis() {
         log.info("基于访问时长的分析...开始");
-
         List<Person> personList = selectAllPerson();
-
         personList.forEach(this::analysisPerson);
-
         log.info("基于访问时长的分析...开始");
     }
 

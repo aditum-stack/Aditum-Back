@@ -70,12 +70,9 @@ public class AnalysorSeven extends BaseAnalysor {
     @Scheduled(cron = "0 0 5 1/1 * ?")
     public void analysis() {
         log.info("基于排名的数据分析...开始");
-
         List<Person> personList = selectAllPerson();
-
         // 用户访问量队列
         List<PersonAccessCount> personAccessCountList = new ArrayList<>(personList.size());
-
         for (Person person : personList) {
             PersonAccessCount obj = analysisPerson(person);
             if (obj == null) {
@@ -83,7 +80,6 @@ public class AnalysorSeven extends BaseAnalysor {
             }
             personAccessCountList.add(obj);
         }
-
         // 基于访问量进行排序
         List<PersonAccessCount> sorted = personAccessCountList.stream()
                 .sorted((o1, o2) -> o2.totalCount.compareTo(o1.totalCount))

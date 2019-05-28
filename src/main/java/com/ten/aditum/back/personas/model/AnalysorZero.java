@@ -21,21 +21,26 @@ import java.util.List;
 @EnableAutoConfiguration
 public class AnalysorZero extends BaseAnalysor {
 
+    /**
+     * 每天生成多少个随机标签
+     */
+    private static final int RANDOM_DAY_COUNT= 10;
+
     @Override
     public void showModelLabel() {
         PersonasLabel label1 = new PersonasLabel()
                 .setLabelId("random1")
-                .setLabelType(0)
+                .setLabelType(LabelType.RANDOM.getType())
                 .setLabelName("作息规律")
                 .setLabelDesc("随机生成，生成概率每天10个人");
         PersonasLabel label2 = new PersonasLabel()
                 .setLabelId("random2")
-                .setLabelType(0)
+                .setLabelType(LabelType.RANDOM.getType())
                 .setLabelName("生活健康")
                 .setLabelDesc("随机生成，生成概率每天10个人");
         PersonasLabel label3 = new PersonasLabel()
                 .setLabelId("random3")
-                .setLabelType(0)
+                .setLabelType(LabelType.RANDOM.getType())
                 .setLabelName("旅游爱好者")
                 .setLabelDesc("随机生成，生成概率每天10个人");
     }
@@ -48,28 +53,28 @@ public class AnalysorZero extends BaseAnalysor {
     @Scheduled(cron = "0 10 5 1/1 * ?")
     public void analysis() {
         log.info("随机标签生成...开始");
-
         List<Person> personList = selectAllPerson();
-
         // 作息规律
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < RANDOM_DAY_COUNT; i++) {
             int index = (int) (Math.random() * personList.size());
             analysisPerson(personList.get(index), "random1");
         }
         // 生活健康
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < RANDOM_DAY_COUNT; i++) {
             int index = (int) (Math.random() * personList.size());
             analysisPerson(personList.get(index), "random2");
         }
         // 旅游爱好者
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < RANDOM_DAY_COUNT; i++) {
             int index = (int) (Math.random() * personList.size());
             analysisPerson(personList.get(index), "random3");
         }
-
         log.info("随机标签生成...结束");
     }
 
+    /**
+     * 根据label生成标签
+     */
     private void analysisPerson(Person person, String label) {
         Personas personas = new Personas()
                 .setPersonnelId(person.getPersonnelId())

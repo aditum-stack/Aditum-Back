@@ -50,11 +50,8 @@ public class AnalysorTwo extends BaseAnalysor {
     @Scheduled(cron = "0 10 4 1/1 * ?")
     public void analysis() {
         log.info("基于早或晚时间的一维分析...开始");
-
         List<Person> personList = selectAllPerson();
-
         personList.forEach(this::analysisPerson);
-
         log.info("基于早或晚时间的一维分析...结束");
     }
 
@@ -63,7 +60,6 @@ public class AnalysorTwo extends BaseAnalysor {
     private long label3 = TimeGenerator.getTotalSec("23:00:00");
 
     private void analysisPerson(Person person) {
-        // 获取AccessTime
         AccessTime accessTimeEntity = new AccessTime()
                 .setPersonnelId(person.getPersonnelId())
                 .setIsDeleted(NO_DELETED);
@@ -73,7 +69,6 @@ public class AnalysorTwo extends BaseAnalysor {
             return;
         }
 
-        // 获取AccessTime
         AccessTime theAccessTime = select.get(0);
         String earliest = theAccessTime.getAverageEarliestAccessTime();
         String latest = theAccessTime.getAverageLatestAccessTime();

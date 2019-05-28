@@ -49,11 +49,8 @@ public class AnalysorFive extends BaseAnalysor {
     @Scheduled(cron = "0 40 4 1/1 * ?")
     public void analysis() {
         log.info("基于用户访问地理信息的分析...开始");
-
         List<Person> personList = selectAllPerson();
-
         personList.forEach(this::analysisPerson);
-
         log.info("基于用户访问地理信息的分析...结束");
     }
 

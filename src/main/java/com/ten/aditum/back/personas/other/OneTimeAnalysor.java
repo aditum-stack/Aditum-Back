@@ -26,11 +26,8 @@ public class OneTimeAnalysor extends BaseAnalysor {
 //    @Scheduled(cron = TEST_TIME)
     public void analysis() {
         log.info("一次性任务...开始");
-
         List<Person> personList = selectAllPerson();
-
         personList.forEach(this::analysisPerson);
-
         log.info("一次性任务...结束");
     }
 

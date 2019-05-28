@@ -57,16 +57,12 @@ public class AnalysorThree extends BaseAnalysor {
     @Scheduled(cron = "0 20 4 1/1 * ?")
     public void analysis() {
         log.info("基于访问频次的一维分析...开始");
-
         List<Person> personList = selectAllPerson();
-
         personList.forEach(this::analysisPerson);
-
         log.info("基于访问频次的一维分析...结束");
     }
 
     private void analysisPerson(Person person) {
-        // 获取AccessTime
         AccessTime accessTimeEntity = new AccessTime()
                 .setPersonnelId(person.getPersonnelId())
                 .setIsDeleted(NO_DELETED);
@@ -76,7 +72,6 @@ public class AnalysorThree extends BaseAnalysor {
             return;
         }
 
-        // 获取AccessTime
         AccessTime theAccessTime = select.get(0);
         int totalDay = theAccessTime.getAverageDailyFrequencyCount();
         int everyDayAccess = theAccessTime.getAverageDailyFrequency();

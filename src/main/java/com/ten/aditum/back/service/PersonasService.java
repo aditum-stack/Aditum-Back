@@ -13,7 +13,9 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
-
+/**
+ * ServiceManager，不对应表，调用其他service进行服务
+ */
 @Slf4j
 @Service
 public class PersonasService {
