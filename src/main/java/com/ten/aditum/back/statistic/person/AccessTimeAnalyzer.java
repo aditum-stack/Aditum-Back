@@ -23,7 +23,7 @@ import static com.ten.aditum.back.util.TimeGenerator.*;
 @Component
 @EnableScheduling
 @EnableAutoConfiguration
-public class TimeAnalyzer extends BaseAnalysor {
+public class AccessTimeAnalyzer extends BaseAnalysor {
 
 //    @Scheduled(cron = TEST_TIME)
 

@@ -28,7 +28,7 @@ import static com.ten.aditum.back.util.TimeGenerator.averageTime;
 @Component
 @EnableScheduling
 @EnableAutoConfiguration
-public class IntervalAnalyzer extends BaseAnalysor {
+public class AccessIntervalAnalyzer extends BaseAnalysor {
 
 //    @Scheduled(cron = TEST_TIME)
 

@@ -1,6 +1,7 @@
 package com.ten.aditum.back.statistic.person;
 
 
+import com.alibaba.fastjson.JSON;
 import com.ten.aditum.back.BaseAnalysor;
 import com.ten.aditum.back.entity.*;
 import com.ten.aditum.back.util.TimeGenerator;
@@ -17,7 +18,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Component
 @EnableScheduling
 @EnableAutoConfiguration
-public class AddressAnalyzer extends BaseAnalysor {
+public class AccessAddressAnalyzer extends BaseAnalysor {
 
 //    @Scheduled(cron = TEST_TIME)
 
@@ -80,6 +81,8 @@ public class AddressAnalyzer extends BaseAnalysor {
         Integer maxCount2 = personImeiMap.get(maxCountImei);
         log.info("Person {} 最常访问设备 {} {}次，累计 {}次",
                 person.getPersonnelName(), maxCountImei, maxCount2, access.getTotalCount());
+
+        System.out.println(JSON.toJSON(personImeiMap));
 
         if (imeiCollection.length() > 500) {
             imeiCollection = imeiCollection.substring(0, 499);

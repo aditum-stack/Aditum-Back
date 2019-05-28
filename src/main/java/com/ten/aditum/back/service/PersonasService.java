@@ -135,6 +135,9 @@ public class PersonasService {
         createOrUpdatePortrait(personas, labelList, existed, portraitId);
     }
 
+    /**
+     * 不存在则创建，存在则更新
+     */
     private void createOrUpdatePortrait(Personas personas, List<String> labelList, boolean existed, int portraitId) {
         if (existed) {
             PersonasPortrait update = new PersonasPortrait()
