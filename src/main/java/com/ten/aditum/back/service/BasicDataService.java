@@ -6,6 +6,7 @@ import com.ten.aditum.back.entity.*;
 import com.ten.aditum.back.util.TimeGenerator;
 import com.ten.aditum.back.vo.BasicCountData;
 import com.ten.aditum.back.vo.BasicDeviceCountData;
+import com.ten.aditum.back.vo.BasicDeviceWeekendData;
 import com.ten.aditum.back.vo.BasicLabelData;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -125,7 +126,7 @@ public class BasicDataService {
             }
         });
 
-        // 统计各个标签出现的次数
+        // 设备访问量
         deviceList.parallelStream().forEach(device1 -> {
             Record record = new Record()
                     .setImei(device1.getImei())
@@ -133,6 +134,7 @@ public class BasicDataService {
             int count = recordService.selectCount(record);
             if (count > 0) {
                 BasicDeviceCountData.DeviceCount deviceCount = new BasicDeviceCountData.DeviceCount();
+                deviceCount.setImei(device1.getImei());
                 deviceCount.setDeviceName(device1.getAlias());
                 deviceCount.setDeviceCount(count);
                 queue.add(deviceCount);
@@ -147,6 +149,47 @@ public class BasicDataService {
         }
         basicDeviceCountData.setDeviceCountList(deviceCounts);
         return basicDeviceCountData;
+    }
+
+    /**
+     * 展示首页的最近七天预览，最近七天每天访问量前MOST_WEEKEND_COUNT的设备（访问量前MOST_WEEKEND_COUNT的设备最近一周的访问量）
+     */
+    public BasicDeviceWeekendData analysisBasicWeekendData(String communityId, int mostWeekendCount) {
+        // 设备一周访问时间
+        String[] weekendDays = TimeGenerator.weekendZeroDateTimes();
+        // 访问量最大的mostWeekendCount个设备
+        BasicDeviceCountData basicDeviceCountData = analysisBasicDeviceData(communityId, mostWeekendCount);
+        List<BasicDeviceCountData.DeviceCount> deviceCountList = basicDeviceCountData.getDeviceCountList();
+
+        // 获取数量最多的maxCount个标签
+        BasicDeviceWeekendData basicDeviceWeekendData = new BasicDeviceWeekendData();
+        List<BasicDeviceWeekendData.WeekendDeviceCount> weekendDeviceCounts = new ArrayList<>();
+
+        // 获取每台设备的最近一周访问量
+        deviceCountList.parallelStream().forEach(deviceCount -> {
+            List<Integer> weekendAccessCount = new ArrayList<>(7);
+            String imei = deviceCount.getImei();
+            Record record = new Record()
+                    .setImei(imei)
+                    .setIsDeleted(BaseController.NO_DELETED);
+            // 今天的访问量
+            int todayCount = recordService.selectCountAfterDateTime(record, weekendDays[0]);
+            weekendAccessCount.add(todayCount);
+            // 其余天数的访问量
+            for (int i = 0; i < weekendDays.length - 1; i++) {
+                // 第一次为：昨天一整天的访问量
+                int countBetweenDateTime = recordService.selectCountBetweenDateTime(record, weekendDays[i + 1], weekendDays[i]);
+                weekendAccessCount.add(countBetweenDateTime);
+            }
+
+            BasicDeviceWeekendData.WeekendDeviceCount weekendDeviceCount = new BasicDeviceWeekendData.WeekendDeviceCount();
+            weekendDeviceCount.setDeviceName(deviceCount.getDeviceName());
+            weekendDeviceCount.setWeekendAccessCount(weekendAccessCount);
+            weekendDeviceCounts.add(weekendDeviceCount);
+        });
+
+        basicDeviceWeekendData.setWeekendDeviceCountList(weekendDeviceCounts);
+        return basicDeviceWeekendData;
     }
 
     // -------------------------------------------------------------- private

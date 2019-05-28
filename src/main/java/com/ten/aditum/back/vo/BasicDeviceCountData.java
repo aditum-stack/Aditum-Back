@@ -16,6 +16,7 @@ public class BasicDeviceCountData {
 
     @Data
     public static class DeviceCount {
+        private String imei;
         private String deviceName;
         private int deviceCount;
     }
