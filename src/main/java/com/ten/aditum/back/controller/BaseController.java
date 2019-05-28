@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public abstract class BaseController<Entity> {
 
-    static final int NO_DELETED = 0;
-    static final int IS_DELETED = 1;
+    public static final int NO_DELETED = 0;
+    public static final int IS_DELETED = 1;
 
     /* Restful Interface */
 

@@ -21,9 +21,21 @@ public class ResultModel {
         this.data = "";
     }
 
+    public ResultModel(AditumCode code, String msg) {
+        this.code = code.getCode();
+        this.msg = msg;
+        this.data = "";
+    }
+
     public ResultModel(AditumCode code, Object data) {
         this.code = code.getCode();
         this.msg = code.getMsg();
+        this.data = data;
+    }
+
+    public ResultModel(AditumCode code, String msg, Object data) {
+        this.code = code.getCode();
+        this.msg = msg;
         this.data = data;
     }
 

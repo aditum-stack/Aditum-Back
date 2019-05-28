@@ -55,6 +55,22 @@ public class TimeGenerator {
     }
 
     /**
+     * 一周每天的0点时刻
+     */
+    public static String[] weekendZeroDateTimes() {
+        String[] everyDayZeroTimes = new String[7];
+        for (int i = 0; i < 7; i++) {
+            Calendar cal = Calendar.getInstance();
+            cal.add(Calendar.DATE, -i);
+            DateFormat fmt = new SimpleDateFormat(DATE_TIME_FORMAT);
+            String dateTime = fmt.format(cal.getTime());
+            String zeroDateTime = formatZeroTime(dateTime);
+            everyDayZeroTimes[i] = zeroDateTime;
+        }
+        return everyDayZeroTimes;
+    }
+
+    /**
      * 判断年月日时分秒是不是昨天
      */
     public static boolean isYesterday(String dateTime) {
@@ -90,6 +106,16 @@ public class TimeGenerator {
         }
         // 去掉日期，保留时间
         return value.substring(11);
+    }
+
+    /**
+     * 年月日时分秒时间字符串转 0点 年月日时分秒
+     */
+    public static String formatZeroTime(String value) {
+        if (value == null) {
+            return "";
+        }
+        return value.substring(0, 11) + "00:00:00";
     }
 
     /**

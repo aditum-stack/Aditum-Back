@@ -92,6 +92,54 @@
     </select>
 
     <!--auto generated Code-->
+    <select id="selectCount" resultType="int">
+        SELECT
+        COUNT(*)
+        FROM record
+        <where>
+            <if test="pojo.id != null">AND id = #{pojo.id}</if>
+            <if test="pojo.imei != null">AND imei = #{pojo.imei}</if>
+            <if test="pojo.personnelId != null">AND personnel_id = #{pojo.personnelId}</if>
+            <if test="pojo.visiteTime != null">AND visite_time = #{pojo.visiteTime}</if>
+            <if test="pojo.visiteStatus != null">AND visite_status = #{pojo.visiteStatus}</if>
+            <if test="pojo.isDeleted != null">AND is_deleted = #{pojo.isDeleted}</if>
+        </where>
+    </select>
+
+    <!--auto generated Code-->
+    <select id="selectCountBetweenDateTime" resultType="int">
+        SELECT
+        COUNT(*)
+        FROM record
+        <where>
+            visite_time > #{startTime}
+            AND #{endTime} > visite_time
+            <if test="pojo.id != null">AND id = #{pojo.id}</if>
+            <if test="pojo.imei != null">AND imei = #{pojo.imei}</if>
+            <if test="pojo.personnelId != null">AND personnel_id = #{pojo.personnelId}</if>
+            <if test="pojo.visiteTime != null">AND visite_time = #{pojo.visiteTime}</if>
+            <if test="pojo.visiteStatus != null">AND visite_status = #{pojo.visiteStatus}</if>
+            <if test="pojo.isDeleted != null">AND is_deleted = #{pojo.isDeleted}</if>
+        </where>
+    </select>
+
+    <!--auto generated Code-->
+    <select id="selectCountAfterDateTime" resultType="int">
+        SELECT
+        COUNT(*)
+        FROM record
+        <where>
+            visite_time > #{startTime}
+            <if test="pojo.id != null">AND id = #{pojo.id}</if>
+            <if test="pojo.imei != null">AND imei = #{pojo.imei}</if>
+            <if test="pojo.personnelId != null">AND personnel_id = #{pojo.personnelId}</if>
+            <if test="pojo.visiteTime != null">AND visite_time = #{pojo.visiteTime}</if>
+            <if test="pojo.visiteStatus != null">AND visite_status = #{pojo.visiteStatus}</if>
+            <if test="pojo.isDeleted != null">AND is_deleted = #{pojo.isDeleted}</if>
+        </where>
+    </select>
+
+    <!--auto generated Code-->
     <select id="selectAfterTheId" resultMap="AllColumnMap">
         SELECT
         <include refid="all_column"/>
