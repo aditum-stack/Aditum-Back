@@ -2,24 +2,20 @@ package com.ten.aditum.back.service;
 
 import com.sun.org.apache.regexp.internal.RE;
 import com.ten.aditum.back.controller.BaseController;
-import com.ten.aditum.back.entity.Community;
-import com.ten.aditum.back.entity.Device;
-import com.ten.aditum.back.entity.Person;
-import com.ten.aditum.back.entity.Record;
+import com.ten.aditum.back.entity.*;
 import com.ten.aditum.back.util.TimeGenerator;
 import com.ten.aditum.back.vo.BasicCountData;
+import com.ten.aditum.back.vo.BasicLabelData;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 /**
- * 基础数据展示，功能函数
+ * 基础图表数据展示，功能函数
  */
 @Slf4j
 @Service
@@ -31,16 +27,18 @@ public class BasicDataService {
     private final DeviceService deviceService;
     private final PersonService personService;
     private final RecordService recordService;
+    private final PersonasPortraitService personasPortraitService;
 
     @Autowired
     public BasicDataService(CommunityService communityService,
                             DeviceService deviceService,
                             PersonService personService,
-                            RecordService recordService) {
+                            RecordService recordService, PersonasPortraitService personasPortraitService) {
         this.communityService = communityService;
         this.deviceService = deviceService;
         this.personService = personService;
         this.recordService = recordService;
+        this.personasPortraitService = personasPortraitService;
     }
 
     /**
@@ -57,6 +55,56 @@ public class BasicDataService {
         // record
         basicCountDataResult = analysisRecord(communityId, basicCountDataResult);
         return basicCountDataResult;
+    }
+
+    /**
+     * 分析数量最多的用户画像标签
+     */
+    public BasicLabelData analysisBasicLabelCount(String communityId, int maxCount) {
+        // TODO 根据communityId获取person
+        Person person = new Person()
+                .setIsDeleted(BaseController.NO_DELETED);
+        List<Person> personList = personService.select(person);
+
+        // 标签数量集合
+        Map<String, Integer> labelCountMap = new ConcurrentHashMap<>(personList.size());
+
+        // 统计各个标签出现的次数
+        personList.parallelStream().forEach(person1 -> {
+            PersonasPortrait personasPortrait = new PersonasPortrait()
+                    .setPersonnelId(person1.getPersonnelId())
+                    .setIsDeleted(BaseController.NO_DELETED);
+            List<PersonasPortrait> personasPortraits = personasPortraitService.select(personasPortrait);
+            if (personasPortraits.size() > 0) {
+                PersonasPortrait portrait = personasPortraits.get(0);
+                String personasExt = portrait.getPersonasExt();
+                String[] labels = personasExt.split(",");
+                for (String label : labels) {
+                    if (labelCountMap.containsKey(label)) {
+                        Integer value = labelCountMap.get(label);
+                        labelCountMap.put(label, value + 1);
+                    } else {
+                        labelCountMap.put(label, 0);
+                    }
+                }
+            }
+        });
+
+        // 降序排列
+        List<Map.Entry<String, Integer>> list = new ArrayList<>(labelCountMap.entrySet());
+        list.sort((o1, o2) -> o2.getValue().compareTo(o1.getValue()));
+
+        // 获取数量最多的maxCount个标签
+        BasicLabelData basicLabelData = new BasicLabelData();
+        List<BasicLabelData.LabelCount> labelCountList = new ArrayList<>();
+        for (int i = 0; i < maxCount; i++) {
+            BasicLabelData.LabelCount labelCount = new BasicLabelData.LabelCount();
+            labelCount.setLabelName(list.get(i).getKey());
+            labelCount.setLabelCount(list.get(i).getValue());
+            labelCountList.add(labelCount);
+        }
+        basicLabelData.setLabelCountList(labelCountList);
+        return basicLabelData;
     }
 
     // -------------------------------------------------------------- private
@@ -90,15 +138,15 @@ public class BasicDataService {
             basicCountDataResult.setCommunityCount(0);
             List<BasicCountData.TotalAndIncrement> voidTotalAndIncrements = newVoidListOfWeekend();
             basicCountDataResult.setCommunityCountList(voidTotalAndIncrements);
-        } else {
-            int count = communityList.size();
-            basicCountDataResult.setCommunityCount(count);
-            List<String> timeList = communityList.stream()
-                    .map(Community::getCreateTime)
-                    .collect(Collectors.toList());
-            List<BasicCountData.TotalAndIncrement> totalAndIncrements = analysisWeekendData(timeList);
-            basicCountDataResult.setCommunityCountList(totalAndIncrements);
+            return basicCountDataResult;
         }
+        int count = communityList.size();
+        basicCountDataResult.setCommunityCount(count);
+        List<String> timeList = communityList.stream()
+                .map(Community::getCreateTime)
+                .collect(Collectors.toList());
+        List<BasicCountData.TotalAndIncrement> totalAndIncrements = analysisWeekendData(timeList);
+        basicCountDataResult.setCommunityCountList(totalAndIncrements);
         return basicCountDataResult;
     }
 
@@ -117,15 +165,15 @@ public class BasicDataService {
             basicCountDataResult.setDeviceCount(0);
             List<BasicCountData.TotalAndIncrement> voidTotalAndIncrements = newVoidListOfWeekend();
             basicCountDataResult.setDeviceCountList(voidTotalAndIncrements);
-        } else {
-            int count = deviceList.size();
-            basicCountDataResult.setDeviceCount(count);
-            List<String> timeList = deviceList.stream()
-                    .map(Device::getCreateTime)
-                    .collect(Collectors.toList());
-            List<BasicCountData.TotalAndIncrement> totalAndIncrements = analysisWeekendData(timeList);
-            basicCountDataResult.setDeviceCountList(totalAndIncrements);
+            return basicCountDataResult;
         }
+        int count = deviceList.size();
+        basicCountDataResult.setDeviceCount(count);
+        List<String> timeList = deviceList.stream()
+                .map(Device::getCreateTime)
+                .collect(Collectors.toList());
+        List<BasicCountData.TotalAndIncrement> totalAndIncrements = analysisWeekendData(timeList);
+        basicCountDataResult.setDeviceCountList(totalAndIncrements);
         return basicCountDataResult;
     }
 
@@ -144,15 +192,15 @@ public class BasicDataService {
             basicCountDataResult.setPersonCount(0);
             List<BasicCountData.TotalAndIncrement> voidTotalAndIncrements = newVoidListOfWeekend();
             basicCountDataResult.setPersonCountList(voidTotalAndIncrements);
-        } else {
-            int count = personList.size();
-            basicCountDataResult.setPersonCount(count);
-            List<String> timeList = personList.stream()
-                    .map(Person::getCreateTime)
-                    .collect(Collectors.toList());
-            List<BasicCountData.TotalAndIncrement> totalAndIncrements = analysisWeekendData(timeList);
-            basicCountDataResult.setPersonCountList(totalAndIncrements);
+            return basicCountDataResult;
         }
+        int count = personList.size();
+        basicCountDataResult.setPersonCount(count);
+        List<String> timeList = personList.stream()
+                .map(Person::getCreateTime)
+                .collect(Collectors.toList());
+        List<BasicCountData.TotalAndIncrement> totalAndIncrements = analysisWeekendData(timeList);
+        basicCountDataResult.setPersonCountList(totalAndIncrements);
         return basicCountDataResult;
     }
 
@@ -163,6 +211,7 @@ public class BasicDataService {
         if (basicCountDataResult == null) {
             return null;
         }
+        // TODO 根据社区communityId查询record
         Record record = new Record()
                 .setIsDeleted(BaseController.NO_DELETED);
         int count = recordService.selectCount(record);
@@ -205,7 +254,6 @@ public class BasicDataService {
     private List<BasicCountData.TotalAndIncrement> analysisWeekendData(List<String> createTimeList) {
         // 最近一周每天的0点时刻
         String[] everyDayZeroTimes = TimeGenerator.weekendZeroDateTimes();
-
         // 最近七天每天新增的量
         Map<Integer, Integer> everyDayIncreate = new HashMap<>(16);
         for (int i = 0; i < WEEKEND; i++) {
@@ -227,7 +275,6 @@ public class BasicDataService {
                 }
             }
         });
-
         List<BasicCountData.TotalAndIncrement> list = new ArrayList<>(8);
 
         // 计算每天的总量和增量
@@ -244,4 +291,5 @@ public class BasicDataService {
         }
         return list;
     }
+
 }
