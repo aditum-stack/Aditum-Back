@@ -50,6 +50,10 @@ public class TimeAnalyzer extends BaseAnalysor {
                     .setIsDeleted(NO_DELETED);
             List<Record> recordList = recordService.selectAfterTheId(recordEntity);
             if (recordList.size() == 0) {
+                if (i == 0) {
+                    log.warn("Person {}{} 没有任何访问记录！",
+                            person.getId(), person.getPersonnelName());
+                }
                 return;
             }
             analysisPersonTime(recordList, dayTimeMap);
@@ -87,7 +91,8 @@ public class TimeAnalyzer extends BaseAnalysor {
 
         int dayCount = dayTimeMap.entrySet().size();
         if (dayCount == 0) {
-            log.warn("Person {} 没有任何访问记录!", person.getPersonnelName());
+            log.warn("Person {}{} 没有任何访问记录!",
+                    person.getId(), person.getPersonnelName());
             return;
         }
 
@@ -113,8 +118,8 @@ public class TimeAnalyzer extends BaseAnalysor {
             accessTime
                     .setCreateTime(TimeGenerator.currentTime());
             accessTimeService.insert(accessTime);
-            log.info("Person {} 插入 {}min {}max {}f/d",
-                    person.getPersonnelName(), min, max, frequency);
+            log.info("Person {}{} 插入 {}min {}max {}f/d",
+                    person.getId(), person.getPersonnelName(), min, max, frequency);
         } else {
             AccessTime origin = accessTimeList.get(0);
             Integer id = origin.getId();
@@ -122,8 +127,8 @@ public class TimeAnalyzer extends BaseAnalysor {
                     .setId(id)
                     .setUpdateTime(TimeGenerator.currentTime());
             accessTimeService.update(accessTime);
-            log.info("Person {} 更新 {}min {}max {}f/d",
-                    person.getPersonnelName(), min, max, frequency);
+            log.info("Person {}{} 更新 {}min {}max {}f/d",
+                    person.getId(), person.getPersonnelName(), min, max, frequency);
         }
     }
 

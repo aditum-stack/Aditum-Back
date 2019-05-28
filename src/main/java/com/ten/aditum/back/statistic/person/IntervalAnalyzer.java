@@ -58,7 +58,8 @@ public class IntervalAnalyzer extends BaseAnalysor {
                 .setIsDeleted(NO_DELETED);
         List<AccessTime> select = accessTimeService.select(accessTimeEntity);
         if (select.size() < 1) {
-            log.info("此用户 {} 还没有AccessTime记录", person.getPersonnelName());
+            log.info("此用户 {}{} 还没有AccessTime记录",
+                    person.getId(), person.getPersonnelName());
             return;
         }
 
