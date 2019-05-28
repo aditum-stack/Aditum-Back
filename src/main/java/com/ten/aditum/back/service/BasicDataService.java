@@ -5,6 +5,7 @@ import com.ten.aditum.back.controller.BaseController;
 import com.ten.aditum.back.entity.*;
 import com.ten.aditum.back.util.TimeGenerator;
 import com.ten.aditum.back.vo.BasicCountData;
+import com.ten.aditum.back.vo.BasicDeviceCountData;
 import com.ten.aditum.back.vo.BasicLabelData;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -105,6 +106,47 @@ public class BasicDataService {
         }
         basicLabelData.setLabelCountList(labelCountList);
         return basicLabelData;
+    }
+
+    /**
+     * 分析访问量最大的设备以及它们的访问量
+     */
+    public BasicDeviceCountData analysisBasicDeviceData(String communityId, int maxCount) {
+        Device device = new Device()
+                .setCommunityId(communityId)
+                .setIsDeleted(BaseController.NO_DELETED);
+        List<Device> deviceList = deviceService.select(device);
+
+        // 数量集合
+        PriorityQueue<BasicDeviceCountData.DeviceCount> queue = new PriorityQueue<>(deviceList.size(), new Comparator<BasicDeviceCountData.DeviceCount>() {
+            @Override
+            public int compare(BasicDeviceCountData.DeviceCount o1, BasicDeviceCountData.DeviceCount o2) {
+                return o2.getDeviceCount() - o1.getDeviceCount();
+            }
+        });
+
+        // 统计各个标签出现的次数
+        deviceList.parallelStream().forEach(device1 -> {
+            Record record = new Record()
+                    .setImei(device1.getImei())
+                    .setIsDeleted(BaseController.NO_DELETED);
+            int count = recordService.selectCount(record);
+            if (count > 0) {
+                BasicDeviceCountData.DeviceCount deviceCount = new BasicDeviceCountData.DeviceCount();
+                deviceCount.setDeviceName(device1.getAlias());
+                deviceCount.setDeviceCount(count);
+                queue.add(deviceCount);
+            }
+        });
+
+        // 获取数量最多的maxCount个标签
+        BasicDeviceCountData basicDeviceCountData = new BasicDeviceCountData();
+        List<BasicDeviceCountData.DeviceCount> deviceCounts = new ArrayList<>();
+        for (int i = 0; i < maxCount; i++) {
+            deviceCounts.add(queue.poll());
+        }
+        basicDeviceCountData.setDeviceCountList(deviceCounts);
+        return basicDeviceCountData;
     }
 
     // -------------------------------------------------------------- private

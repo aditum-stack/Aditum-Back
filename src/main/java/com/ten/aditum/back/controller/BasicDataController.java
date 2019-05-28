@@ -4,6 +4,7 @@ import com.ten.aditum.back.model.AditumCode;
 import com.ten.aditum.back.model.ResultModel;
 import com.ten.aditum.back.service.*;
 import com.ten.aditum.back.vo.BasicCountData;
+import com.ten.aditum.back.vo.BasicDeviceCountData;
 import com.ten.aditum.back.vo.BasicLabelData;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,18 +46,18 @@ public class BasicDataController extends BaseController<BasicCountData> {
         if (communityId == null) {
             return new ResultModel(AditumCode.ERROR, "communityId不能为空");
         }
-        log.info("BasicCountData [GET] : {}", communityId);
+        log.info("showBasicCountData [GET] : {}", communityId);
 
         // 初始化缓存
         if (cache == null) {
             basicCountData = basicDataService.analysisBasicData(communityId);
             if (basicCountData == null) {
-                log.warn("BasicCountData [GET] [INIT] FAILURE : {} -> {}", communityId);
+                log.warn("showBasicCountData [GET] [INIT] FAILURE : {} -> {}", communityId);
                 return new ResultModel(AditumCode.ERROR);
             }
             basicCountData.setCommunityId(communityId);
             cache = new ResultModel(AditumCode.OK, basicCountData);
-            log.info("BasicCountData [GET] [INIT] SUCCESS {}", basicCountData);
+            log.info("showBasicCountData [GET] [INIT] SUCCESS {}", basicCountData);
             return cache;
         }
 
@@ -66,15 +67,15 @@ public class BasicDataController extends BaseController<BasicCountData> {
             cacheTime = current;
             BasicCountData basicCountDataResult = basicDataService.analysisBasicData(communityId);
             if (basicCountDataResult == null) {
-                log.warn("BasicCountData [GET] FAILURE : {} -> {}", communityId);
+                log.warn("showBasicCountData [GET] FAILURE : {} -> {}", communityId);
                 return new ResultModel(AditumCode.ERROR);
             }
             basicCountDataResult.setCommunityId(communityId);
-            log.info("BasicCountData [GET] SUCCESS : {} -> {}", communityId, basicCountDataResult);
+            log.info("showBasicCountData [GET] SUCCESS : {} -> {}", communityId, basicCountDataResult);
             return new ResultModel(AditumCode.OK, basicCountDataResult);
         }
 
-        log.info("BasicCountData [GET] [CACHE] SUCCESS {}", cache.getData());
+        log.info("showBasicCountData [GET] [CACHE] SUCCESS {}", cache.getData());
         return cache;
     }
 
@@ -119,7 +120,7 @@ public class BasicDataController extends BaseController<BasicCountData> {
     }
 
     /**
-     * 展示首页的门禁预览，访问量最多的五个门禁设备以及数量
+     * 展示首页的门禁预览，访问量最多的X个门禁设备以及数量
      */
     @RequestMapping(value = "/device/count", method = RequestMethod.GET)
     public ResultModel showBasicDeviceCountData(BasicCountData basicCountData) {
@@ -127,18 +128,18 @@ public class BasicDataController extends BaseController<BasicCountData> {
         if (communityId == null) {
             return new ResultModel(AditumCode.ERROR, "communityId不能为空");
         }
-        log.info("BasicCountData [GET] : {}", communityId);
+        log.info("showBasicDeviceCountData [GET] : {}", communityId);
 
         // 初始化缓存
         if (cache == null) {
-            basicCountData = basicDataService.analysisBasicData(communityId);
-            if (basicCountData == null) {
-                log.warn("BasicCountData [GET] [INIT] FAILURE : {} -> {}", communityId);
+            BasicDeviceCountData basicDeviceCountData =
+                    basicDataService.analysisBasicDeviceData(communityId, 7);
+            if (basicDeviceCountData == null) {
+                log.warn("showBasicDeviceCountData [GET] [INIT] FAILURE : {} -> {}", communityId);
                 return new ResultModel(AditumCode.ERROR);
             }
-            basicCountData.setCommunityId(communityId);
-            cache = new ResultModel(AditumCode.OK, basicCountData);
-            log.info("BasicCountData [GET] [INIT] SUCCESS {}", basicCountData);
+            cache = new ResultModel(AditumCode.OK, basicDeviceCountData);
+            log.info("showBasicDeviceCountData [GET] [INIT] SUCCESS {}", basicDeviceCountData);
             return cache;
         }
 
@@ -146,17 +147,17 @@ public class BasicDataController extends BaseController<BasicCountData> {
         long current = System.currentTimeMillis();
         if (current - cacheTime > VALID_TIME) {
             cacheTime = current;
-            BasicCountData basicCountDataResult = basicDataService.analysisBasicData(communityId);
-            if (basicCountDataResult == null) {
-                log.warn("BasicCountData [GET] FAILURE : {} -> {}", communityId);
+            BasicDeviceCountData basicDeviceCountData =
+                    basicDataService.analysisBasicDeviceData(communityId, 7);
+            if (basicDeviceCountData == null) {
+                log.warn("showBasicDeviceCountData [GET] FAILURE : {} -> {}", communityId);
                 return new ResultModel(AditumCode.ERROR);
             }
-            basicCountDataResult.setCommunityId(communityId);
-            log.info("BasicCountData [GET] SUCCESS : {} -> {}", communityId, basicCountDataResult);
-            return new ResultModel(AditumCode.OK, basicCountDataResult);
+            log.info("showBasicDeviceCountData [GET] SUCCESS : {} -> {}", communityId, basicDeviceCountData);
+            return new ResultModel(AditumCode.OK, basicDeviceCountData);
         }
 
-        log.info("BasicCountData [GET] [CACHE] SUCCESS {}", cache.getData());
+        log.info("showBasicDeviceCountData [GET] [CACHE] SUCCESS {}", cache.getData());
         return cache;
     }
 
