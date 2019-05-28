@@ -1,10 +1,9 @@
 package com.ten.aditum.back.mapper;
 
+import com.ten.aditum.back.entity.PersonasPortrait;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
-
-import com.ten.aditum.back.entity.PersonasPortrait;
 
 public interface PersonasPortraitDao {
 

@@ -1,10 +1,9 @@
 package com.ten.aditum.back.mapper;
 
+import com.ten.aditum.back.entity.DeviceAccessHeat;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
-
-import com.ten.aditum.back.entity.DeviceAccessHeat;
 
 public interface DeviceAccessHeatDao {
 

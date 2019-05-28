@@ -2,7 +2,7 @@ package com.ten.aditum.back.controller;
 
 import com.ten.aditum.back.model.AditumCode;
 import com.ten.aditum.back.model.ResultModel;
-import com.ten.aditum.back.service.*;
+import com.ten.aditum.back.service.BasicDataService;
 import com.ten.aditum.back.vo.BasicCountData;
 import com.ten.aditum.back.vo.BasicDeviceCountData;
 import com.ten.aditum.back.vo.BasicDeviceWeekendData;

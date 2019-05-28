@@ -5,7 +5,6 @@ import com.ten.aditum.back.entity.Person;
 import com.ten.aditum.back.model.AditumCode;
 import com.ten.aditum.back.model.ResultModel;
 import com.ten.aditum.back.service.BasicTableService;
-import com.ten.aditum.back.vo.BasicCountData;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;

@@ -1,6 +1,8 @@
 package com.ten.aditum.back.controller;
 
-import com.ten.aditum.back.entity.*;
+import com.ten.aditum.back.entity.AccessAddress;
+import com.ten.aditum.back.entity.AccessTime;
+import com.ten.aditum.back.entity.Person;
 import com.ten.aditum.back.model.AditumCode;
 import com.ten.aditum.back.model.ResultModel;
 import com.ten.aditum.back.service.AccessAddressService;

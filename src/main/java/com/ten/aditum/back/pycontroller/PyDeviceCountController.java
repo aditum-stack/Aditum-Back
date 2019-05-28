@@ -1,5 +1,6 @@
 package com.ten.aditum.back.pycontroller;
 
+import com.ten.aditum.back.config.PythonConstants;
 import com.ten.aditum.back.model.AditumCode;
 import com.ten.aditum.back.model.ResultModel;
 import lombok.extern.slf4j.Slf4j;
@@ -29,16 +30,11 @@ public class PyDeviceCountController {
     private long lastUseTime = System.currentTimeMillis();
 
     /**
-     * 缓存有效时间 五分钟
-     */
-    private static final long VALID_TIME = 1000 * 60 * 5;
-
-    /**
      * python脚本执行路径
      */
     private static final String[] ARGUMENTS = new String[]{
             PythonConstants.PYTHON_PATH,
-            "D:\\Users\\shihaowang\\Desktop\\Aditum-Personas\\com.ten.aditum\\personas\\DeviceCountClusteringModel.py"};
+            PythonConstants.PTTHON_PROGRAM_BATH_PATH + "DeviceCountClusteringModel.py"};
 
     /**
      * 获取设备热度聚类数据图
@@ -61,7 +57,7 @@ public class PyDeviceCountController {
 
         long current = System.currentTimeMillis();
         // 缓存过期，更新
-        if (current - lastUseTime > VALID_TIME) {
+        if (current - lastUseTime > PythonConstants.VALID_TIME) {
             lastUseTime = current;
             base64Img = computeBase64();
             cache = new ResultModel(AditumCode.OK, base64Img);

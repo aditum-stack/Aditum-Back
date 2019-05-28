@@ -1,12 +1,11 @@
 package com.ten.aditum.back.service;
 
 import com.ten.aditum.back.entity.Record;
+import com.ten.aditum.back.mapper.RecordDao;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
-
-import com.ten.aditum.back.mapper.RecordDao;
 
 @Service
 public class RecordService {

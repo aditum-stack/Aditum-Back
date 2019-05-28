@@ -1,12 +1,11 @@
 package com.ten.aditum.back.service;
 
 import com.ten.aditum.back.entity.Device;
+import com.ten.aditum.back.mapper.DeviceDao;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
-
-import com.ten.aditum.back.mapper.DeviceDao;
 
 @Service
 public class DeviceService {

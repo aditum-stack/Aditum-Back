@@ -1,10 +1,11 @@
 package com.ten.aditum.back.controller;
 
-import com.ten.aditum.back.entity.*;
+import com.ten.aditum.back.entity.PersonasPortrait;
 import com.ten.aditum.back.model.AditumCode;
 import com.ten.aditum.back.model.ResultModel;
-import com.ten.aditum.back.service.*;
-import com.ten.aditum.back.util.TimeGenerator;
+import com.ten.aditum.back.service.PersonasLabelService;
+import com.ten.aditum.back.service.PersonasPortraitService;
+import com.ten.aditum.back.service.PersonasService;
 import com.ten.aditum.back.vo.Personas;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;

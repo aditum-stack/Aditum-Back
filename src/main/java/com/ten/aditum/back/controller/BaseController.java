@@ -2,10 +2,7 @@ package com.ten.aditum.back.controller;
 
 
 import com.ten.aditum.back.model.ResultModel;
-import com.ten.aditum.back.util.TimeGenerator;
-import com.ten.aditum.back.util.UidGenerator;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;

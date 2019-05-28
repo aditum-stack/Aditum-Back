@@ -5,24 +5,16 @@ import com.ten.aditum.back.BaseAnalysor;
 import com.ten.aditum.back.entity.AccessInterval;
 import com.ten.aditum.back.entity.AccessTime;
 import com.ten.aditum.back.entity.Person;
-import com.ten.aditum.back.entity.Record;
-import com.ten.aditum.back.service.AccessIntervalService;
-import com.ten.aditum.back.service.AccessTimeService;
 import com.ten.aditum.back.util.TimeGenerator;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import static com.ten.aditum.back.util.TimeGenerator.*;
-import static com.ten.aditum.back.util.TimeGenerator.averageTime;
+import static com.ten.aditum.back.util.TimeGenerator.getTimeFromSec;
 
 @Slf4j
 @Component

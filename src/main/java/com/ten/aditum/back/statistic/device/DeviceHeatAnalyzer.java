@@ -5,22 +5,15 @@ import com.ten.aditum.back.BaseAnalysor;
 import com.ten.aditum.back.entity.Device;
 import com.ten.aditum.back.entity.DeviceAccessHeat;
 import com.ten.aditum.back.entity.Record;
-import com.ten.aditum.back.service.DeviceAccessHeatService;
-import com.ten.aditum.back.service.DeviceService;
-import com.ten.aditum.back.service.RecordService;
 import com.ten.aditum.back.util.TimeGenerator;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import java.sql.Time;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
-
-import static com.ten.aditum.back.util.TimeGenerator.hourBeforeDateTime;
 
 
 @Slf4j

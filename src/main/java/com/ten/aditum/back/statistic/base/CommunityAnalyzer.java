@@ -4,13 +4,8 @@ import com.ten.aditum.back.BaseAnalysor;
 import com.ten.aditum.back.entity.Community;
 import com.ten.aditum.back.entity.Device;
 import com.ten.aditum.back.entity.Person;
-import com.ten.aditum.back.service.CommunityService;
-import com.ten.aditum.back.service.DeviceService;
-import com.ten.aditum.back.service.PersonService;
-import com.ten.aditum.back.service.RecordService;
 import com.ten.aditum.back.util.TimeGenerator;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -25,6 +20,7 @@ import java.util.List;
 public class CommunityAnalyzer extends BaseAnalysor {
 
 //    @Scheduled(cron = TEST_TIME)
+
     /**
      * 每天2点更新社区信息
      */
