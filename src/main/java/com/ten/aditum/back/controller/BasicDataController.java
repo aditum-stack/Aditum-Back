@@ -74,7 +74,8 @@ public class BasicDataController extends BaseController<BasicCountData> {
             }
             basicCountDataResult.setCommunityId(communityId);
             log.info("showBasicCountData [GET] SUCCESS : {} -> {}", communityId, basicCountDataResult);
-            return new ResultModel(AditumCode.OK, basicCountDataResult);
+            showBasicCountDataCache = new ResultModel(AditumCode.OK, basicCountDataResult);
+            return showBasicCountDataCache;
         }
 
         log.info("showBasicCountData [GET] [CACHE] SUCCESS {}", showBasicCountDataCache.getData());
@@ -123,7 +124,8 @@ public class BasicDataController extends BaseController<BasicCountData> {
                 return new ResultModel(AditumCode.ERROR);
             }
             log.info("showBasicLabelData [GET] SUCCESS : {} -> {}", communityId, basicLabelData);
-            return new ResultModel(AditumCode.OK, basicLabelData);
+            showBasicLabelDataCache = new ResultModel(AditumCode.OK, basicLabelData);
+            return showBasicLabelDataCache;
         }
 
         log.info("showBasicLabelData [GET] [CACHE] SUCCESS {}", showBasicLabelDataCache.getData());
@@ -172,7 +174,8 @@ public class BasicDataController extends BaseController<BasicCountData> {
                 return new ResultModel(AditumCode.ERROR);
             }
             log.info("showBasicDeviceCountData [GET] SUCCESS : {} -> {}", communityId, basicDeviceCountData);
-            return new ResultModel(AditumCode.OK, basicDeviceCountData);
+            showBasicDeviceCountDataCache = new ResultModel(AditumCode.OK, basicDeviceCountData);
+            return showBasicDeviceCountDataCache;
         }
 
         log.info("showBasicDeviceCountData [GET] [CACHE] SUCCESS {}", showBasicDeviceCountDataCache.getData());
@@ -221,7 +224,8 @@ public class BasicDataController extends BaseController<BasicCountData> {
                 return new ResultModel(AditumCode.ERROR);
             }
             log.info("showBasicDeviceWeekendData [GET] SUCCESS : {} -> {}", communityId, basicDeviceWeekendData);
-            return new ResultModel(AditumCode.OK, basicDeviceWeekendData);
+            showBasicDeviceWeekendDataCache = new ResultModel(AditumCode.OK, basicDeviceWeekendData);
+            return showBasicDeviceWeekendDataCache;
         }
 
         log.info("showBasicDeviceWeekendData [GET] [CACHE] SUCCESS {}", showBasicDeviceWeekendDataCache.getData());
