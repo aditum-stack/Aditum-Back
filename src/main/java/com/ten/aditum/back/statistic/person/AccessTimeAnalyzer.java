@@ -72,7 +72,7 @@ public class AccessTimeAnalyzer extends BaseAnalysor {
         // 每天最晚访问时间集合
         List<String> latestAccessTimeList = new ArrayList<>();
         // 总访问次数
-        Integer accessCount = 0;
+        int accessCount = 0;
         // 按天遍历集合
         for (Map.Entry<String, List<String>> recordDay : dayTimeMap.entrySet()) {
             List<String> timeList = recordDay.getValue();
