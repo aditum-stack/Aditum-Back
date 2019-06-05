@@ -88,17 +88,17 @@ public class TheFullAnalysisBootstarp {
         CompletableFuture<Void> voidCompletableFuture7 = CompletableFuture.runAsync(this.analysorTwo::analysis);
         CompletableFuture<Void> voidCompletableFuture8 = CompletableFuture.runAsync(this.deviceLogAnalyzer::analysis);
         CompletableFuture<Void> voidCompletableFuture9 = CompletableFuture.runAsync(this.deviceTotalAnalyzer::analysis);
-        CompletableFuture<Void> voidCompletableFuture10 = CompletableFuture.runAsync(this.analysorSeven::analysis);
-        CompletableFuture<Void> voidCompletableFuture11 = CompletableFuture.runAsync(this.analysorFour::analysis);
-        CompletableFuture<Void> voidCompletableFuture12 = CompletableFuture.runAsync(this.analysorThree::analysis);
-        CompletableFuture<Void> voidCompletableFuture13 = CompletableFuture.runAsync(this.analysorSix::analysis);
-        CompletableFuture<Void> voidCompletableFuture14 = CompletableFuture.runAsync(this.analysorMix::analysis);
-        CompletableFuture<Void> voidCompletableFuture15 = CompletableFuture.runAsync(this.analysorZero::analysis);
-        CompletableFuture<Void> voidCompletableFuture16 = CompletableFuture.runAsync(this.addressAnalysor::analysis);
-        CompletableFuture<Void> voidCompletableFuture17 = CompletableFuture.runAsync(this.phoneAnalysor::analysis);
-        CompletableFuture<Void> voidCompletableFuture18 = CompletableFuture.runAsync(this.analysorOne::analysis);
-        CompletableFuture<Void> voidCompletableFuture19 = CompletableFuture.runAsync(this.tripsAnalysor::analysis);
-        CompletableFuture<Void> voidCompletableFuture20 = CompletableFuture.runAsync(this.analysorFive::analysis);
+        CompletableFuture<Void> voidCompletableFuture10= CompletableFuture.runAsync(this.analysorSeven::analysis);
+        CompletableFuture<Void> voidCompletableFuture11= CompletableFuture.runAsync(this.analysorFour::analysis);
+        CompletableFuture<Void> voidCompletableFuture12= CompletableFuture.runAsync(this.analysorThree::analysis);
+        CompletableFuture<Void> voidCompletableFuture13= CompletableFuture.runAsync(this.analysorSix::analysis);
+        CompletableFuture<Void> voidCompletableFuture14= CompletableFuture.runAsync(this.analysorMix::analysis);
+        CompletableFuture<Void> voidCompletableFuture15= CompletableFuture.runAsync(this.analysorZero::analysis);
+        CompletableFuture<Void> voidCompletableFuture16= CompletableFuture.runAsync(this.addressAnalysor::analysis);
+        CompletableFuture<Void> voidCompletableFuture17= CompletableFuture.runAsync(this.phoneAnalysor::analysis);
+        CompletableFuture<Void> voidCompletableFuture18= CompletableFuture.runAsync(this.analysorOne::analysis);
+        CompletableFuture<Void> voidCompletableFuture19= CompletableFuture.runAsync(this.tripsAnalysor::analysis);
+        CompletableFuture<Void> voidCompletableFuture20= CompletableFuture.runAsync(this.analysorFive::analysis);
 
         CompletableFuture
                 .allOf(voidCompletableFuture1,

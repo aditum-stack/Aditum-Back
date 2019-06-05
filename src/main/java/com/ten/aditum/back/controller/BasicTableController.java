@@ -52,7 +52,8 @@ public class BasicTableController {
 
         // 初始化缓存
         if (showBasicUserTableCache == null) {
-            return getBasicUserTable(communityId);
+            showBasicUserTableCache = getBasicUserTable(communityId);
+            return showBasicUserTableCache;
         }
 
         // 缓存过期，更新
@@ -96,7 +97,8 @@ public class BasicTableController {
 
         // 初始化缓存
         if (showBasicDeviceRepairCache == null) {
-            return getBasicDeviceRepair(communityId);
+            showBasicDeviceRepairCache = getBasicDeviceRepair(communityId);
+            return showBasicDeviceRepairCache;
         }
 
         // 缓存过期，更新

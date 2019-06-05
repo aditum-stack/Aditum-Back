@@ -43,7 +43,7 @@ public class PersonasController {
      */
     @RequestMapping(method = RequestMethod.GET)
     public ResultModel getPersonas(Personas personas) {
-        log.debug("Personas [GET] : {}", personas);
+        log.info("Personas [GET] : {}", personas);
 
         if (personas.getPersonnelId() == null) {
             return new ResultModel(AditumCode.ERROR);
@@ -71,7 +71,7 @@ public class PersonasController {
                 .setPersonnelId(select.getPersonnelId())
                 .setPersonasList(Arrays.asList(personasList));
 
-        log.debug("Personas [GET] SUCCESS : {} -> {}", personas, personasEntity);
+        log.info("Personas [GET] SUCCESS : {} -> {}", personas, personasEntity);
         return new ResultModel(AditumCode.OK, personasEntity);
     }
 
@@ -80,7 +80,7 @@ public class PersonasController {
      */
     @RequestMapping(value = "/weight", method = RequestMethod.GET)
     public ResultModel getPersonasWeight(Personas personas) {
-        log.debug("PersonasWeight [GET] : {}", personas);
+        log.info("PersonasWeight [GET] : {}", personas);
 
         if (personas.getPersonnelId() == null) {
             return new ResultModel(AditumCode.ERROR);
@@ -116,8 +116,42 @@ public class PersonasController {
                 .setPersonnelId(select.getPersonnelId())
                 .setPersonasWeightList(weightsLabelList);
 
-        log.debug("PersonasWeight [GET] SUCCESS : {} -> {}", personas, personasEntity);
+        log.info("PersonasWeight [GET] SUCCESS : {} -> {}", personas, personasEntity);
         return new ResultModel(AditumCode.OK, personasEntity);
+    }
+
+    /**
+     * 根据labelId更新用户画像标签
+     */
+    @RequestMapping(value = "/updateById", method = RequestMethod.POST)
+    public ResultModel updatePersonasByLabelId(Personas personas) {
+        log.info("updatePersonasByLabelId [POST] : {}", personas);
+
+        if (personas.getPersonnelId() == null || personas.getLabelId() == null) {
+            return new ResultModel(AditumCode.ERROR);
+        }
+
+        personasService.updatePersonas(personas);
+
+        log.info("updatePersonasByLabelId [POST] SUCCESS : {}", personas);
+        return new ResultModel(AditumCode.OK, personas);
+    }
+
+    /**
+     * 根据labelId更新用户画像标签
+     */
+    @RequestMapping(value = "/updateByName", method = RequestMethod.POST)
+    public ResultModel updatePersonasByLabelName(Personas personas) {
+        log.info("updatePersonasByLabelName [POST] : {}", personas);
+
+        if (personas.getPersonnelId() == null || personas.getLabelName() == null) {
+            return new ResultModel(AditumCode.ERROR);
+        }
+
+        personasService.updatePersonasByLabelName(personas);
+
+        log.info("updatePersonasByLabelName [POST] SUCCESS : {}", personas);
+        return new ResultModel(AditumCode.OK, personas);
     }
 
 }
