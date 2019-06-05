@@ -30,20 +30,20 @@ public class CommunityController extends BaseController<Community> {
     @Override
     @RequestMapping(method = RequestMethod.GET)
     public ResultModel get(Community community) {
-        log.debug("Community [GET] : {}", community);
+        log.info("Community [GET] : {}", community);
         List<Community> communityList = service.select(community);
         if (communityList == null) {
             log.warn("Community [GET] FAILURE : {}", community);
             return new ResultModel(AditumCode.ERROR);
         }
-        log.debug("Community [GET] SUCCESS : {} -> {}", community, communityList);
+        log.info("Community [GET] SUCCESS : {} -> {}", community, communityList);
         return new ResultModel(AditumCode.OK, communityList);
     }
 
     @Override
     @RequestMapping(method = RequestMethod.POST)
     public ResultModel post(@RequestBody Community community) {
-        log.debug("Community [POST] : {}", community);
+        log.info("Community [POST] : {}", community);
         Community entity = new Community()
                 .setCommunityId(UidGenerator.generateUid())
                 .setCommunityName(community.getCommunityName())
@@ -60,7 +60,7 @@ public class CommunityController extends BaseController<Community> {
             log.warn("Community [POST] FAILURE : {}", community);
             return new ResultModel(AditumCode.ERROR);
         }
-        log.debug("Community [POST] SUCCESS : {}", entity);
+        log.info("Community [POST] SUCCESS : {}", entity);
         return new ResultModel(AditumCode.OK);
     }
 

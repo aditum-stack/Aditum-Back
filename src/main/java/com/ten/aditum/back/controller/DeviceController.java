@@ -30,20 +30,20 @@ public class DeviceController extends BaseController<Device> {
     @Override
     @RequestMapping(method = RequestMethod.GET)
     public ResultModel get(Device device) {
-        log.debug("Device [GET] : {}", device);
+        log.info("Device [GET] : {}", device);
         List<Device> deviceList = deviceService.select(device);
         if (deviceList == null) {
             log.warn("Device [GET] FAILURE : {}", device);
             return new ResultModel(AditumCode.ERROR);
         }
-        log.debug("Device [GET] SUCCESS : {} -> {}", device, deviceList);
+        log.info("Device [GET] SUCCESS : {} -> {}", device, deviceList);
         return new ResultModel(AditumCode.OK, deviceList);
     }
 
     @Override
     @RequestMapping(method = RequestMethod.POST)
     public ResultModel post(@RequestBody Device device) {
-        log.debug("Device [POST] : {}", device);
+        log.info("Device [POST] : {}", device);
         Device entity = new Device()
                 .setImei(UidGenerator.generateUid())
                 .setAlias(device.getAlias())
@@ -58,7 +58,7 @@ public class DeviceController extends BaseController<Device> {
             log.warn("Device [POST] FAILURE : {}", device);
             return new ResultModel(AditumCode.ERROR);
         }
-        log.debug("Device [POST] SUCCESS : {}", entity);
+        log.info("Device [POST] SUCCESS : {}", entity);
         return new ResultModel(AditumCode.OK);
     }
 

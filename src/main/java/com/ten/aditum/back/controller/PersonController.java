@@ -30,20 +30,20 @@ public class PersonController extends BaseController<Person> {
     @Override
     @RequestMapping(method = RequestMethod.GET)
     public ResultModel get(Person person) {
-        log.debug("Person [GET] : {}", person);
+        log.info("Person [GET] : {}", person);
         List<Person> personList = service.select(person);
         if (personList == null) {
             log.warn("Person [GET] FAILURE : {}", person);
             return new ResultModel(AditumCode.ERROR);
         }
-        log.debug("Person [GET] SUCCESS : {} -> {}", person, personList);
+        log.info("Person [GET] SUCCESS : {} -> {}", person, personList);
         return new ResultModel(AditumCode.OK, personList);
     }
 
     @Override
     @RequestMapping(method = RequestMethod.POST)
     public ResultModel post(@RequestBody Person person) {
-        log.debug("Person [POST] : {}", person);
+        log.info("Person [POST] : {}", person);
         Person entity = new Person()
                 .setPersonnelId(UidGenerator.generateUid())
                 .setPersonnelName(person.getPersonnelName())
@@ -59,7 +59,7 @@ public class PersonController extends BaseController<Person> {
             log.warn("Person [POST] FAILURE : {}", person);
             return new ResultModel(AditumCode.ERROR);
         }
-        log.debug("Person [POST] SUCCESS : {}", entity);
+        log.info("Person [POST] SUCCESS : {}", entity);
         return new ResultModel(AditumCode.OK);
     }
 
