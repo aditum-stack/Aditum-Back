@@ -15,4 +15,5 @@ public interface DeviceAccessCountDao {
 
     int update(@Param("pojo") DeviceAccessCount pojo);
 
+    List<DeviceAccessCount> selectOneMonth(@Param("pojo") DeviceAccessCount pojo);
 }

@@ -16,14 +16,17 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
+/**
+ * 用户画像信息
+ */
 @Slf4j
 @RestController
 @RequestMapping(value = "/personas")
-public class PersonasController {
+public class PersonasController extends BaseController {
 
-    private static final int NO_DELETED = 0;
-    private static final int IS_DELETED = 1;
+    private Random random = new Random();
 
     private final PersonasService personasService;
     private final PersonasLabelService personasLabelService;
@@ -64,7 +67,7 @@ public class PersonasController {
         String personasExt = select.getPersonasExt();
         String[] personasList = personasExt.split(",");
         if (personasList.length == 0) {
-            personasList = new String[]{"小白"};
+            personasList = new String[]{"当前用户暂时没有用户画像"};
         }
 
         Personas personasEntity = new Personas()
@@ -101,14 +104,14 @@ public class PersonasController {
         String personasExt = select.getPersonasExt();
         String[] personasList = personasExt.split(",");
         if (personasList.length == 0) {
-            personasList = new String[]{"小白"};
+            personasList = new String[]{"当前用户暂时没有用户画像"};
         }
 
         List<Personas.WeightsLabel> weightsLabelList = new ArrayList<>();
         for (String personasLabel : personasList) {
             Personas.WeightsLabel weightsLabel = new Personas.WeightsLabel();
             weightsLabel.setName(personasLabel);
-            weightsLabel.setValue((int) (Math.random() * 100));
+            weightsLabel.setValue(random.nextInt(100));
             weightsLabelList.add(weightsLabel);
         }
 
@@ -121,7 +124,7 @@ public class PersonasController {
     }
 
     /**
-     * 根据labelId更新用户画像标签
+     * 根据labelId更新用户画像标签，labelId必须存在于label表中并且对应
      */
     @RequestMapping(value = "/updateById", method = RequestMethod.POST)
     public ResultModel updatePersonasByLabelId(Personas personas) {
@@ -138,7 +141,7 @@ public class PersonasController {
     }
 
     /**
-     * 根据labelId更新用户画像标签
+     * 根据labelId更新用户画像标签，name可以不存在于label表中
      */
     @RequestMapping(value = "/updateByName", method = RequestMethod.POST)
     public ResultModel updatePersonasByLabelName(Personas personas) {

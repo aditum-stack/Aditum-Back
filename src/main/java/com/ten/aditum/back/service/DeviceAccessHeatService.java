@@ -29,4 +29,10 @@ public class DeviceAccessHeatService {
         return deviceAccessHeatDao.update(pojo);
     }
 
+    /**
+     * 获取最近二十四条数据
+     */
+    public List<DeviceAccessHeat> selectOneDayHeat(DeviceAccessHeat pojo) {
+        return deviceAccessHeatDao.selectOneDayHeat(pojo);
+    }
 }

@@ -16,13 +16,13 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * 设备访问热度分析数据
+ */
 @Slf4j
 @RestController
 @RequestMapping(value = "/access/device")
-public class AccessDeviceController {
-
-    private static final int NO_DELETED = 0;
-    private static final int IS_DELETED = 1;
+public class AccessDeviceController extends BaseController {
 
     private final DeviceAccessCountService deviceAccessCountService;
     private final DeviceAccessHeatService deviceAccessHeatService;
@@ -41,14 +41,14 @@ public class AccessDeviceController {
     }
 
     /**
-     * 根据IMEI获取设备的所有访问记录
+     * 根据IMEI获取该设备的所有访问记录
      */
     @RequestMapping(value = "/log", method = RequestMethod.GET)
     public ResultModel getLog(Device device) {
         log.info("AccessDeviceLog [GET] : {}", device);
 
         if (device.getImei() == null) {
-            return new ResultModel(AditumCode.ERROR);
+            return new ResultModel(AditumCode.ERROR, "缺少imei");
         }
 
         DeviceAccessLog logEntity = new DeviceAccessLog()
@@ -58,7 +58,7 @@ public class AccessDeviceController {
         List<DeviceAccessLog> deviceAccessLogs = deviceAccessLogService.select(logEntity);
         if (deviceAccessLogs.size() < 1) {
             log.warn("AccessDeviceLog [GET] FAILURE : {}", device);
-            return new ResultModel(AditumCode.ERROR);
+            return new ResultModel(AditumCode.ERROR, "数据库中无数据");
         }
 
         log.info("AccessDeviceLog [GET] SUCCESS : {} -> {}", device, deviceAccessLogs);
@@ -80,13 +80,11 @@ public class AccessDeviceController {
                 .setImei(device.getImei())
                 .setIsDeleted(NO_DELETED);
 
-        List<DeviceAccessHeat> deviceAccessHeats = deviceAccessHeatService.select(heatEntity);
+        List<DeviceAccessHeat> deviceAccessHeats = deviceAccessHeatService.selectOneDayHeat(heatEntity);
         if (deviceAccessHeats.size() < 1) {
             log.warn("AccessDeviceHeat [GET] FAILURE : {}", device);
             return new ResultModel(AditumCode.ERROR);
         }
-
-        log.info("AccessDeviceHeat [GET] SUCCESS : {} -> {}", device, deviceAccessHeats);
 
         // 获取最近二十四条
         List<DeviceAccessHeat> deviceAccessHeatList = deviceAccessHeats.stream()
@@ -97,6 +95,7 @@ public class AccessDeviceController {
             deviceAccessHeatList = deviceAccessHeatList.subList(0, 24);
         }
 
+        log.info("AccessDeviceHeat [GET] SUCCESS : {} -> {}", device, deviceAccessHeats);
         return new ResultModel(AditumCode.OK, deviceAccessHeatList);
     }
 
@@ -115,13 +114,11 @@ public class AccessDeviceController {
                 .setImei(device.getImei())
                 .setIsDeleted(NO_DELETED);
 
-        List<DeviceAccessCount> deviceAccessCounts = deviceAccessCountService.select(countEntity);
+        List<DeviceAccessCount> deviceAccessCounts = deviceAccessCountService.selectOneMonth(countEntity);
         if (deviceAccessCounts.size() < 1) {
             log.warn("AccessDeviceCount [GET] FAILURE : {}", device);
             return new ResultModel(AditumCode.ERROR);
         }
-
-        log.info("AccessDeviceCount [GET] SUCCESS : {} -> {}", device, deviceAccessCounts);
 
         // 获取最近三十天
         List<DeviceAccessCount> deviceAccessCountList = deviceAccessCounts.stream()
@@ -132,7 +129,7 @@ public class AccessDeviceController {
             deviceAccessCountList = deviceAccessCountList.subList(0, 30);
         }
 
-
+        log.info("AccessDeviceCount [GET] SUCCESS : {} -> {}", device, deviceAccessCounts);
         return new ResultModel(AditumCode.OK, deviceAccessCountList);
     }
 

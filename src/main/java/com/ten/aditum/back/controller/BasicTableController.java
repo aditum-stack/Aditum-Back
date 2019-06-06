@@ -1,10 +1,12 @@
 package com.ten.aditum.back.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.ten.aditum.back.entity.Device;
 import com.ten.aditum.back.entity.Person;
 import com.ten.aditum.back.model.AditumCode;
 import com.ten.aditum.back.model.ResultModel;
 import com.ten.aditum.back.service.BasicTableService;
+import com.ten.aditum.back.vo.BasicLabelData;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,7 +21,7 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequestMapping(value = "/basic/table")
-public class BasicTableController {
+public class BasicTableController extends BaseController {
 
     private final BasicTableService basicTableService;
 
@@ -28,16 +30,6 @@ public class BasicTableController {
         this.basicTableService = basicTableService;
     }
 
-    /**
-     * 缓存有效时间 12小时
-     */
-    private static final long VALID_TIME = 1000 * 60 * 60 * 12;
-
-    /**
-     * showBasicUserTable缓存
-     */
-    private ResultModel showBasicUserTableCache;
-    private long showBasicUserTableCacheTime = System.currentTimeMillis();
     private static final int MOST_PERSON = 7;
 
     /**
@@ -48,24 +40,26 @@ public class BasicTableController {
         if (communityId == null) {
             return new ResultModel(AditumCode.ERROR, "communityId不能为空");
         }
-        log.debug("showBasicUserTable [GET] : {}", communityId);
+        log.info("showBasicUserTable [GET] : {}", communityId);
 
-        // 初始化缓存
-        if (showBasicUserTableCache == null) {
-            showBasicUserTableCache = getBasicUserTable(communityId);
-            return showBasicUserTableCache;
+        String key = "showBasicUserTable" + communityId;
+        String originValue = jedis.get(key);
+        if (originValue == null) {
+            ResultModel resultModel = getBasicUserTable(communityId);
+            if (resultModel.getCode() == AditumCode.ERROR.getCode()) {
+                log.warn("showBasicUserTable [GET] [INIT] FAILURE : {} -> {}", communityId);
+                return resultModel;
+            } else {
+                String value = JSON.toJSONString(resultModel);
+                jedis.setex(key, VALID_TIME, value);
+                log.info("showBasicUserTable [GET] [INIT] SUCCESS {}", resultModel);
+                return resultModel;
+            }
+        } else {
+            ResultModel cache = JSON.parseObject(originValue, ResultModel.class);
+            log.info("showBasicUserTable [GET] [CACHE] SUCCESS {}", cache);
+            return cache;
         }
-
-        // 缓存过期，更新
-        long current = System.currentTimeMillis();
-        if (current - showBasicUserTableCacheTime > VALID_TIME) {
-            showBasicUserTableCacheTime = current;
-            showBasicUserTableCache = getBasicUserTable(communityId);
-            return showBasicUserTableCache;
-        }
-
-        log.info("showBasicUserTable [GET] [CACHE] SUCCESS {}", showBasicUserTableCache.getData());
-        return showBasicUserTableCache;
     }
 
     private ResultModel getBasicUserTable(String communityId) {
@@ -78,11 +72,6 @@ public class BasicTableController {
         return new ResultModel(AditumCode.OK, personList);
     }
 
-    /**
-     * showBasicDeviceRepair缓存
-     */
-    private ResultModel showBasicDeviceRepairCache;
-    private long showBasicDeviceRepairCacheTime = System.currentTimeMillis();
     private static final int MOST_DEVICE_REPAIR = 8;
 
     /**
@@ -93,24 +82,26 @@ public class BasicTableController {
         if (communityId == null) {
             return new ResultModel(AditumCode.ERROR, "communityId不能为空");
         }
-        log.debug("showBasicDeviceRepair [GET] : {}", communityId);
+        log.info("showBasicDeviceRepair [GET] : {}", communityId);
 
-        // 初始化缓存
-        if (showBasicDeviceRepairCache == null) {
-            showBasicDeviceRepairCache = getBasicDeviceRepair(communityId);
-            return showBasicDeviceRepairCache;
+        String key = "showBasicDeviceRepair" + communityId;
+        String originValue = jedis.get(key);
+        if (originValue == null) {
+            ResultModel resultModel = getBasicDeviceRepair(communityId);
+            if (resultModel.getCode() == AditumCode.ERROR.getCode()) {
+                log.warn("showBasicDeviceRepair [GET] [INIT] FAILURE : {} -> {}", communityId);
+                return resultModel;
+            } else {
+                String value = JSON.toJSONString(resultModel);
+                jedis.setex(key, VALID_TIME, value);
+                log.info("showBasicDeviceRepair [GET] [INIT] SUCCESS {}", resultModel);
+                return resultModel;
+            }
+        } else {
+            ResultModel cache = JSON.parseObject(originValue, ResultModel.class);
+            log.info("showBasicDeviceRepair [GET] [CACHE] SUCCESS {}", cache);
+            return cache;
         }
-
-        // 缓存过期，更新
-        long current = System.currentTimeMillis();
-        if (current - showBasicDeviceRepairCacheTime > VALID_TIME) {
-            showBasicDeviceRepairCacheTime = current;
-            showBasicDeviceRepairCache = getBasicDeviceRepair(communityId);
-            return showBasicDeviceRepairCache;
-        }
-
-        log.info("showBasicDeviceRepair [GET] [CACHE] SUCCESS {}", showBasicDeviceRepairCache.getData());
-        return showBasicDeviceRepairCache;
     }
 
     private ResultModel getBasicDeviceRepair(String communityId) {

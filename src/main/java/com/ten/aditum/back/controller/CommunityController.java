@@ -27,7 +27,6 @@ public class CommunityController extends BaseController<Community> {
         this.service = service;
     }
 
-    @Override
     @RequestMapping(method = RequestMethod.GET)
     public ResultModel get(Community community) {
         log.info("Community [GET] : {}", community);
@@ -40,7 +39,6 @@ public class CommunityController extends BaseController<Community> {
         return new ResultModel(AditumCode.OK, communityList);
     }
 
-    @Override
     @RequestMapping(method = RequestMethod.POST)
     public ResultModel post(@RequestBody Community community) {
         log.info("Community [POST] : {}", community);
@@ -64,12 +62,10 @@ public class CommunityController extends BaseController<Community> {
         return new ResultModel(AditumCode.OK);
     }
 
-    @Override
     public ResultModel update(Community community) {
         return null;
     }
 
-    @Override
     public ResultModel delete(Community community) {
         return null;
     }

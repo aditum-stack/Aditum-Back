@@ -29,4 +29,7 @@ public class DeviceAccessCountService {
         return deviceAccessCountDao.update(pojo);
     }
 
+    public List<DeviceAccessCount> selectOneMonth(DeviceAccessCount pojo) {
+        return deviceAccessCountDao.selectOneMonth(pojo);
+    }
 }

@@ -15,4 +15,5 @@ public interface DeviceAccessHeatDao {
 
     int update(@Param("pojo") DeviceAccessHeat pojo);
 
+    List<DeviceAccessHeat> selectOneDayHeat(@Param("pojo") DeviceAccessHeat pojo);
 }

@@ -1,5 +1,6 @@
 package com.ten.aditum.back.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.ten.aditum.back.model.AditumCode;
 import com.ten.aditum.back.model.ResultModel;
 import com.ten.aditum.back.service.BasicDataService;
@@ -29,17 +30,6 @@ public class BasicDataController extends BaseController<BasicCountData> {
     }
 
     /**
-     * 缓存有效时间 12小时
-     */
-    private static final long VALID_TIME = 1000 * 60 * 60 * 12;
-
-    /**
-     * showBasicCountData缓存
-     */
-    private ResultModel showBasicCountDataCache;
-    private long showBasicCountDataCacheTime = System.currentTimeMillis();
-
-    /**
      * 展示四个基本属性的总数，以及最近七天的每天的总量和增量
      */
     @RequestMapping(value = "count", method = RequestMethod.GET)
@@ -50,47 +40,31 @@ public class BasicDataController extends BaseController<BasicCountData> {
         }
         log.info("showBasicCountData [GET] : {}", communityId);
 
-        // 初始化缓存
-        if (showBasicCountDataCache == null) {
+        String key = "showBasicCountData" + communityId;
+        String originValue = jedis.get(key);
+        if (originValue == null) {
             basicCountData = basicDataService.analysisBasicData(communityId);
             if (basicCountData == null) {
                 log.warn("showBasicCountData [GET] [INIT] FAILURE : {} -> {}", communityId);
                 return new ResultModel(AditumCode.ERROR);
+            } else {
+                ResultModel cache = new ResultModel(AditumCode.OK, basicCountData);
+                String value = JSON.toJSONString(cache);
+                jedis.setex(key, VALID_TIME, value);
+                log.info("showBasicCountData [GET] [INIT] SUCCESS {}", cache);
+                return cache;
             }
-            basicCountData.setCommunityId(communityId);
-            showBasicCountDataCache = new ResultModel(AditumCode.OK, basicCountData);
-            log.info("showBasicCountData [GET] [INIT] SUCCESS {}", basicCountData);
-            return showBasicCountDataCache;
+        } else {
+            ResultModel cache = JSON.parseObject(originValue, ResultModel.class);
+            log.info("showBasicCountData [GET] [CACHE] SUCCESS {}", cache);
+            return cache;
         }
-
-        // 缓存过期，更新
-        long current = System.currentTimeMillis();
-        if (current - showBasicCountDataCacheTime > VALID_TIME) {
-            showBasicCountDataCacheTime = current;
-            BasicCountData basicCountDataResult = basicDataService.analysisBasicData(communityId);
-            if (basicCountDataResult == null) {
-                log.warn("showBasicCountData [GET] FAILURE : {} -> {}", communityId);
-                return new ResultModel(AditumCode.ERROR);
-            }
-            basicCountDataResult.setCommunityId(communityId);
-            log.info("showBasicCountData [GET] SUCCESS : {} -> {}", communityId, basicCountDataResult);
-            showBasicCountDataCache = new ResultModel(AditumCode.OK, basicCountDataResult);
-            return showBasicCountDataCache;
-        }
-
-        log.info("showBasicCountData [GET] [CACHE] SUCCESS {}", showBasicCountDataCache.getData());
-        return showBasicCountDataCache;
     }
 
-    /**
-     * showBasicLabelData缓存
-     */
-    private ResultModel showBasicLabelDataCache;
-    private long showBasicLabelDataCacheTime = System.currentTimeMillis();
     private static final int MOST_LABEL_COUNT = 5;
 
     /**
-     * 展示首页的标签预览，数量最多的五个标签和相对应的数量
+     * 展示首页的标签预览，数量最多的MOST_LABEL_COUNT个标签和相对应的数量
      */
     @RequestMapping(value = "/label/count", method = RequestMethod.GET)
     public ResultModel showBasicLabelData(BasicCountData basicCountData) {
@@ -100,43 +74,28 @@ public class BasicDataController extends BaseController<BasicCountData> {
         }
         log.info("showBasicLabelData [GET] : {}", communityId);
 
-        // 初始化缓存
-        if (showBasicLabelDataCache == null) {
+        String key = "showBasicLabelData" + communityId;
+        String originValue = jedis.get(key);
+        if (originValue == null) {
             BasicLabelData basicLabelData =
                     basicDataService.analysisBasicLabelCount(communityId, MOST_LABEL_COUNT);
             if (basicLabelData == null) {
                 log.warn("showBasicLabelData [GET] [INIT] FAILURE : {} -> {}", communityId);
                 return new ResultModel(AditumCode.ERROR);
+            } else {
+                ResultModel cache = new ResultModel(AditumCode.OK, basicLabelData);
+                String value = JSON.toJSONString(cache);
+                jedis.setex(key, VALID_TIME, value);
+                log.info("showBasicLabelData [GET] [INIT] SUCCESS {}", cache);
+                return cache;
             }
-            showBasicLabelDataCache = new ResultModel(AditumCode.OK, basicLabelData);
-            log.info("showBasicLabelData [GET] [INIT] SUCCESS {}", basicLabelData);
-            return showBasicLabelDataCache;
+        } else {
+            ResultModel cache = JSON.parseObject(originValue, ResultModel.class);
+            log.info("showBasicLabelData [GET] [CACHE] SUCCESS {}", cache);
+            return cache;
         }
-
-        // 缓存过期，更新
-        long current = System.currentTimeMillis();
-        if (current - showBasicLabelDataCacheTime > VALID_TIME) {
-            showBasicLabelDataCacheTime = current;
-            BasicLabelData basicLabelData =
-                    basicDataService.analysisBasicLabelCount(communityId, MOST_LABEL_COUNT);
-            if (basicLabelData == null) {
-                log.warn("showBasicLabelData [GET] FAILURE : {} -> {}", communityId);
-                return new ResultModel(AditumCode.ERROR);
-            }
-            log.info("showBasicLabelData [GET] SUCCESS : {} -> {}", communityId, basicLabelData);
-            showBasicLabelDataCache = new ResultModel(AditumCode.OK, basicLabelData);
-            return showBasicLabelDataCache;
-        }
-
-        log.info("showBasicLabelData [GET] [CACHE] SUCCESS {}", showBasicLabelDataCache.getData());
-        return showBasicLabelDataCache;
     }
 
-    /**
-     * showBasicDeviceCountData缓存
-     */
-    private ResultModel showBasicDeviceCountDataCache;
-    private long showBasicDeviceCountDataCacheTime = System.currentTimeMillis();
     private static final int MOST_DEVICE_COUNT = 7;
 
     /**
@@ -150,47 +109,33 @@ public class BasicDataController extends BaseController<BasicCountData> {
         }
         log.info("showBasicDeviceCountData [GET] : {}", communityId);
 
-        // 初始化缓存
-        if (showBasicDeviceCountDataCache == null) {
+        String key = "showBasicDeviceCountData" + communityId;
+        String originValue = jedis.get(key);
+        if (originValue == null) {
             BasicDeviceCountData basicDeviceCountData =
                     basicDataService.analysisBasicDeviceData(communityId, MOST_DEVICE_COUNT);
             if (basicDeviceCountData == null) {
                 log.warn("showBasicDeviceCountData [GET] [INIT] FAILURE : {} -> {}", communityId);
                 return new ResultModel(AditumCode.ERROR);
+            } else {
+                ResultModel cache = new ResultModel(AditumCode.OK, basicDeviceCountData);
+                String value = JSON.toJSONString(cache);
+                jedis.setex(key, VALID_TIME, value);
+                log.info("showBasicDeviceCountData [GET] [INIT] SUCCESS {}", cache);
+                return cache;
             }
-            showBasicDeviceCountDataCache = new ResultModel(AditumCode.OK, basicDeviceCountData);
-            log.info("showBasicDeviceCountData [GET] [INIT] SUCCESS {}", basicDeviceCountData);
-            return showBasicDeviceCountDataCache;
+        } else {
+            ResultModel cache = JSON.parseObject(originValue, ResultModel.class);
+            log.info("showBasicDeviceCountData [GET] [CACHE] SUCCESS {}", cache);
+            return cache;
         }
-
-        // 缓存过期，更新
-        long current = System.currentTimeMillis();
-        if (current - showBasicDeviceCountDataCacheTime > VALID_TIME) {
-            showBasicDeviceCountDataCacheTime = current;
-            BasicDeviceCountData basicDeviceCountData =
-                    basicDataService.analysisBasicDeviceData(communityId, MOST_DEVICE_COUNT);
-            if (basicDeviceCountData == null) {
-                log.warn("showBasicDeviceCountData [GET] FAILURE : {} -> {}", communityId);
-                return new ResultModel(AditumCode.ERROR);
-            }
-            log.info("showBasicDeviceCountData [GET] SUCCESS : {} -> {}", communityId, basicDeviceCountData);
-            showBasicDeviceCountDataCache = new ResultModel(AditumCode.OK, basicDeviceCountData);
-            return showBasicDeviceCountDataCache;
-        }
-
-        log.info("showBasicDeviceCountData [GET] [CACHE] SUCCESS {}", showBasicDeviceCountDataCache.getData());
-        return showBasicDeviceCountDataCache;
     }
 
-    /**
-     * showBasicDeviceWeekendData缓存
-     */
-    private ResultModel showBasicDeviceWeekendDataCache;
-    private long showBasicDeviceWeekendDataCacheTime = System.currentTimeMillis();
     private static final int MOST_WEEKEND_COUNT = 3;
 
     /**
-     * 展示首页的最近七天预览，最近七天每天访问量前MOST_WEEKEND_COUNT的设备（访问量前MOST_WEEKEND_COUNT的设备最近一周的访问量）
+     * 展示首页的最近七天预览，最近七天每天访问量前MOST_WEEKEND_COUNT的设备
+     * （访问量前MOST_WEEKEND_COUNT的设备最近一周的访问量）
      */
     @RequestMapping(value = "/device/weekend", method = RequestMethod.GET)
     public ResultModel showBasicDeviceWeekendData(BasicCountData basicCountData) {
@@ -200,55 +145,25 @@ public class BasicDataController extends BaseController<BasicCountData> {
         }
         log.info("showBasicDeviceWeekendData [GET] : {}", communityId);
 
-        // 初始化缓存
-        if (showBasicDeviceWeekendDataCache == null) {
+        String key = "showBasicDeviceWeekendData" + communityId;
+        String originValue = jedis.get(key);
+        if (originValue == null) {
             BasicDeviceWeekendData basicDeviceWeekendData =
                     basicDataService.analysisBasicWeekendData(communityId, MOST_WEEKEND_COUNT);
             if (basicDeviceWeekendData == null) {
                 log.warn("showBasicDeviceWeekendData [GET] [INIT] FAILURE : {} -> {}", communityId);
                 return new ResultModel(AditumCode.ERROR);
+            } else {
+                ResultModel cache = new ResultModel(AditumCode.OK, basicDeviceWeekendData);
+                String value = JSON.toJSONString(cache);
+                jedis.setex(key, VALID_TIME, value);
+                log.info("showBasicDeviceWeekendData [GET] [INIT] SUCCESS {}", cache);
+                return cache;
             }
-            showBasicDeviceWeekendDataCache = new ResultModel(AditumCode.OK, basicDeviceWeekendData);
-            log.info("showBasicDeviceWeekendData [GET] [INIT] SUCCESS {}", basicDeviceWeekendData);
-            return showBasicDeviceWeekendDataCache;
+        } else {
+            ResultModel cache = JSON.parseObject(originValue, ResultModel.class);
+            log.info("showBasicDeviceWeekendData [GET] [CACHE] SUCCESS {}", cache);
+            return cache;
         }
-
-        // 缓存过期，更新
-        long current = System.currentTimeMillis();
-        if (current - showBasicDeviceWeekendDataCacheTime > VALID_TIME) {
-            showBasicDeviceWeekendDataCacheTime = current;
-            BasicDeviceWeekendData basicDeviceWeekendData =
-                    basicDataService.analysisBasicWeekendData(communityId, MOST_WEEKEND_COUNT);
-            if (basicDeviceWeekendData == null) {
-                log.warn("showBasicDeviceWeekendData [GET] FAILURE : {} -> {}", communityId);
-                return new ResultModel(AditumCode.ERROR);
-            }
-            log.info("showBasicDeviceWeekendData [GET] SUCCESS : {} -> {}", communityId, basicDeviceWeekendData);
-            showBasicDeviceWeekendDataCache = new ResultModel(AditumCode.OK, basicDeviceWeekendData);
-            return showBasicDeviceWeekendDataCache;
-        }
-
-        log.info("showBasicDeviceWeekendData [GET] [CACHE] SUCCESS {}", showBasicDeviceWeekendDataCache.getData());
-        return showBasicDeviceWeekendDataCache;
-    }
-
-    @Override
-    public ResultModel get(BasicCountData basicCountData) {
-        return null;
-    }
-
-    @Override
-    public ResultModel post(BasicCountData basicCountData) {
-        return null;
-    }
-
-    @Override
-    public ResultModel update(BasicCountData basicCountData) {
-        return null;
-    }
-
-    @Override
-    public ResultModel delete(BasicCountData basicCountData) {
-        return null;
     }
 }

@@ -26,7 +26,6 @@ public class RecordController extends BaseController<Record> {
         this.service = service;
     }
 
-    @Override
     @RequestMapping(method = RequestMethod.GET)
     public ResultModel get(Record record) {
         log.info("Record [GET] : {}", record);
@@ -39,7 +38,6 @@ public class RecordController extends BaseController<Record> {
         return new ResultModel(AditumCode.OK, recordList);
     }
 
-    @Override
     @RequestMapping(method = RequestMethod.POST)
     public ResultModel post(@RequestBody Record record) {
         log.info("Record [POST] : {}", record);
@@ -62,12 +60,10 @@ public class RecordController extends BaseController<Record> {
         return new ResultModel(AditumCode.OK);
     }
 
-    @Override
     public ResultModel update(Record record) {
         return null;
     }
 
-    @Override
     public ResultModel delete(Record record) {
         return null;
     }

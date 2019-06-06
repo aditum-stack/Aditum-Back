@@ -1,15 +1,20 @@
 package com.ten.aditum.back.pycontroller;
 
+import com.ten.aditum.back.config.PythonConstants;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 
+/**
+ * python调用测试
+ */
 public class PythonLocalTest {
     public static void main(String[] args) {
-        String line = null;
+        String line;
         String[] arguments = new String[]{
-                "D:\\Users\\shihaowang\\AppData\\Local\\Programs\\Python\\Python37\\python.exe",
-                "D:\\Users\\shihaowang\\Desktop\\Aditum-Personas\\com.ten.aditum\\personas\\AccessTimeClusteringModel.py"};
+                PythonConstants.PYTHON_PATH,
+                PythonConstants.PTTHON_PROGRAM_BATH_PATH + "AccessTimeClusteringModel.py"};
         try {
             Process process = Runtime.getRuntime().exec(arguments);
             BufferedReader in = new BufferedReader(new InputStreamReader(process.getInputStream()));

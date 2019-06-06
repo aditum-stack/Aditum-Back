@@ -27,7 +27,6 @@ public class DeviceController extends BaseController<Device> {
         this.deviceService = deviceService;
     }
 
-    @Override
     @RequestMapping(method = RequestMethod.GET)
     public ResultModel get(Device device) {
         log.info("Device [GET] : {}", device);
@@ -40,7 +39,6 @@ public class DeviceController extends BaseController<Device> {
         return new ResultModel(AditumCode.OK, deviceList);
     }
 
-    @Override
     @RequestMapping(method = RequestMethod.POST)
     public ResultModel post(@RequestBody Device device) {
         log.info("Device [POST] : {}", device);
@@ -62,12 +60,10 @@ public class DeviceController extends BaseController<Device> {
         return new ResultModel(AditumCode.OK);
     }
 
-    @Override
     public ResultModel update(Device device) {
         return null;
     }
 
-    @Override
     public ResultModel delete(Device device) {
         return null;
     }

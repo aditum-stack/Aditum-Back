@@ -1,6 +1,8 @@
 package com.ten.aditum.back.pycontroller;
 
+import com.alibaba.fastjson.JSON;
 import com.ten.aditum.back.config.PythonConstants;
+import com.ten.aditum.back.controller.BaseController;
 import com.ten.aditum.back.model.AditumCode;
 import com.ten.aditum.back.model.ResultModel;
 import lombok.extern.slf4j.Slf4j;
@@ -14,65 +16,54 @@ import java.nio.charset.StandardCharsets;
 
 /**
  * Python聚类分析，DeviceCount设备按天访问热度聚类分析
- *
- * @author shihaowang
- * @date 2019/5/22
  */
 @Slf4j
 @RestController
 @RequestMapping(value = "/py/device/access/")
-public class PyDeviceCountController {
+public class PyDeviceCountController extends BaseController {
 
-    /**
-     * 缓存
-     */
-    private ResultModel cache;
-    private long lastUseTime = System.currentTimeMillis();
-
-    /**
-     * python脚本执行路径
-     */
     private static final String[] ARGUMENTS = new String[]{
             PythonConstants.PYTHON_PATH,
             PythonConstants.PTTHON_PROGRAM_BATH_PATH + "DeviceCountClusteringModel.py"};
 
     /**
      * 获取设备热度聚类数据图
+     * TODO 根据communityId获取
      *
      * @return base64 img
      */
     @RequestMapping(value = "/count/yesterday", method = RequestMethod.GET)
-    public ResultModel getCountByDayClustering() {
+    public ResultModel getCountByDayClustering(String communityId) {
         log.info("PyDeviceCount yesterday [GET] clustering");
-
-        String base64Img;
-
-        // 初始化缓存
-        if (cache == null) {
-            base64Img = computeBase64();
-            cache = new ResultModel(AditumCode.OK, base64Img);
-            log.info("PyDeviceCount yesterday [GET] clustering [INIT] SUCCESS {}", base64Img);
-            return cache;
+        if (communityId == null) {
+//            return new ResultModel(AditumCode.ERROR, "communityId不能为空");
         }
 
-        long current = System.currentTimeMillis();
-        // 缓存过期，更新
-        if (current - lastUseTime > PythonConstants.VALID_TIME) {
-            lastUseTime = current;
-            base64Img = computeBase64();
-            cache = new ResultModel(AditumCode.OK, base64Img);
-            log.info("PyDeviceCount yesterday [GET] clustering [NEW] SUCCESS {}", base64Img);
+        String key = "PyDeviceCount" + communityId;
+        String originValue = jedis.get(key);
+        if (originValue == null) {
+            String base64Img = computeBase64(communityId);
+            if (base64Img == null) {
+                log.warn("PyDeviceCount [GET] [INIT] FAILURE : {} -> {}", communityId);
+                return new ResultModel(AditumCode.ERROR);
+            } else {
+                ResultModel cache = new ResultModel(AditumCode.OK, base64Img);
+                String value = JSON.toJSONString(cache);
+                jedis.setex(key, VALID_TIME, value);
+                log.info("PyDeviceCount [GET] [INIT] SUCCESS {}", cache);
+                return cache;
+            }
+        } else {
+            ResultModel cache = JSON.parseObject(originValue, ResultModel.class);
+            log.info("PyDeviceCount [GET] [CACHE] SUCCESS {}", cache);
             return cache;
         }
-
-        log.info("PyDeviceCount yesterday [GET] clustering [CACHE] SUCCESS {}", cache.getData());
-        return cache;
     }
 
     /**
      * 调用Python脚本执行并返回base64图片字符串
      */
-    private String computeBase64() {
+    private String computeBase64(String communityId) {
         log.info("PyDeviceCount 聚类算法开始计算...预计耗时10s");
         long start = System.currentTimeMillis();
 

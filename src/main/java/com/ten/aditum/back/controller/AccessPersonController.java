@@ -16,13 +16,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+/**
+ * 用户访问行为分析数据
+ */
 @Slf4j
 @RestController
 @RequestMapping(value = "/access/person")
-public class AccessPersonController {
-
-    private static final int NO_DELETED = 0;
-    private static final int IS_DELETED = 1;
+public class AccessPersonController extends BaseController {
 
     private final AccessAddressService accessAddressService;
     private final AccessIntervalService accessIntervalService;

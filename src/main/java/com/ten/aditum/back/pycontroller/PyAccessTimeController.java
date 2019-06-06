@@ -1,6 +1,8 @@
 package com.ten.aditum.back.pycontroller;
 
+import com.alibaba.fastjson.JSON;
 import com.ten.aditum.back.config.PythonConstants;
+import com.ten.aditum.back.controller.BaseController;
 import com.ten.aditum.back.model.AditumCode;
 import com.ten.aditum.back.model.ResultModel;
 import lombok.extern.slf4j.Slf4j;
@@ -14,31 +16,18 @@ import java.nio.charset.StandardCharsets;
 
 /**
  * Python聚类分析，AccessTime用户时间行为偏好聚类分析
- *
- * @author shihaowang
- * @date 2019/5/22
  */
 @Slf4j
 @RestController
 @RequestMapping(value = "/py/access/")
-public class PyAccessTimeController {
+public class PyAccessTimeController extends BaseController {
 
-    /**
-     * 缓存
-     */
-    private ResultModel cache;
-    private long lastUseTime = System.currentTimeMillis();
-
-    /**
-     * python脚本执行路径
-     */
     private static final String[] ARGUMENTS = new String[]{
             PythonConstants.PYTHON_PATH,
             PythonConstants.PTTHON_PROGRAM_BATH_PATH + "AccessTimeClusteringModel.py"};
 
     /**
      * 获取用户时间行为偏好聚类数据图
-     * <p>
      * TODO 根据communityId获取
      *
      * @return base64 img
@@ -46,35 +35,35 @@ public class PyAccessTimeController {
     @RequestMapping(value = "/time", method = RequestMethod.GET)
     public ResultModel getTimeClustering(String communityId) {
         log.info("PythonAccessTime [GET] clustering, cId {}", communityId);
-
-        String base64Img;
-
-        // 初始化缓存
-        if (cache == null) {
-            base64Img = computeBase64();
-            cache = new ResultModel(AditumCode.OK, base64Img);
-            log.info("PythonAccessTime [GET] clustering [INIT] SUCCESS {}", base64Img);
-            return cache;
+        if (communityId == null) {
+//            return new ResultModel(AditumCode.ERROR, "communityId不能为空");
         }
 
-        long current = System.currentTimeMillis();
-        // 缓存过期，更新
-        if (current - lastUseTime > PythonConstants.VALID_TIME) {
-            lastUseTime = current;
-            base64Img = computeBase64();
-            cache = new ResultModel(AditumCode.OK, base64Img);
-            log.info("PythonAccessTime [GET] clustering [NEW] SUCCESS {}", base64Img);
+        String key = "PythonAccessTime" + communityId;
+        String originValue = jedis.get(key);
+        if (originValue == null) {
+            String base64Img = computeBase64(communityId);
+            if (base64Img == null) {
+                log.warn("PythonAccessTime [GET] [INIT] FAILURE : {} -> {}", communityId);
+                return new ResultModel(AditumCode.ERROR);
+            } else {
+                ResultModel cache = new ResultModel(AditumCode.OK, base64Img);
+                String value = JSON.toJSONString(cache);
+                jedis.setex(key, VALID_TIME, value);
+                log.info("PythonAccessTime [GET] [INIT] SUCCESS {}", cache);
+                return cache;
+            }
+        } else {
+            ResultModel cache = JSON.parseObject(originValue, ResultModel.class);
+            log.info("PythonAccessTime [GET] [CACHE] SUCCESS {}", cache);
             return cache;
         }
-
-        log.info("PythonAccessTime [GET] clustering [CACHE] SUCCESS {}", cache.getData());
-        return cache;
     }
 
     /**
      * 调用Python脚本执行并返回base64图片字符串
      */
-    private String computeBase64() {
+    private String computeBase64(String communityId) {
         log.info("PythonAccessTime 聚类算法开始计算...预计耗时20s");
         long start = System.currentTimeMillis();
 
