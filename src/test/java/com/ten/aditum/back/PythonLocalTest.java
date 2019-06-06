@@ -1,4 +1,4 @@
-package com.ten.aditum.back.pycontroller;
+package com.ten.aditum.back;
 
 import com.ten.aditum.back.config.PythonConstants;
 

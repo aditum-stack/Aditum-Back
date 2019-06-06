@@ -26,7 +26,7 @@ public class BeanConfigurator {
         redisConnection.setPort(6379);
 //        redisConnection.setPwd("wangshihao");
         redisConnection.setClientName(Thread.currentThread().getName());
-        redisConnection.setTimeOut(600);
+        redisConnection.setTimeOut(1000);
         redisConnection.setJedisPoolConfig(jedisPoolConfig);
         return redisConnection.getJedis();
     }

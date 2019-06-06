@@ -1,4 +1,4 @@
-package com.ten.aditum.back;
+package com.ten.aditum.back.util;
 
 import org.junit.After;
 import org.junit.Before;
