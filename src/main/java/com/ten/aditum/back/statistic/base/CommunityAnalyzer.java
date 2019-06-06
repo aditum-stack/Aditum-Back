@@ -1,6 +1,6 @@
 package com.ten.aditum.back.statistic.base;
 
-import com.ten.aditum.back.BaseAnalysor;
+import com.ten.aditum.back.statistic.BaseAnalysor;
 import com.ten.aditum.back.entity.Community;
 import com.ten.aditum.back.entity.Device;
 import com.ten.aditum.back.entity.Person;

@@ -1,7 +1,7 @@
 package com.ten.aditum.back.statistic.device;
 
 
-import com.ten.aditum.back.BaseAnalysor;
+import com.ten.aditum.back.statistic.BaseAnalysor;
 import com.ten.aditum.back.entity.DeviceAccessLog;
 import com.ten.aditum.back.entity.Record;
 import com.ten.aditum.back.util.TimeGenerator;

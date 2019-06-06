@@ -2,7 +2,7 @@ package com.ten.aditum.back.statistic.person;
 
 
 import com.alibaba.fastjson.JSON;
-import com.ten.aditum.back.BaseAnalysor;
+import com.ten.aditum.back.statistic.BaseAnalysor;
 import com.ten.aditum.back.entity.*;
 import com.ten.aditum.back.util.TimeGenerator;
 import lombok.extern.slf4j.Slf4j;

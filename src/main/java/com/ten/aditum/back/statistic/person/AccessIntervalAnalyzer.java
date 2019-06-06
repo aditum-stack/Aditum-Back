@@ -1,7 +1,7 @@
 package com.ten.aditum.back.statistic.person;
 
 
-import com.ten.aditum.back.BaseAnalysor;
+import com.ten.aditum.back.statistic.BaseAnalysor;
 import com.ten.aditum.back.entity.AccessInterval;
 import com.ten.aditum.back.entity.AccessTime;
 import com.ten.aditum.back.entity.Person;

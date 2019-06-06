@@ -1,4 +1,4 @@
-package com.ten.aditum.back;
+package com.ten.aditum.back.statistic;
 
 import com.ten.aditum.back.entity.AccessTime;
 import com.ten.aditum.back.entity.Community;

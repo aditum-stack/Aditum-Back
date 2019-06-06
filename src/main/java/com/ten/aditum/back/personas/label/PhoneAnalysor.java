@@ -2,7 +2,7 @@ package com.ten.aditum.back.personas.label;
 
 
 import com.github.pagehelper.util.StringUtil;
-import com.ten.aditum.back.BaseAnalysor;
+import com.ten.aditum.back.statistic.BaseAnalysor;
 import com.ten.aditum.back.entity.Person;
 import com.ten.aditum.back.vo.Personas;
 import lombok.extern.slf4j.Slf4j;

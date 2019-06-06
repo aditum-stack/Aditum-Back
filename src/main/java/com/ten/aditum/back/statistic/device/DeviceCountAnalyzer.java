@@ -1,7 +1,7 @@
 package com.ten.aditum.back.statistic.device;
 
 
-import com.ten.aditum.back.BaseAnalysor;
+import com.ten.aditum.back.statistic.BaseAnalysor;
 import com.ten.aditum.back.entity.Device;
 import com.ten.aditum.back.entity.DeviceAccessCount;
 import com.ten.aditum.back.entity.Record;
