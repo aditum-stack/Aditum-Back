@@ -1,50 +1,33 @@
 package com.ten.aditum.back.util;
 
+import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 
+@Slf4j
 public class RedisConnection {
+    @Setter
+    private String ip;
+    @Setter
+    private Integer port;
+    @Setter
+    private String pwd;
+    @Setter
+    private Integer timeOut;
     /**
      * redis 连接池配置信息
      */
+    @Setter
     private JedisPoolConfig jedisPoolConfig;
-
-    private String ip;
-    private Integer port;
-    private String pwd;
-    private Integer timeOut;
-
     /**
      * redis 连接客户端名称
      */
-    private String clientName = null;
+    @Setter
+    private String clientName;
 
     private JedisPool jedisPool;
-
-    public void setJedisPoolConfig(JedisPoolConfig jedisPoolConfig) {
-        this.jedisPoolConfig = jedisPoolConfig;
-    }
-
-    public void setIp(String ip) {
-        this.ip = ip;
-    }
-
-    public void setPort(Integer port) {
-        this.port = port;
-    }
-
-    public void setPwd(String pwd) {
-        this.pwd = pwd;
-    }
-
-    public void setTimeOut(Integer timeOut) {
-        this.timeOut = timeOut;
-    }
-
-    public void setClientName(String clientName) {
-        this.clientName = clientName;
-    }
 
     private void buildConnection() {
         if (jedisPool == null) {
@@ -56,11 +39,38 @@ public class RedisConnection {
         }
     }
 
-    public Jedis getJedis() {
+    public void buildJedis() {
         buildConnection();
-        if (jedisPool != null) {
-            return jedisPool.getResource();
+        if (jedisPool == null) {
+            throw new RuntimeException("redisPool初始化失败");
         }
-        return null;
+    }
+
+    public String get(String key) {
+        try (Jedis jedis = jedisPool.getResource()) {
+            String value = jedis.get(key);
+            log.info("redis [GET] \\{key: {}, value: {}\\}", key, value);
+            return value;
+        } catch (Exception e) {
+            log.error("redis [GET] FAILURE key: {}", key);
+            return null;
+        }
+    }
+
+    public String setex(String key, int timeOutS, String value) {
+        try (Jedis jedis = jedisPool.getResource()) {
+            return jedis.setex(key, timeOutS, value);
+        } catch (Exception e) {
+            log.error("redis [setEx] FAILURE \\{key: {}, value: {}\\}", key, value);
+            return null;
+        }
+    }
+
+    public void flushAll() {
+        try (Jedis jedis = jedisPool.getResource()) {
+            jedis.flushAll();
+        } catch (Exception e) {
+            log.error("redis [flushAll] FAILURE");
+        }
     }
 }

@@ -12,28 +12,29 @@ import redis.clients.jedis.JedisPoolConfig;
  *
  * @author <Authors name>
  * @version 1.0
- * @since <pre>ÁùÔÂ 6, 2019</pre>
+ * @since <pre>ï¿½ï¿½ï¿½ï¿½ 6, 2019</pre>
  */
 public class RedisConnectionTest {
 
-    private RedisConnection redisConnection;
+    private RedisConnection jedis;
 
     @Before
     public void before() throws Exception {
         JedisPoolConfig jedisPoolConfig = new JedisPoolConfig();
-        // ÉèÖÃ redis Á¬½Ó³Ø×î´óÁ¬½ÓÊýÁ¿
+        // ï¿½ï¿½ï¿½ï¿½ redis ï¿½ï¿½ï¿½Ó³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         jedisPoolConfig.setMaxTotal(50);
-        // ÉèÖÃ redis Á¬½Ó³Ø×î´ó¿ÕÏÐÁ¬½ÓÊýÁ¿
+        // ï¿½ï¿½ï¿½ï¿½ redis ï¿½ï¿½ï¿½Ó³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         jedisPoolConfig.setMaxIdle(10);
-        // ÉèÖÃ redis Á¬½Ó³Ø×îÐ¡¿ÕÏÐÁ¬½ÓÊýÁ¿
+        // ï¿½ï¿½ï¿½ï¿½ redis ï¿½ï¿½ï¿½Ó³ï¿½ï¿½ï¿½Ð¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         jedisPoolConfig.setMinIdle(1);
-        redisConnection = new RedisConnection();
-        redisConnection.setIp("47.106.11.84");
-        redisConnection.setPort(6379);
-        redisConnection.setPwd("wangshihao");
-        redisConnection.setClientName(Thread.currentThread().getName());
-        redisConnection.setTimeOut(60000);
-        redisConnection.setJedisPoolConfig(jedisPoolConfig);
+        jedis = new RedisConnection();
+        jedis.setIp("47.106.11.84");
+        jedis.setPort(6379);
+        jedis.setPwd("wangshihao");
+        jedis.setClientName(Thread.currentThread().getName());
+        jedis.setTimeOut(60000);
+        jedis.setJedisPoolConfig(jedisPoolConfig);
+        jedis.buildJedis();
     }
 
     @After
@@ -41,21 +42,20 @@ public class RedisConnectionTest {
     }
 
     /**
-     * Method: getJedis()
+     * Method: buildJedis()
      */
     @Test
     public void testGetJedis() throws Exception {
-        Jedis jedis = redisConnection.getJedis();
-        try {
-            jedis.select(1);
-//            jedis.set("name", "grace");
-            System.out.println(jedis.get("name1"));
-            Assert.assertEquals("grace", jedis.get("name"));
-        } finally {
-            if (jedis != null) {
-                jedis.close();
-            }
-        }
+//        try {
+//            jedis.select(1);
+////            jedis.set("name", "grace");
+//            System.out.println(jedis.get("name1"));
+//            Assert.assertEquals("grace", jedis.get("name"));
+//        } finally {
+//            if (jedis != null) {
+//                jedis.close();
+//            }
+//        }
     }
 
 } 

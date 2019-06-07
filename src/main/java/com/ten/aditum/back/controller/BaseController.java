@@ -3,6 +3,7 @@ package com.ten.aditum.back.controller;
 
 import com.ten.aditum.back.model.AditumCode;
 import com.ten.aditum.back.model.ResultModel;
+import com.ten.aditum.back.util.RedisConnection;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,7 +26,7 @@ public abstract class BaseController<Entity> {
     protected static final int VALID_TIME = 60 * 60 * 12;
 
     @Autowired
-    protected Jedis jedis;
+    protected RedisConnection jedis;
 
     /* Restful Interface */
 
