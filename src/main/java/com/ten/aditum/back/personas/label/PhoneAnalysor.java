@@ -42,7 +42,7 @@ public class PhoneAnalysor extends BaseAnalysor {
     private void analysisPerson(Person person) {
         String phone = person.getPersonnelPhone();
         if (StringUtil.isEmpty(phone)) {
-            log.warn("用户 {} 没有电话号", person.getPersonnelName());
+            log.info("用户 {} 没有电话号", person.getPersonnelName());
             return;
         }
 
@@ -52,7 +52,7 @@ public class PhoneAnalysor extends BaseAnalysor {
                 .setPersonnelId(person.getPersonnelId())
                 .setLabelName(labelName);
         personasService.updatePersonasByLabelName(label);
-        log.info("用户 {} 运营商标签计算完成，{}", person.getPersonnelName(), labelName);
+        log.debug("用户 {} 运营商标签计算完成，{}", person.getPersonnelName(), labelName);
     }
 
     /**

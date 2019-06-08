@@ -68,7 +68,7 @@ public class DeviceLogAnalyzer extends BaseAnalysor {
                     .setUpdateTime(TimeGenerator.currentTime())
                     .setIsDeleted(NO_DELETED);
             deviceAccessLogService.insert(accessLog);
-            log.info("此记录完成更新 id:{}", record.getId());
+            log.debug("此记录完成更新 id:{}", record.getId());
         } else {
             log.debug("此记录已更新过 id:{}", record.getId());
         }

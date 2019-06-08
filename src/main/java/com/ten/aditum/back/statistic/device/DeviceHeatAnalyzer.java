@@ -51,9 +51,13 @@ public class DeviceHeatAnalyzer extends BaseAnalysor {
                 .setIsDeleted(NO_DELETED);
         List<DeviceAccessHeat> select = deviceAccessHeatService.select(selectEntity);
         if (select.size() > 0) {
-            log.warn("当前时间已更新 {}", hourBeforeZeroDateTime);
+            log.debug("当前时间已更新 {}", hourBeforeZeroDateTime);
             return;
         }
+
+        AtomicInteger currentHourCount = new AtomicInteger(0);
+        AtomicInteger currentHourInCount = new AtomicInteger(0);
+        AtomicInteger currentHourOutCount = new AtomicInteger(0);
 
         // 上个小时的访问记录
         Record recordEntity = new Record()
@@ -62,30 +66,26 @@ public class DeviceHeatAnalyzer extends BaseAnalysor {
                 .setIsDeleted(NO_DELETED);
         List<Record> recordList = recordService.selectAfterTheDateTime(recordEntity);
         if (recordList.size() == 0) {
-            log.warn("device {} 本小时 {} 没有任何访问记录!", device.getAlias(), hourBeforeZeroDateTime);
-            return;
-        }
-
-        AtomicInteger currentHourCount = new AtomicInteger(0);
-        AtomicInteger currentHourInCount = new AtomicInteger(0);
-        AtomicInteger currentHourOutCount = new AtomicInteger(0);
-        recordList.forEach(record -> {
-            String visiteTime = record.getVisiteTime().substring(0, 19);
-            record.setVisiteTime(visiteTime);
-            // 若record时间大于前一小时且小于当前小时，访问次数+1
-            if (visiteTime.compareTo(hourBeforeZeroDateTime) > 0
-                    && TimeGenerator.currentDateTime().compareTo(visiteTime) > 0) {
-                currentHourCount.getAndIncrement();
-                // 出入类型
-                if (record.getVisiteStatus() == 0) {
-                    currentHourInCount.getAndIncrement();
-                } else if (record.getVisiteStatus() == 1) {
-                    currentHourOutCount.getAndIncrement();
-                } else {
-                    log.warn("记录访问失败！{}", record);
+            log.info("device {} 本小时 {} 没有任何访问记录!", device.getAlias(), hourBeforeZeroDateTime);
+        } else {
+            recordList.forEach(record -> {
+                String visiteTime = record.getVisiteTime().substring(0, 19);
+                record.setVisiteTime(visiteTime);
+                // 若record时间大于前一小时且小于当前小时，访问次数+1
+                if (visiteTime.compareTo(hourBeforeZeroDateTime) > 0
+                        && TimeGenerator.currentDateTime().compareTo(visiteTime) > 0) {
+                    currentHourCount.getAndIncrement();
+                    // 出入类型
+                    if (record.getVisiteStatus() == 0) {
+                        currentHourInCount.getAndIncrement();
+                    } else if (record.getVisiteStatus() == 1) {
+                        currentHourOutCount.getAndIncrement();
+                    } else {
+                        log.warn("记录访问失败！{}", record);
+                    }
                 }
-            }
-        });
+            });
+        }
 
         DeviceAccessHeat accessHeat = new DeviceAccessHeat()
                 .setImei(device.getImei())

@@ -50,7 +50,7 @@ public class AccessIntervalAnalyzer extends BaseAnalysor {
                 .setIsDeleted(NO_DELETED);
         List<AccessTime> select = accessTimeService.select(accessTimeEntity);
         if (select.size() < 1) {
-            log.info("此用户 {}{} 还没有AccessTime记录",
+            log.debug("此用户 {}{} 还没有AccessTime记录",
                     person.getId(), person.getPersonnelName());
             return;
         }
@@ -70,7 +70,7 @@ public class AccessIntervalAnalyzer extends BaseAnalysor {
         long workTimeS;
         long lifeTimeS;
         if (es == ls) {
-            log.warn("此用户 {} 只有一次访问时间记录", person.getPersonnelName());
+            log.debug("此用户 {} 只有一次访问时间记录", person.getPersonnelName());
             return;
         } else {
             workTimeS = ls - es;
@@ -98,7 +98,7 @@ public class AccessIntervalAnalyzer extends BaseAnalysor {
             accessInterval
                     .setCreateTime(TimeGenerator.currentTime());
             accessIntervalService.insert(accessInterval);
-            log.info("Person {} 插入 w {} l {}", person.getPersonnelName(), workTime, lifeTime);
+            log.debug("Person {} 插入 w {} l {}", person.getPersonnelName(), workTime, lifeTime);
         }
         // 当前用户已有记录，更新
         else {
@@ -108,7 +108,7 @@ public class AccessIntervalAnalyzer extends BaseAnalysor {
                     .setId(id)
                     .setUpdateTime(TimeGenerator.currentTime());
             accessIntervalService.update(accessInterval);
-            log.info("Person {} 更新 w {} l {}", person.getPersonnelName(), workTime, lifeTime);
+            log.debug("Person {} 更新 w {} l {}", person.getPersonnelName(), workTime, lifeTime);
         }
     }
 

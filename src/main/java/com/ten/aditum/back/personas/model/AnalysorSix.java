@@ -62,7 +62,7 @@ public class AnalysorSix extends BaseAnalysor {
                 .setIsDeleted(NO_DELETED);
         List<AccessInterval> select = accessIntervalService.select(accessIntervalEntity);
         if (select.size() < 1) {
-            log.info("此用户还没有AccessInterval记录, {}", person.getPersonnelName());
+            log.debug("此用户还没有AccessInterval记录, {}", person.getPersonnelName());
             return;
         }
 
@@ -77,7 +77,7 @@ public class AnalysorSix extends BaseAnalysor {
         long out = TimeGenerator.getTotalSec(meanTimeOut);
 
         if (in == 0 && out == 0) {
-            log.warn("此用户 {} 访问间隔为空，退出", person.getPersonnelName());
+            log.debug("此用户 {} 访问间隔为空，退出", person.getPersonnelName());
         }
 
         // 标签集合
@@ -110,7 +110,7 @@ public class AnalysorSix extends BaseAnalysor {
             personasService.updatePersonas(personas);
         }
 
-        log.info("用户 {} 计算完成。添加 : {} , 删除 : {}",
+        log.debug("用户 {} 计算完成。添加 : {} , 删除 : {}",
                 person.getPersonnelName(), String.join(",", labelSet), String.join(",", removeSet));
     }
 }

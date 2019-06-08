@@ -117,7 +117,7 @@ public class AnalysorSeven extends BaseAnalysor {
                 .setIsDeleted(NO_DELETED);
         List<AccessTime> select = accessTimeService.select(accessTimeEntity);
         if (select.size() < 1) {
-            log.info("此用户还没有AccessTime记录, {}", person.getPersonnelName());
+            log.debug("此用户还没有AccessTime记录, {}", person.getPersonnelName());
             return null;
         }
         // 获取AccessTime
@@ -193,7 +193,7 @@ public class AnalysorSeven extends BaseAnalysor {
             personasService.removePersonas(remove2);
         }
 
-        log.info("用户 {} 计算完成。添加 : {} , 删除 : {}",
+        log.debug("用户 {} 计算完成。添加 : {} , 删除 : {}",
                 person.getPersonnelName(), String.join(",", labelSet), String.join(",", removeSet));
     }
 }

@@ -49,11 +49,11 @@ public class CommunityAnalyzer extends BaseAnalysor {
 
         int deviceCount = deviceList.size();
         if (deviceCount == originDeviceCount) {
-            log.info("社区 {} 没有新增设备", communityName);
+            log.debug("社区 {} 没有新增设备", communityName);
             return;
         }
         if (deviceCount < originDeviceCount) {
-            log.warn("社区 {} 设备数量减少 {}", communityName, originDeviceCount - deviceCount);
+            log.info("社区 {} 设备数量减少 {}", communityName, originDeviceCount - deviceCount);
         }
 
         int id = community.getId();
@@ -82,11 +82,11 @@ public class CommunityAnalyzer extends BaseAnalysor {
 
         int personCount = personList.size();
         if (personCount == originPersonCount) {
-            log.info("社区 {} 没有新注册用户", communityName);
+            log.debug("社区 {} 没有新注册用户", communityName);
             return;
         }
         if (personCount < originPersonCount) {
-            log.warn("社区 {} 用户数量减少 {}", communityName, originPersonCount - personCount);
+            log.info("社区 {} 用户数量减少 {}", communityName, originPersonCount - personCount);
         }
 
         int id = community.getId();

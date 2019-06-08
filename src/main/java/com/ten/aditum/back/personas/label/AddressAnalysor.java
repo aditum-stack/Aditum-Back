@@ -57,7 +57,7 @@ public class AddressAnalysor extends BaseAnalysor {
 
         personasService.updatePersonasByLabelName(label);
 
-        log.info("用户 {} 居住地标签计算完成，{}", person.getPersonnelName(), labelName);
+        log.debug("用户 {} 居住地标签计算完成，{}", person.getPersonnelName(), labelName);
     }
 
 }

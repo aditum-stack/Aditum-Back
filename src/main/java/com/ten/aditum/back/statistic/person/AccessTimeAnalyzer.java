@@ -118,7 +118,7 @@ public class AccessTimeAnalyzer extends BaseAnalysor {
             accessTime
                     .setCreateTime(TimeGenerator.currentTime());
             accessTimeService.insert(accessTime);
-            log.info("Person {}{} 插入 {}min {}max {}f/d",
+            log.debug("Person {}{} 插入 {}min {}max {}f/d",
                     person.getId(), person.getPersonnelName(), min, max, frequency);
         } else {
             AccessTime origin = accessTimeList.get(0);
@@ -127,7 +127,7 @@ public class AccessTimeAnalyzer extends BaseAnalysor {
                     .setId(id)
                     .setUpdateTime(TimeGenerator.currentTime());
             accessTimeService.update(accessTime);
-            log.info("Person {}{} 更新 {}min {}max {}f/d",
+            log.debug("Person {}{} 更新 {}min {}max {}f/d",
                     person.getId(), person.getPersonnelName(), min, max, frequency);
         }
     }

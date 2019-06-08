@@ -102,7 +102,7 @@ public class DeviceCountAnalyzer extends BaseAnalysor {
             } else {
                 deviceAccessCountService.insert(accessCountEntity);
             }
-            log.info("device完成更新 date:{}, count:{}", accessCount.getKey(), accessCount.getValue());
+            log.debug("device完成更新 date:{}, count:{}", accessCount.getKey(), accessCount.getValue());
         }
     }
 

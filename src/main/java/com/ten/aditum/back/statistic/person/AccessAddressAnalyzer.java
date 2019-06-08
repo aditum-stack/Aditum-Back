@@ -70,7 +70,7 @@ public class AccessAddressAnalyzer extends BaseAnalysor {
         String collection = String.join(",", addressList);
         String maxCountAddress = getMaxCount(personAddressMap);
         Integer maxCount = personAddressMap.get(maxCountAddress);
-        log.info("Person {} 最常访问社区 {} {}次",
+        log.debug("Person {} 最常访问社区 {} {}次",
                 person.getPersonnelName(), maxCountAddress, maxCount);
 
         // 设备分析
@@ -79,10 +79,8 @@ public class AccessAddressAnalyzer extends BaseAnalysor {
         String imeiCollection = String.join(",", imeiList);
         String maxCountImei = getMaxCount(personImeiMap);
         Integer maxCount2 = personImeiMap.get(maxCountImei);
-        log.info("Person {} 最常访问设备 {} {}次，累计 {}次",
+        log.debug("Person {} 最常访问设备 {} {}次，累计 {}次",
                 person.getPersonnelName(), maxCountImei, maxCount2, access.getTotalCount());
-
-        System.out.println(JSON.toJSON(personImeiMap));
 
         if (imeiCollection.length() > 500) {
             imeiCollection = imeiCollection.substring(0, 499);
@@ -113,7 +111,7 @@ public class AccessAddressAnalyzer extends BaseAnalysor {
             accessAddress
                     .setCreateTime(TimeGenerator.currentTime());
             accessAddressService.insert(accessAddress);
-            log.info("Person {} 还没有地址记录，插入 {}", person.getPersonnelName(), accessAddress);
+            log.debug("Person {} 还没有地址记录，插入 {}", person.getPersonnelName(), accessAddress);
         }
         // 当前用户已有记录，更新
         else {
@@ -123,7 +121,7 @@ public class AccessAddressAnalyzer extends BaseAnalysor {
                     .setId(id)
                     .setUpdateTime(TimeGenerator.currentTime());
             accessAddressService.update(accessAddress);
-            log.info("Person {} 已经有地址记录，更新 {}", person.getPersonnelName(), accessAddress);
+            log.debug("Person {} 已经有地址记录，更新 {}", person.getPersonnelName(), accessAddress);
         }
     }
 

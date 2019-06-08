@@ -44,7 +44,7 @@ public class OneTimeAnalysor extends BaseAnalysor {
                 .setLabelId("job2");
         personasService.removePersonas(personas2);
 
-        log.info("用户 {} 计算完成，{}", person.getPersonnelName());
+        log.debug("用户 {} 计算完成，{}", person.getPersonnelName());
     }
 
 }

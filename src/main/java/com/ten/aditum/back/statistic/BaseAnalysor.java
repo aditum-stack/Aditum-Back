@@ -103,7 +103,7 @@ public abstract class BaseAnalysor {
         Community community = new Community()
                 .setIsDeleted(NO_DELETED);
         List<Community> communityList = communityService.select(community);
-        log.info("Community集合 : {}", communityList);
+        log.debug("Community集合 : {}", communityList);
         return communityList;
     }
 
@@ -114,7 +114,7 @@ public abstract class BaseAnalysor {
         Device device = new Device()
                 .setIsDeleted(NO_DELETED);
         List<Device> deviceList = deviceService.select(device);
-        log.info("Device集合 : {}", deviceList);
+        log.debug("Device集合 : {}", deviceList);
         return deviceList;
     }
 
@@ -126,7 +126,7 @@ public abstract class BaseAnalysor {
                 .setCommunityId(communityId)
                 .setIsDeleted(NO_DELETED);
         List<Device> deviceList = deviceService.select(device);
-        log.info("Device集合 : {}", deviceList);
+        log.debug("Device集合 : {}", deviceList);
         return deviceList;
     }
 
@@ -137,7 +137,7 @@ public abstract class BaseAnalysor {
         Person personEntity = new Person()
                 .setIsDeleted(NO_DELETED);
         List<Person> personList = personService.select(personEntity);
-        log.info("Person集合 : {}", personList);
+        log.debug("Person集合 : {}", personList);
         return personList;
     }
 
@@ -149,7 +149,7 @@ public abstract class BaseAnalysor {
                 .setCommunityId(communityId)
                 .setIsDeleted(NO_DELETED);
         List<Person> personList = personService.select(personEntity);
-        log.info("Person集合 : {}", personList);
+        log.debug("Person集合 : {}", personList);
         return personList;
     }
 
@@ -163,7 +163,7 @@ public abstract class BaseAnalysor {
                 .setPersonnelId(personnelId)
                 .setIsDeleted(NO_DELETED);
         List<AccessTime> select = accessTimeService.select(accessTimeEntity);
-        log.info("AccessTime集合 : {}", select);
+        log.debug("AccessTime集合 : {}", select);
         return select;
     }
 

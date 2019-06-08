@@ -85,7 +85,7 @@ public class TripsAnalysor extends BaseAnalysor {
     private PersonAccessCount analysisPerson(Person person) {
         List<AccessTime> select = selectPersonAccessTime(person.getPersonnelId());
         if (select.size() < 1) {
-            log.info("Person {} 还没有AccessTime记录", person.getPersonnelName());
+            log.debug("Person {} 还没有AccessTime记录", person.getPersonnelName());
             return null;
         }
         AccessTime theAccessTime = select.get(0);
@@ -111,7 +111,7 @@ public class TripsAnalysor extends BaseAnalysor {
                 .setPersonnelId(person.getPersonnelId())
                 .setLabelName(labelName);
         personasService.updatePersonasByLabelName(label);
-        log.info("用户 {} 访问排名计算完成，{}", person.getPersonnelName(), labelName);
+        log.debug("用户 {} 访问排名计算完成，{}", person.getPersonnelName(), labelName);
     }
 
 }
