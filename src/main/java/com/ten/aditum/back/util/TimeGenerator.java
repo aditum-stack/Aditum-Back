@@ -45,6 +45,16 @@ public class TimeGenerator {
     }
 
     /**
+     * 返回当前时间的前一分钟的年月日时分秒
+     */
+    public static String minuteBeforeDateTime() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.MINUTE, calendar.get(Calendar.MINUTE) - 1);
+        SimpleDateFormat df = new SimpleDateFormat(DATE_TIME_FORMAT);
+        return df.format(calendar.getTime());
+    }
+
+    /**
      * 昨天的的年月日时分秒
      */
     public static String yesterdayDateTime() {

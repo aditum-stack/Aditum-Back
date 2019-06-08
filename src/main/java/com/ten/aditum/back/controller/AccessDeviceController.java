@@ -3,10 +3,7 @@ package com.ten.aditum.back.controller;
 import com.ten.aditum.back.entity.*;
 import com.ten.aditum.back.model.AditumCode;
 import com.ten.aditum.back.model.ResultModel;
-import com.ten.aditum.back.service.DeviceAccessCountService;
-import com.ten.aditum.back.service.DeviceAccessHeatService;
-import com.ten.aditum.back.service.DeviceAccessLogService;
-import com.ten.aditum.back.service.DeviceAccessTotalService;
+import com.ten.aditum.back.service.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,16 +25,19 @@ public class AccessDeviceController extends BaseController {
     private final DeviceAccessHeatService deviceAccessHeatService;
     private final DeviceAccessLogService deviceAccessLogService;
     private final DeviceAccessTotalService deviceAccessTotalService;
+    private final DeviceAccessMinuteHeatService deviceAccessMinuteHeatService;
 
     @Autowired
     public AccessDeviceController(DeviceAccessCountService deviceAccessCountService,
                                   DeviceAccessHeatService deviceAccessHeatService,
                                   DeviceAccessLogService deviceAccessLogService,
-                                  DeviceAccessTotalService deviceAccessTotalService) {
+                                  DeviceAccessTotalService deviceAccessTotalService,
+                                  DeviceAccessMinuteHeatService deviceAccessMinuteHeatService) {
         this.deviceAccessCountService = deviceAccessCountService;
         this.deviceAccessHeatService = deviceAccessHeatService;
         this.deviceAccessLogService = deviceAccessLogService;
         this.deviceAccessTotalService = deviceAccessTotalService;
+        this.deviceAccessMinuteHeatService = deviceAccessMinuteHeatService;
     }
 
     /**
@@ -63,6 +63,41 @@ public class AccessDeviceController extends BaseController {
 
         log.info("AccessDeviceLog [GET] SUCCESS : {} -> {}", device, deviceAccessLogs);
         return new ResultModel(AditumCode.OK, deviceAccessLogs);
+    }
+
+    /**
+     * 根据IMEI获取设备最近一小时六十分钟的分钟访问热度
+     */
+    @RequestMapping(value = "/heat/minute", method = RequestMethod.GET)
+    public ResultModel getMinuteHeat(Device device) {
+        log.info("AccessDeviceMinuteHeat [GET] : {}", device);
+
+        if (device.getImei() == null) {
+            return new ResultModel(AditumCode.ERROR);
+        }
+
+        DeviceAccessMinuteHeat heatEntity = new DeviceAccessMinuteHeat()
+                .setImei(device.getImei())
+                .setIsDeleted(NO_DELETED);
+
+        List<DeviceAccessMinuteHeat> deviceAccessMinuteHeats =
+                deviceAccessMinuteHeatService.selectOneHourHeat(heatEntity);
+        if (deviceAccessMinuteHeats.size() < 1) {
+            log.warn("AccessDeviceMinuteHeat [GET] FAILURE : {}", device);
+            return new ResultModel(AditumCode.ERROR);
+        }
+
+        // 获取最近六十条
+        List<DeviceAccessMinuteHeat> deviceAccessHeatList = deviceAccessMinuteHeats.stream()
+                .sorted(((o1, o2) -> o2.getCurrentMinuteTime().compareTo(o1.getCurrentMinuteTime())))
+                .collect(Collectors.toList());
+
+        if (deviceAccessHeatList.size() > 60) {
+            deviceAccessHeatList = deviceAccessHeatList.subList(0, 60);
+        }
+
+        log.info("AccessDeviceMinuteHeat [GET] SUCCESS : {} -> {}", device, deviceAccessMinuteHeats);
+        return new ResultModel(AditumCode.OK, deviceAccessHeatList);
     }
 
     /**

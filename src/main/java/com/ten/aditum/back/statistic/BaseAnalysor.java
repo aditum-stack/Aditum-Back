@@ -77,6 +77,8 @@ public abstract class BaseAnalysor {
     @Resource
     protected DeviceAccessLogService deviceAccessLogService;
     @Resource
+    protected DeviceAccessMinuteHeatService deviceAccessMinuteHeatService;
+    @Resource
     protected DeviceAccessTotalService deviceAccessTotalService;
 
     @Resource
