@@ -19,7 +19,7 @@ import java.util.List;
 @EnableAutoConfiguration
 public class CommunityAnalyzer extends BaseAnalysor {
 
-    @Scheduled(cron = TEST_TIME)
+//    @Scheduled(cron = TEST_TIME)
 
     /**
      * 每天2点更新社区信息
