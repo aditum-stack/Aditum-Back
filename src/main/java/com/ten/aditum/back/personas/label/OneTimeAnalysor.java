@@ -24,7 +24,7 @@ public class OneTimeAnalysor extends BaseAnalysor {
     /**
      * 一次性任务
      */
-    @Scheduled(cron = TEST_TIME)
+//    @Scheduled(cron = TEST_TIME)
     public void analysis() {
         log.info("一次性任务...开始");
         List<Person> personList = selectAllPerson();
@@ -39,17 +39,17 @@ public class OneTimeAnalysor extends BaseAnalysor {
         Personas personas = new Personas()
                 .setPersonnelId(person.getPersonnelId())
                 .setLabelName("灞呬綇");
-        personasService.removePersonas(personas);
+        personasService.removeFuzzyPersonasByKey(personas);
         Personas personas2 = new Personas()
                 .setPersonnelId(person.getPersonnelId())
-                .setLabelName("杩");
-        personasService.removePersonas(personas2);
+                .setLabelName("杩愯惀鍟�");
+        personasService.removeFuzzyPersonasByKey(personas2);
         Personas personas3 = new Personas()
                 .setPersonnelId(person.getPersonnelId())
-                .setLabelName("鍑");
-        personasService.removePersonas(personas3);
+                .setLabelName("鍑昏触浜�");
+        personasService.removeFuzzyPersonasByKey(personas3);
 
-        log.info("用户 {}{} 删除完成，", person.getId(), person.getPersonnelName());
+        log.info("用户一次性 {}{} 删除完成，", person.getId(), person.getPersonnelName());
     }
 
 }
