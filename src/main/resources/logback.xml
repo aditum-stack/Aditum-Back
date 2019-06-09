@@ -27,9 +27,31 @@
         </triggeringPolicy>
     </appender>
 
+    <!--&lt;!&ndash; hadoop目录格式为：/%Y%m%d/%{application}/%{dir} 对应application配置节和additionalAvroHeaders中的dir，其中dir可以为不配置 &ndash;&gt;-->
+    <!--<appender name="flume" class="com.gilt.logback.flume.FlumeLogstashV1Appender">-->
+        <!--&lt;!&ndash; 此项是连接flume节点的ip和端口 &ndash;&gt;-->
+        <!--<flumeAgents>127.0.0.1:44444</flumeAgents>-->
+        <!--<flumeProperties>connect-timeout=4000;request-timeout=8000</flumeProperties>-->
+        <!--<batchSize>100</batchSize>-->
+        <!--<reportingWindow>1000</reportingWindow>-->
+        <!--&lt;!&ndash; 此项配置avro头部信息，dir标识目录 &ndash;&gt;-->
+        <!--<additionalAvroHeaders>dir=logs</additionalAvroHeaders>-->
+        <!--&lt;!&ndash; 此项配置当前应用 &ndash;&gt;-->
+        <!--<filter class="ch.qos.logback.classic.filter.LevelFilter">-->
+            <!--<level>TRACE</level>-->
+            <!--<onMatch>ACCEPT</onMatch>-->
+            <!--<onMismatch>DENY</onMismatch>-->
+        <!--</filter>-->
+    <!--</appender>-->
+
+    <!--<logger name="com.dzmsoft.framework.log.service.impl.LogServiceImpl"  level="TRACE" >-->
+        <!--<appender-ref ref="flume" />-->
+    <!--</logger>-->
+
     <!-- 日志输出级别 -->
     <root level="INFO">
         <appender-ref ref="STDOUT"/>
         <appender-ref ref="FILE"/>
+        <!--<appender-ref ref="flume" />-->
     </root>
 </configuration>

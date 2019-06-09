@@ -13,6 +13,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicInteger;
 
 
@@ -62,38 +63,41 @@ public class DeviceMinuteHeatAnalyzer extends BaseAnalysor {
                 .setVisiteTime(minuteBeforeZeroDateTime)
                 .setIsDeleted(NO_DELETED);
         List<Record> recordList = recordService.selectAfterTheDateTime(recordEntity);
-        if (recordList.size() == 0) {
-            log.debug("device {} 本分钟 {} 没有任何访问记录!", device.getAlias(), minuteBeforeZeroDateTime);
-        } else {
-            recordList.forEach(record -> {
-                String visiteTime = record.getVisiteTime().substring(0, 19);
-                record.setVisiteTime(visiteTime);
-                // 若record时间大于前一分钟且小于当前分钟，访问次数+1
-                if (visiteTime.compareTo(minuteBeforeZeroDateTime) > 0
-                        && TimeGenerator.currentDateTime().compareTo(visiteTime) > 0) {
-                    currentMinuteCount.getAndIncrement();
-                    // 出入类型
-                    if (record.getVisiteStatus() == 0) {
-                        currentMinuteInCount.getAndIncrement();
-                    } else if (record.getVisiteStatus() == 1) {
-                        currentMinuteOutCount.getAndIncrement();
-                    } else {
-                        log.info("记录访问失败！{}", record);
-                    }
-                }
-            });
-        }
 
-        DeviceAccessMinuteHeat accessMinuteHeat = new DeviceAccessMinuteHeat()
-                .setImei(device.getImei())
-                .setCurrentMinuteTime(minuteBeforeZeroDateTime)
-                .setCurrentMinuteCount(currentMinuteCount.get())
-                .setCurrentMinuteInCount(currentMinuteInCount.get())
-                .setCurrentMinuteOutCount(currentMinuteOutCount.get())
-                .setCreateTime(TimeGenerator.currentDateTime())
-                .setUpdateTime(TimeGenerator.currentDateTime())
-                .setIsDeleted(NO_DELETED);
-        deviceAccessMinuteHeatService.insert(accessMinuteHeat);
+        CompletableFuture.runAsync(() -> {
+            if (recordList.size() == 0) {
+                log.debug("device {} 本分钟 {} 没有任何访问记录!", device.getAlias(), minuteBeforeZeroDateTime);
+            } else {
+                recordList.forEach(record -> {
+                    String visiteTime = record.getVisiteTime().substring(0, 19);
+                    record.setVisiteTime(visiteTime);
+                    // 若record时间大于前一分钟且小于当前分钟，访问次数+1
+                    if (visiteTime.compareTo(minuteBeforeZeroDateTime) > 0
+                            && TimeGenerator.currentDateTime().compareTo(visiteTime) > 0) {
+                        currentMinuteCount.getAndIncrement();
+                        // 出入类型
+                        if (record.getVisiteStatus() == 0) {
+                            currentMinuteInCount.getAndIncrement();
+                        } else if (record.getVisiteStatus() == 1) {
+                            currentMinuteOutCount.getAndIncrement();
+                        } else {
+                            log.info("记录访问失败！{}", record);
+                        }
+                    }
+                });
+            }
+
+            DeviceAccessMinuteHeat accessMinuteHeat = new DeviceAccessMinuteHeat()
+                    .setImei(device.getImei())
+                    .setCurrentMinuteTime(minuteBeforeZeroDateTime)
+                    .setCurrentMinuteCount(currentMinuteCount.get())
+                    .setCurrentMinuteInCount(currentMinuteInCount.get())
+                    .setCurrentMinuteOutCount(currentMinuteOutCount.get())
+                    .setCreateTime(TimeGenerator.currentDateTime())
+                    .setUpdateTime(TimeGenerator.currentDateTime())
+                    .setIsDeleted(NO_DELETED);
+            deviceAccessMinuteHeatService.insert(accessMinuteHeat);
+        });
     }
 
 }

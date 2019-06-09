@@ -7,6 +7,7 @@ import com.ten.aditum.back.vo.Personas;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -23,7 +24,7 @@ public class OneTimeAnalysor extends BaseAnalysor {
     /**
      * 一次性任务
      */
-//    @Scheduled(cron = TEST_TIME)
+    @Scheduled(cron = TEST_TIME)
     public void analysis() {
         log.info("一次性任务...开始");
         List<Person> personList = selectAllPerson();
@@ -37,14 +38,18 @@ public class OneTimeAnalysor extends BaseAnalysor {
     private void analysisPerson(Person person) {
         Personas personas = new Personas()
                 .setPersonnelId(person.getPersonnelId())
-                .setLabelId("job1");
+                .setLabelName("灞呬綇");
         personasService.removePersonas(personas);
         Personas personas2 = new Personas()
                 .setPersonnelId(person.getPersonnelId())
-                .setLabelId("job2");
+                .setLabelName("杩");
         personasService.removePersonas(personas2);
+        Personas personas3 = new Personas()
+                .setPersonnelId(person.getPersonnelId())
+                .setLabelName("鍑");
+        personasService.removePersonas(personas3);
 
-        log.debug("用户 {} 计算完成，{}", person.getPersonnelName());
+        log.info("用户 {}{} 删除完成，", person.getId(), person.getPersonnelName());
     }
 
 }

@@ -156,6 +156,13 @@
             <artifactId>kafka-streams</artifactId>
             <version>1.0.0</version>
         </dependency>
+
+        <!--flume-->
+        <dependency>
+            <groupId>com.teambytes.logback</groupId>
+            <artifactId>logback-flume-appender_2.10</artifactId>
+            <version>0.0.9</version>
+        </dependency>
     </dependencies>
 
     <build>
